@@ -1,7 +1,5 @@
 <?php
 
-include_once '../lib/_functions.inc.php'; // app functions
-
 /**
  * Database connector and queries for app
  *
@@ -17,15 +15,15 @@ class Db {
   public function __construct($connectionType=NULL) {
     if ($connectionType === 'write') {
       $this->_pdo = [
-        'db' => $GLOBALS['DB_WRITE_DSN'],
-        'user' => $GLOBALS['DB_WRITE_USER'],
-        'pass' => $GLOBALS['DB_WRITE_PASS']
+        'db' => $GLOBALS['CONFIG']['DB_WRITE_DSN'],
+        'user' => $GLOBALS['CONFIG']['DB_WRITE_USER'],
+        'pass' => $GLOBALS['CONFIG']['DB_WRITE_PASS']
       ];
     } else {
       $this->_pdo = [
-        'db' => $GLOBALS['DB_DSN'],
-        'user' => $GLOBALS['DB_USER'],
-        'pass' => $GLOBALS['DB_PASS']
+        'db' => $GLOBALS['CONFIG']['DB_DSN'],
+        'user' => $GLOBALS['CONFIG']['DB_USER'],
+        'pass' => $GLOBALS['CONFIG']['DB_PASS']
       ];
     }
     try {
@@ -88,6 +86,17 @@ class Db {
     }
 
     return $type;
+  }
+
+  /**
+   * Get arrays
+   *
+   * @return {Function}
+   */
+  public function queryArrays() {
+    $sql = 'SELECT * FROM nsmp_structures ORDER BY cosmoscode ASC, stacode ASC';
+
+    return $this->_execQuery($sql);
   }
 
 }
