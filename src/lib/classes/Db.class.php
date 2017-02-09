@@ -90,11 +90,14 @@ class Db {
 
   /**
    * Get arrays
+   *   Listing columns explicitly so 'cosmoscode' is first column in result
    *
    * @return {Function}
    */
   public function queryArrays() {
-    $sql = 'SELECT * FROM nsmp_structures ORDER BY cosmoscode ASC, stacode ASC';
+    $sql = 'SELECT `cosmoscode`, `stacode`, `agency`, `lat`, `lon`, `name`,
+      `city`, `state`, `channels`, `image`, `schematic`
+      FROM nsmp_structures ORDER BY cosmoscode ASC, stacode ASC';
 
     return $this->_execQuery($sql);
   }
