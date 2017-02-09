@@ -19,7 +19,7 @@ $NAVIGATION =
     navItem("$section/arrays/index.php", 'Structural Arrays') .
     navItem("$section/buildings/index.php", 'Buildings') .
     navItem("$section/nsmpdata.php", 'Data') .
-    navItem("$section/history.php", 'History')
+    navItem("$section/history/index.php", 'History')
   );
 
 print $NAVIGATION;
