@@ -3,7 +3,7 @@
 include_once '../../conf/config.inc.php'; // app config
 
 if (!isset($TEMPLATE)) {
-  $TITLE = 'NSMP Instrumentation of Multi-Story Buildings in the Los Angeles Region';
+  $TITLE = 'Dense Instrumentation of Multi-Story Buildings in the Los Angeles Region';
   $NAVIGATION = true;
 
   include 'template.inc.php';
