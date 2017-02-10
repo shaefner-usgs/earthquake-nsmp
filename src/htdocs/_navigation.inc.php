@@ -14,12 +14,12 @@ if (preg_match("@^$section/arrays(/index.php)?$@", $url)) {
 
 $NAVIGATION =
   navGroup('NSMP',
-    navItem("$section/index.php", 'Overview') .
+    navItem("$section/", 'Overview') .
     navItem("$section/stations.php", 'Station Map') .
-    navItem("$section/arrays/index.php", 'Structural Arrays') .
-    navItem("$section/buildings/index.php", 'Buildings') .
+    navItem("$section/arrays/", 'Structural Arrays') .
+    navItem("$section/buildings/", 'Buildings') .
     navItem("$section/nsmpdata.php", 'Data') .
-    navItem("$section/history/index.php", 'History')
+    navItem("$section/history/", 'History')
   );
 
 print $NAVIGATION;
