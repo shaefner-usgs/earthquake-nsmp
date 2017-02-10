@@ -23,7 +23,7 @@ if (!isset($TEMPLATE)) {
   the future.</p>
 
 <div class="figure">
-  <img src="img/unlv-exterior_2x.jpg" alt="Photo of the UNLV Building" width="784" height="326" />
+  <img src="img/unlv-exterior_2x.jpg" alt="Photo of the UNLV Building" />
   <p>The Science and Engineering Building, located on the north side of the
     UNLV campus, is a state-of-the-art facility designed for interdisciplinary
     research and education.</p>
@@ -46,7 +46,7 @@ if (!isset($TEMPLATE)) {
 
 <h2>USGS Uses Advanced Sensing Technologies</h2>
 
-<figure class="right" style="max-width:464px">
+<figure class="right">
   <img src="img/unlv-diagram_2x.png" alt="Diagram showing building's sensors"/>
   <figcaption>
     <p>UNLV&rsquo;s environmentally friendly Science and Engineering Building
@@ -105,7 +105,7 @@ if (!isset($TEMPLATE)) {
 
 <div class="figure">
   <a href="img/unlv-flowchart.pdf" title="Click to view a high-res version (.pdf)">
-    <img src="img/unlv-flowchart_2x.jpg" alt="Diagram of building" width="784" height="269" />
+    <img src="img/unlv-flowchart_2x.jpg" alt="Diagram of building" />
   </a>
   <p>Flow chart showing the functioning of a real-time earthquake monitoring
     system for instrumented buildings. This system will provide important
@@ -121,7 +121,7 @@ if (!isset($TEMPLATE)) {
     <a href="https://pubs.usgs.gov/fs/2013/3022/">
       <h4>UNLV&rsquo;s Environmentally Friendly Science and Engineering Building
         is Monitored for Earthquake Shaking</h4>
-      <img src="img/fs3022.gif" alt="factsheet 3022"/>
+      <img src="img/fs3022.gif" alt="factsheet 3022" style="max-width: 125px;" />
     </a>
     <p>USGS Fact Sheet 2013&ndash;3022, by Erol Kalkan, Woody Savage, Shahneam
     Reza, Eric Knight, and Ying Tian</p>
