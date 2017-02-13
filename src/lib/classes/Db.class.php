@@ -94,10 +94,32 @@ class Db {
    *
    * @return {Function}
    */
-  public function queryArrays() {
+  public function queryArrays () {
     $sql = 'SELECT `cosmoscode`, `stacode`, `agency`, `lat`, `lon`, `name`,
       `city`, `state`, `channels`, `image`, `schematic`
       FROM nsmp_structures ORDER BY cosmoscode ASC, stacode ASC';
+
+    return $this->_execQuery($sql);
+  }
+
+  /**
+   * Get buildings
+   *
+   * @return {Function}
+   */
+  public function queryBuildings () {
+    $sql = 'SELECT * FROM monitoring_buildings';
+
+    return $this->_execQuery($sql);
+  }
+
+  /**
+   * Get stations
+   *
+   * @return {Function}
+   */
+  public function queryStations () {
+    $sql = 'SELECT * FROM nsmp_stations';
 
     return $this->_execQuery($sql);
   }
