@@ -1,8 +1,8 @@
 'use strict';
 
 
-var IndexMap = require('map/IndexMap');
+var StationMap = require('map/StationMap');
 
-IndexMap({
+StationMap({
   el: document.querySelector('.map')
 });
