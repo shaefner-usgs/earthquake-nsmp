@@ -75,7 +75,7 @@ var StationMap = function (options) {
     layers.overlays = {
       'Stations': _stations
     };
-    layers.defaults = [terrain];
+    layers.defaults = [terrain, _stations];
 
     return layers;
   };
@@ -91,11 +91,12 @@ var StationMap = function (options) {
 
     // Create map
     map = L.map(_el, {
-      center: [38, -123],
-      zoom: 7,
       layers: layers.defaults,
       scrollWheelZoom: false
     });
+
+    // Set intial map extent to contain stations overlay
+    map.fitBounds(_stations.getBounds());
 
     // Add controllers
     L.control.fullscreen({ pseudoFullscreen: true }).addTo(map);
@@ -106,10 +107,8 @@ var StationMap = function (options) {
     // Remember user's map settings (selected layers, map extent)
     map.restoreMap({
       baseLayers: layers.baseLayers,
-      id: 'id',
-      overlays: layers.overlays,
-      scope: 'appName',
-      shareLayers: true
+      id: 'main',
+      overlays: layers.overlays
     });
   };
 
