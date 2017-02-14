@@ -1,6 +1,8 @@
-/* global L */
+/* global L, MOUNT_PATH */
 'use strict';
 
+
+var Xhr = require('util/Xhr');
 
 // Leaflet plugins
 require('leaflet-fullscreen');
@@ -12,6 +14,7 @@ require('map/RestoreMap');
 require('map/DarkLayer');
 require('map/GreyscaleLayer');
 require('map/SatelliteLayer');
+require('map/BuildingsLayer');
 require('map/TerrainLayer');
 
 
@@ -23,10 +26,11 @@ var BuildingMap = function (options) {
       _this,
 
       _el,
+      _buildings,
 
-      _addMarker,
       _getMapLayers,
-      _initMap;
+      _initMap,
+      _loadBuildingsLayer;
 
   _this = {};
 
@@ -35,14 +39,8 @@ var BuildingMap = function (options) {
     options = options || {};
     _el = options.el || document.createElement('div');
 
-    _initMap();
-  };
-
-  _addMarker = function (map) {
-    var marker;
-
-    marker = L.marker([37.78, -122.45]).bindLabel('label');
-    marker.addTo(map);
+    // Load buildings layer which calls initMap() when finished
+    _loadBuildingsLayer();
   };
 
   /**
@@ -75,9 +73,9 @@ var BuildingMap = function (options) {
       'Dark': dark
     };
     layers.overlays = {
-
+      'Buildings': _buildings
     };
-    layers.defaults = [terrain];
+    layers.defaults = [terrain, _buildings];
 
     return layers;
   };
@@ -93,13 +91,12 @@ var BuildingMap = function (options) {
 
     // Create map
     map = L.map(_el, {
-      center: [38, -123],
-      zoom: 7,
       layers: layers.defaults,
       scrollWheelZoom: false
     });
 
-    _addMarker(map);
+    // Set intial map extent to contain buildings overlay
+    map.fitBounds(_buildings.getBounds());
 
     // Add controllers
     L.control.fullscreen({ pseudoFullscreen: true }).addTo(map);
@@ -110,10 +107,26 @@ var BuildingMap = function (options) {
     // Remember user's map settings (selected layers, map extent)
     map.restoreMap({
       baseLayers: layers.baseLayers,
-      id: 'id',
-      overlays: layers.overlays,
-      scope: 'appName',
-      shareLayers: true
+      id: 'main',
+      overlays: layers.overlays
+    });
+  };
+
+  /**
+   * Load buildings layer from geojson data via ajax
+   */
+  _loadBuildingsLayer = function () {
+    Xhr.ajax({
+      url: MOUNT_PATH + '/_getBuildings.json.php',
+      success: function (data) {
+        _buildings = L.buildingsLayer({
+          data: data
+        });
+        _initMap();
+      },
+      error: function (status) {
+        console.log(status);
+      }
     });
   };
 
