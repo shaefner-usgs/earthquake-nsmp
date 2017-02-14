@@ -1,0 +1,30 @@
+.popup {
+  min-width: 15em;
+
+  dt {
+    clear: left;
+    color: #333;
+    display: block;
+    float: left;
+    font-weight: 300;
+    width: 10em;
+  }
+
+  h2 {
+    font-weight: normal;
+  }
+
+  p {
+    margin-top: 0;
+  }
+
+  .images {
+    display: flex;
+    justify-content: space-between;
+    width: 240px;
+
+    img {
+      height: 100px;
+    }
+  }
+}
