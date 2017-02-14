@@ -6,8 +6,15 @@ if (!isset($TEMPLATE)) {
   $TITLE = 'Structural Health Monitoring of Veterans Affairs&rsquo; Hospital Buildings';
   $NAVIGATION	= true;
   $HEAD = '
+    <link rel="stylesheet" href="/lib/leaflet-0.7.7/leaflet.css" />
+    <link rel="stylesheet" href="../css/va.css"/>
   ';
   $FOOT = '
+    <script>
+      var MOUNT_PATH = "' . $MOUNT_PATH . '";
+    </script>
+    <script src="/lib/leaflet-0.7.7/leaflet.js"></script>
+    <script src="../js/va.js"></script>
   ';
   include	'template.inc.php';
 }
@@ -15,7 +22,7 @@ if (!isset($TEMPLATE)) {
 ?>
 
 <p>In collaboration with the U.S. Department of Veterans Affairs (VA),
-  the <a href="http://nsmp.wr.usgs.gov/">National Strong Motion Project</a>
+  the <a href="/monitoring/nsmp/">National Strong Motion Project</a>
   of the U.S. Geological Survey has been installing sophisticated seismic
   systems that will monitor the structural integrity of VA hospital buildings
   located in conterminous United States, Alaska and Puerto Rico during
@@ -27,6 +34,21 @@ if (!isset($TEMPLATE)) {
   from future earthquake losses.</p>
 
 <div class="map"></div>
+<ul class="legend no-style">
+  <li>
+    <svg>
+      <circle class="array" cx="8" cy="8" r="7" />
+    </svg>
+    <span>Building Array</span>
+  </li>
+  <li>
+    <svg>
+      <circle class="reference" cx="8" cy="8" r="7" />
+    </svg>
+    <span>Reference Site</span>
+  </li>
+  <li class="count"></li>
+</ul>
 
 <p>Select a circle on the map to see details at each instrumented structure.
   Note that some structures have both building arrays and reference sites where
@@ -34,9 +56,9 @@ if (!isset($TEMPLATE)) {
   in the top right corner of the map).</p>
 
 <ul>
-  <li>Building Array (orange circles): Instrumented by 6 or more accelerometers
+  <li>Building Array: Instrumented by 6 or more accelerometers
     at different floors.</li>
-  <li>Reference Site (blue circles): Instrumented by 3 accelerometers</li>
+  <li>Reference Site: Instrumented by 3 accelerometers</li>
 </ul>
 
 <h2>Fact Sheets</h2>
