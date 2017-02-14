@@ -6,13 +6,16 @@
   margin: 0 0 1em 0;
 }
 
-.legend li {
-  height: 1.5em;
+.legend {
+  margin: .5em 0;
+
+  li {
+    height: 1.5em;
+  }
 }
 
-.owners,
-.types {
-  margin: .5em 0;
+.owners img {
+  filter: opacity(.8);
 }
 
 .types {
