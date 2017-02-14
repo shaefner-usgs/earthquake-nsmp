@@ -57,6 +57,7 @@ var BuildingMap = function (options) {
     var dark,
         greyscale,
         layers,
+        name,
         satellite,
         terrain;
 
@@ -72,10 +73,15 @@ var BuildingMap = function (options) {
       'Greyscale': greyscale,
       'Dark': dark
     };
-    layers.overlays = {
-      'Buildings': _buildings
-    };
+    layers.overlays = {};
     layers.defaults = [terrain, _buildings];
+
+    // Add buildings to overlays / defaults
+    Object.keys(_buildings.layers).forEach(function(key) {
+      name = _buildings.names[key] + ' (' + _buildings.count[key] + ')';
+      layers.overlays[name] = _buildings.layers[key];
+      layers.defaults.push(_buildings.layers[key]);
+    });
 
     return layers;
   };

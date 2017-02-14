@@ -8,6 +8,7 @@ require('leaflet.label');
 
 
 var _DEFAULTS,
+    _LAYERNAMES,
     _OVERLAY_DEFAULTS;
 
 _OVERLAY_DEFAULTS = {
@@ -20,6 +21,10 @@ _DEFAULTS = {
   data: {},
   overlayOptions: _OVERLAY_DEFAULTS
 };
+_LAYERNAMES = {
+  array: 'Building Array',
+  reference: 'Reference Site'
+};
 
 /**
  * Factory for Buildings overlay
@@ -27,6 +32,7 @@ _DEFAULTS = {
  * @param options {Object}
  *     {
  *       data: {String} Geojson data
+ *       overlayOptions: {Object} L.CircleMarker options
  *     }
  *
  * @return {L.FeatureGroup}
@@ -37,23 +43,38 @@ var BuildingsLayer = function (options) {
 
       _overlayOptions,
 
+      _initLayers,
       _onEachFeature,
       _pointToLayer,
       _showCount;
 
 
-  _this = {};
+  _this = L.featureGroup();
 
   _initialize = function (options) {
     options = Util.extend({}, _DEFAULTS, options);
-
     _overlayOptions = Util.extend({}, _OVERLAY_DEFAULTS, options.overlayOptions);
 
     _showCount(options.data.count);
+    _initLayers();
 
-    _this = L.geoJson(options.data, {
+    L.geoJson(options.data, {
       onEachFeature: _onEachFeature,
       pointToLayer: _pointToLayer
+    });
+  };
+
+  /**
+   * Create a featureGroup for each type of station
+   */
+  _initLayers = function () {
+    _this.count = {};
+    _this.layers = {};
+    _this.names = _LAYERNAMES;
+    Object.keys(_LAYERNAMES).forEach(function (key) {
+      _this.count[key] = 0;
+      _this.layers[key] = L.featureGroup();
+      _this.addLayer(_this.layers[key]); // add to 'master' featureGroup
     });
   };
 
@@ -120,6 +141,10 @@ var BuildingsLayer = function (options) {
       _overlayOptions.fillColor = '#00c';
     }
     marker = L.circleMarker(latlng, _overlayOptions);
+
+    // Group stations in separate layers by type
+    _this.layers[type].addLayer(marker);
+    _this.count[type] ++;
 
     return marker;
   };
