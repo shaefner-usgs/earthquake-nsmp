@@ -87,14 +87,28 @@ var BuildingsLayer = function (options) {
    */
   _onEachFeature = function (feature, layer) {
     var data,
+        imgs,
         popup,
         popupTemplate,
         props;
 
     props = feature.properties;
+
+    if (props.photo) {
+      imgs += '<a href="img/photos/' + props.photo + '" target="_blank">' +
+          '<img src="img/photos/thumbs/' + props.photo + '" alt="building photo" />' +
+        '</a>';
+    }
+    if (props.layout) {
+      imgs += '<a href="img/layouts/' + props.layout + '" target="_blank">' +
+          '<img src="img/layouts/thumbs/' + props.layout_thumb + '" alt="building layout" />' +
+        '</a>';
+    }
+
     data = {
       building: props.building,
       city: props.city,
+      imgs: imgs,
       name: props.name,
       photo: props.photo,
       sensors_ground: props.sensors_ground,
@@ -106,6 +120,7 @@ var BuildingsLayer = function (options) {
     popupTemplate = '<div class="popup">' +
         '<h2>{name}</h2>' +
         '<p>{city}, {state}' +
+        imgs +
         '<dl>' +
           '<dt>Station number</dt><dd>{station}</dd>' +
           '<dt>Building number</dt><dd>{building}</dd>' +
