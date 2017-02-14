@@ -26,10 +26,10 @@ while ($row = $rsBuildings->fetch(PDO::FETCH_ASSOC)) {
   // ImageMagick adds '-0', '-1', etc when converting multipage .pdf to .png
   $thumb = '';
   if ($row['filename_layout']) {
-    $thumb = $thumbPath . preg_replace('/pdf$/', 'png', $row['filename_layout']);
+    $thumb = preg_replace('/pdf$/', 'png', $row['filename_layout']);
     // Try file-0.png if file.png doesn't exist
-    if (!file_exists($thumb)) {
-      $thumb = $thumbPath . preg_replace('/\.pdf$/', '-0.png', $row['filename_layout']);
+    if (!file_exists("$thumbPath/$thumb")) {
+      $thumb = preg_replace('/\.pdf$/', '-0.png', $row['filename_layout']);
     }
   }
 
