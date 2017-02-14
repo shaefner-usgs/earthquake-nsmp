@@ -10,6 +10,9 @@ if (!isset($TEMPLATE)) {
     <link rel="stylesheet" href="css/stations.css"/>
   ';
   $FOOT = '
+    <script>
+      var MOUNT_PATH = "' . $MOUNT_PATH . '";
+    </script>
     <script src="/lib/leaflet-0.7.7/leaflet.js"></script>
     <script src="js/stations.js"></script>
   ';
@@ -20,3 +23,4 @@ if (!isset($TEMPLATE)) {
 ?>
 
 <div class="map"></div>
+<p class="count"></p>
