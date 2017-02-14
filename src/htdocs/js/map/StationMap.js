@@ -57,6 +57,7 @@ var StationMap = function (options) {
     var dark,
         greyscale,
         layers,
+        name,
         satellite,
         terrain;
 
@@ -72,10 +73,15 @@ var StationMap = function (options) {
       'Greyscale': greyscale,
       'Dark': dark
     };
-    layers.overlays = {
-      'Stations': _stations
-    };
-    layers.defaults = [terrain, _stations];
+    layers.overlays = {};
+    layers.defaults = [terrain];
+
+    // Add stations to overlays / defaults
+    Object.keys(_stations.layers).forEach(function(key) {
+      name = _stations.names[key] + ' (' + _stations.count[key] + ')';
+      layers.overlays[name] = _stations.layers[key];
+      layers.defaults.push(_stations.layers[key]);
+    });
 
     return layers;
   };
@@ -129,6 +135,7 @@ var StationMap = function (options) {
       }
     });
   };
+
 
   _initialize(options);
   options = null;

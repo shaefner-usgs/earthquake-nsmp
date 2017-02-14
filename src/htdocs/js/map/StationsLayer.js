@@ -7,10 +7,24 @@ var Util = require('util/Util');
 require('leaflet.label');
 
 
-var _DEFAULTS;
+var _DEFAULTS,
+    _LAYERNAMES,
+    _MARKER_DEFAULTS;
 
+_MARKER_DEFAULTS = {
+  opacity: 0.8
+};
 _DEFAULTS = {
   data: {},
+  markerOptions: _MARKER_DEFAULTS
+};
+_LAYERNAMES = {
+  array: 'Geotechnical Array',
+  bridge: 'Bridge, overpass',
+  building: 'Building',
+  dam: 'Dam',
+  misc: 'Miscellaneous',
+  ref: 'Free-field and reference'
 };
 
 /**
@@ -19,6 +33,7 @@ _DEFAULTS = {
  * @param options {Object}
  *     {
  *       data: {String} Geojson data
+ *       markerOptions: {Object} L.Marker options
  *     }
  *
  * @return {L.FeatureGroup}
@@ -28,26 +43,64 @@ var StationsLayer = function (options) {
       _this,
 
       _icons,
+      _markerOptions,
 
       _getIcon,
       _getStaionType,
+      _initLayers,
       _onEachFeature,
       _pointToLayer,
       _showCount;
 
 
-  _this = {};
+  _this = L.featureGroup();
 
   _initialize = function (options) {
     options = Util.extend({}, _DEFAULTS, options);
+    _markerOptions = Util.extend({}, _MARKER_DEFAULTS, options.markerOptions);
+
     _icons = [];
 
     _showCount(options.data.count);
+    _initLayers();
 
-    _this = L.geoJson(options.data, {
+    L.geoJson(options.data, {
       onEachFeature: _onEachFeature,
       pointToLayer: _pointToLayer
     });
+  };
+
+  /**
+   * Get Leaflet icon for a point
+   *
+   * @param code {String}
+   * @param owner {String}
+   *
+   * @return {L.icon}
+   */
+  _getIcon = function (code, owner) {
+    var colors;
+
+    colors = {
+      USGS: '48a',
+      other: 'c34'
+    };
+    if (owner !== 'USGS') {
+      owner = 'other';
+    }
+    if (!_icons[code]) {
+      _icons[code] = {};
+    }
+    if (!_icons[code][owner]) {
+      _icons[code][owner] = L.icon({
+        iconUrl: 'img/pin-m-' + code + '+' + colors[owner] + '.png',
+        iconSize: [30, 70],
+        iconAnchor: [15, 35],
+        popupAnchor: [0, -35]
+      });
+    }
+
+    return _icons[code][owner];
   };
 
   /**
@@ -55,11 +108,10 @@ var StationsLayer = function (options) {
    *
    * @param num {Integer}
    *
-   * @return {Object}
+   * @return {String}
    */
   _getStaionType = function (num) {
-    var codes,
-        names;
+    var codes;
 
     codes = {
       0: 'misc',
@@ -81,50 +133,22 @@ var StationsLayer = function (options) {
       50: 'array',
       52: 'array'
     };
-    names = {
-      'array': 'Geotechnical Array',
-      'bridge': 'Bridge, overpass',
-      'building': 'Building',
-      'dam': 'Dam',
-      'misc': 'Miscellaneous',
-      'ref': 'Free-field and reference'
-    };
 
-    return {
-      code: codes[num],
-      name: names[codes[num]]
-    };
+    return codes[num];
   };
 
   /**
-   * Get Leaflet icon for a point
-   *
-   * @param code {String}
-   * @param owner {String}
-   *
-   * @return {L.icon}
+   * Create a layerGroup for each type of station
    */
-  _getIcon = function (code, owner) {
-    var colors = {
-      USGS: '48a',
-      other: 'c34'
-    };
-    if (owner !== 'USGS') {
-      owner = 'other';
-    }
-    if (!_icons[code]) {
-      _icons[code] = {};
-    }
-    if (!_icons[code][owner]) {
-      _icons[code][owner] = L.icon({
-        iconUrl: 'img/pin-m-' + code + '+' + colors[owner] + '.png',
-        iconSize: [30, 70],
-        iconAnchor: [15, 35],
-        popupAnchor: [0, -35]
-      });
-    }
-
-    return _icons[code][owner];
+  _initLayers = function () {
+    _this.count = {};
+    _this.layers = {};
+    _this.names = _LAYERNAMES;
+    Object.keys(_LAYERNAMES).forEach(function (key) {
+      _this.count[key] = 0;
+      _this.layers[key] = L.featureGroup();
+      _this.addLayer(_this.layers[key]); // add to featureGroup
+    });
   };
 
   /**
@@ -186,12 +210,14 @@ var StationsLayer = function (options) {
     props = feature.properties;
 
     type = _getStaionType(props.cosmoscode);
-    icon = _getIcon(type.code, props.owner);
+    icon = _getIcon(type, props.owner);
+    _markerOptions.icon = icon;
 
-    marker = L.marker(latlng, {
-      opacity: 0.8,
-      icon: icon
-    });
+    marker = L.marker(latlng, _markerOptions);
+
+    // Group stations in separate layers by type
+    _this.layers[type].addLayer(marker);
+    _this.count[type] ++;
 
     return marker;
   };
