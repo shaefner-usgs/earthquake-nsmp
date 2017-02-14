@@ -138,7 +138,7 @@ var StationsLayer = function (options) {
   };
 
   /**
-   * Create a layerGroup for each type of station
+   * Create a featureGroup for each type of station
    */
   _initLayers = function () {
     _this.count = {};
@@ -147,7 +147,7 @@ var StationsLayer = function (options) {
     Object.keys(_LAYERNAMES).forEach(function (key) {
       _this.count[key] = 0;
       _this.layers[key] = L.featureGroup();
-      _this.addLayer(_this.layers[key]); // add to featureGroup
+      _this.addLayer(_this.layers[key]); // add to 'master' featureGroup
     });
   };
 
