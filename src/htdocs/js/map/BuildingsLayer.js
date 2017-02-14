@@ -92,6 +92,7 @@ var BuildingsLayer = function (options) {
         popupTemplate,
         props;
 
+    imgs = '';
     props = feature.properties;
 
     if (props.photo) {
@@ -119,8 +120,8 @@ var BuildingsLayer = function (options) {
 
     popupTemplate = '<div class="popup">' +
         '<h2>{name}</h2>' +
-        '<p>{city}, {state}' +
-        imgs +
+        '<p>{city}, {state}</p>' +
+        '<div class="images">{imgs}</div>' +
         '<dl>' +
           '<dt>Station number</dt><dd>{station}</dd>' +
           '<dt>Building number</dt><dd>{building}</dd>' +
