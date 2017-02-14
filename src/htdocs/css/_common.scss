@@ -1,29 +1,29 @@
 .legend {
   display: flex;
-  margin-top: 5px;
+  flex-flow: row wrap;
+  margin: 0;
 
+  img {
+    position: absolute;
+    top: -2px;
+    width: 18px;
+  }
   li {
     font-size: 16px;
     height: 16px;
     line-height: 16px;
-    margin-right: 1em;
+    margin-right: .75em;
     position: relative;
-
-    &.count {
-      flex: 1;
-      margin-right: 0;
-      text-align: right;
-    }
   }
   span {
     display: inline-block;
     margin-left: 20px;
   }
   svg {
+    fill-opacity: .3;
     height: 16px;
-    fill-opacity: 0.3;
     position: absolute;
-    stroke-opacity: 0.7;
+    stroke-opacity: .7;
     stroke-width: 1px;
     width: 16px;
   }

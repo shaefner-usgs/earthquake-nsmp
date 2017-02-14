@@ -1,6 +1,12 @@
 @import '_common.scss';
 @import 'map/_map.scss';
 
+li.count {
+  flex: 1;
+  margin-right: 0;
+  text-align: right;
+}
+
 .array {
   fill: #ff7800;
   stroke: #ff7800;
