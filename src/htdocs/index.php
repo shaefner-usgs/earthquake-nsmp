@@ -39,7 +39,7 @@ if (!isset($TEMPLATE)) {
 
 <p>Currently the NSMP operates and maintains <a href="stations.php">strong-motion
   instruments</a> at more than 660 ground, free-field and reference sites, and
-  more than 3200 channels of data from about 180 <a href="/monitoring/nsmp/arrays.php">structural
+  more than 3200 channels of data from about 180 <a href="/monitoring/nsmp/arrays/">structural
   arrays</a>.  When a significant earthquake occurs, the NSMP automatically
   retrieves strong motion recordings from its instrumentation as well as from
   more than 2000 other instruments operated throughout the US by federal,
