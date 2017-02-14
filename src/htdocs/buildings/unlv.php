@@ -5,6 +5,8 @@ include_once '../../conf/config.inc.php'; // app config
 if (!isset($TEMPLATE)) {
   $TITLE	=	'UNLV&rsquo;s Environmentally Friendly Science and Engineering Building is Monitored for Earthquake Shaking';
   $NAVIGATION	= true;
+  $HEAD = '<link rel="stylesheet" href="../css/unlv.css" />';
+
   include	'template.inc.php';
 }
 
@@ -121,7 +123,7 @@ if (!isset($TEMPLATE)) {
     <a href="https://pubs.usgs.gov/fs/2013/3022/">
       <h4>UNLV&rsquo;s Environmentally Friendly Science and Engineering Building
         is Monitored for Earthquake Shaking</h4>
-      <img src="img/fs3022.gif" alt="factsheet 3022" style="max-width: 125px;" />
+      <img src="img/fs3022.gif" alt="factsheet 3022" />
     </a>
     <p>USGS Fact Sheet 2013&ndash;3022, by Erol Kalkan, Woody Savage, Shahneam
     Reza, Eric Knight, and Ying Tian</p>
