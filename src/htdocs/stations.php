@@ -36,7 +36,9 @@ if (!isset($TEMPLATE)) {
 
 <div class="map"></div>
 
-<ul class="legend no-style">
+<p class="count"></p>
+
+<ul class="legend types no-style">
   <li>
     <img src="img/pin-m-building+48a.png" alt="marker icon">
     <span>Building</span>
@@ -61,6 +63,8 @@ if (!isset($TEMPLATE)) {
     <img src="img/pin-m-misc+48a.png" alt="marker icon">
     <span>Misc</span>
   </li>
+</ul>
+<ul class="legend owners no-style">
   <li>
     <img src="img/pin-m+48a.png" alt="marker icon">
     <span>USGS site</span>
@@ -69,5 +73,4 @@ if (!isset($TEMPLATE)) {
     <img src="img/pin-m+c34.png" alt="marker icon">
     <span>non-USGS site</span>
   </li>
-  <li class="count"></li>
 </ul>
