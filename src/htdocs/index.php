@@ -19,7 +19,7 @@ if (!isset($TEMPLATE)) {
       arrows) recorded horizontal movement on the 49th floor of the building
       five times greater than the 1.5 inches measured in the basement, as
       indicated by the recordings (red lines).</p>
-    <p>Learn more: USGS Fact Sheet 068-03 <a href="http://pubs.usgs.gov/fs/2003/fs068-03/fs068-03.pdf">Monitoring
+    <p>Learn more: USGS Fact Sheet 068-03 <a href="https://pubs.usgs.gov/fs/2003/fs068-03/fs068-03.pdf">Monitoring
       Earthquake Shaking in Buildings to Reduce Loss of Life and Property</a>.</p>
   </figcaption>
 
@@ -47,5 +47,5 @@ if (!isset($TEMPLATE)) {
   that participate in the <a href="/monitoring/anss/">Advanced National
   Seismic System</a> (ANSS). The NSMP rapidly processes these recordings
   according to <a href="http://www.cosmos-eq.org/publications/reports/">COSMOS</a>
-  standards and archives the products at the <a href="http://strongmotioncenter.org/">Center
+  standards and archives the products at the <a href="https://strongmotioncenter.org/">Center
   for Engineering Strong Motion Data</a>.</p>

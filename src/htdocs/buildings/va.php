@@ -108,6 +108,6 @@ if (!isset($TEMPLATE)) {
     Conf. on Earthquake Engineering, Paper No. 4474, Lisbon, Portugal.</li>
 </ul>
 
-<a href="http://www.va.gov/">
+<a href="https://www.va.gov/">
   <img src="img/va-logo.png" class="logo" alt="U.S. Department of Veterans Affairs" width="221" height="50" />
 </a>

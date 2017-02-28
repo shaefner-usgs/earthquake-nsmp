@@ -130,6 +130,6 @@ if (!isset($TEMPLATE)) {
   </li>
 </ul>
 
-<a href="http://www.unlv.edu">
+<a href="https://www.unlv.edu">
   <img src="img/unlv-logo_2x.png" class="logo" alt="UNLV logo" width="144" height="42" />
 </a>
