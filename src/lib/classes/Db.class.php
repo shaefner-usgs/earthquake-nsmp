@@ -108,7 +108,7 @@ class Db {
    * @return {Function}
    */
   public function queryBuildings () {
-    $sql = 'SELECT * FROM monitoring_buildings';
+    $sql = 'SELECT * FROM nsmp_buildings';
 
     return $this->_execQuery($sql);
   }
