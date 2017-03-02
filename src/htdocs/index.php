@@ -3,7 +3,7 @@
 include_once '../conf/config.inc.php'; // app config
 
 if (!isset($TEMPLATE)) {
-  $TITLE = 'National Stong Motion Project';
+  $TITLE = 'National Strong Motion Project';
   $NAVIGATION = true;
 
   include 'template.inc.php';
