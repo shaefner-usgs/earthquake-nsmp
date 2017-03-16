@@ -26,7 +26,8 @@ module.exports = function (grunt) {
     'copy:leaflet',
     'copy:leaflet_fullscreen',
     'postcss:build',
-    'copy:build'//,
+    'copy:build',
+    'copy:oms'
     //'copy:test'
   ]);
 

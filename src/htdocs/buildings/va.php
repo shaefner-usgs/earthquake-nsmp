@@ -14,6 +14,7 @@ if (!isset($TEMPLATE)) {
       var MOUNT_PATH = "' . $CONFIG['MOUNT_PATH'] . '";
     </script>
     <script src="/lib/leaflet-0.7.7/leaflet.js"></script>
+    <script src="../lib/oms/oms.min.js"></script>
     <script src="../js/va.js"></script>
   ';
   include	'template.inc.php';

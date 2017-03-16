@@ -84,6 +84,15 @@ var copy = {
     src: [
       '*.png'
     ]
+  },
+
+  oms: {
+    cwd: 'src/lib/oms',
+    dest: config.build + '/' + config.src + '/htdocs/lib/oms',
+    expand: true,
+    src: [
+      '**/*'
+    ]
   }
 
 };
