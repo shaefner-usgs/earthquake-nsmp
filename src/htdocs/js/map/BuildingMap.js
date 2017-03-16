@@ -25,12 +25,12 @@ var BuildingMap = function (options) {
   var _initialize,
       _this,
 
-      _el,
       _buildings,
+      _el,
       _map,
 
       _getMapLayers,
-      _finishMap,
+      _finishMapInit,
       _initMap,
       _loadBuildingsLayer;
 
@@ -44,7 +44,7 @@ var BuildingMap = function (options) {
     // Create Leaflet map immediately so it can be passed to _loadBuildingsLayer()
     _map = _initMap();
 
-    // Load buildings layer which calls _finishMap() when finished
+    // Load buildings layer which calls _finishMapInit() when finished
     _loadBuildingsLayer(_map);
   };
 
@@ -91,12 +91,11 @@ var BuildingMap = function (options) {
     return layers;
   };
 
-
   /**
    * Finish Leaflet map init - separated out from initMap so we can call oms
    *   library with leaflet map instance before Buildings layer is created
    */
-  _finishMap = function () {
+  _finishMapInit = function () {
     var layers;
 
     // Get all layers and add default layers to map
@@ -146,13 +145,14 @@ var BuildingMap = function (options) {
           data: data,
           map: map
         });
-        _finishMap();
+        _finishMapInit();
       },
       error: function (status) {
         console.log(status);
       }
     });
   };
+  
 
   _initialize(options);
   options = null;
