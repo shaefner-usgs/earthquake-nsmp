@@ -125,8 +125,8 @@ var BuildingsLayer = function (options) {
         '<dl>' +
           '<dt>Station number</dt><dd>{station}</dd>' +
           '<dt>Building number</dt><dd>{building}</dd>' +
-          '<dt>Sensors in building</dt><dd>{sensors_ground}</dd>' +
-          '<dt>Sensors in ground</dt><dd>{sensors_structure}</dd>' +
+          '<dt>Sensors in building</dt><dd>{sensors_structure}</dd>' +
+          '<dt>Sensors in ground</dt><dd>{sensors_ground}</dd>' +
         '</dl>' +
       '</div>';
     popup = L.Util.template(popupTemplate, data);
