@@ -286,7 +286,11 @@ Note: The Leaflet maps API must be included *before* this code
             marker.addEventListener('mouseout', mhl.unhighlight);
           }
           marker.setLatLng(footLl);
-          marker.setZIndexOffset(1000000);
+          if (marker instanceof L.CircleMarker) {
+            marker.bringToFront();
+          } else {
+            marker.setZIndexOffset(1000000);
+          }
           _results.push(marker);
         }
         return _results;
@@ -316,7 +320,11 @@ Note: The Leaflet maps API must be included *before* this code
           if (marker !== markerNotToMove) {
             marker.setLatLng(marker['_omsData'].usualPosition);
           }
-          marker.setZIndexOffset(0);
+          if (marker instanceof L.CircleMarker) {
+            marker.bringToBack();
+          } else {
+            marker.setZIndexOffset(0);
+          }
           mhl = marker['_omsData'].highlightListeners;
           if (mhl != null) {
             marker.removeEventListener('mouseover', mhl.highlight);
