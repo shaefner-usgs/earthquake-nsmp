@@ -206,6 +206,7 @@ var BuildingsLayer = function (options) {
     el.innerHTML = count + ' structures on this map';
   };
 
+
   _initialize(options);
   options = null;
   return _this;
