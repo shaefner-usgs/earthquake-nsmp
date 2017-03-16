@@ -27,8 +27,10 @@ var BuildingMap = function (options) {
 
       _el,
       _buildings,
+      _map,
 
       _getMapLayers,
+      _finishMap,
       _initMap,
       _loadBuildingsLayer;
 
@@ -39,8 +41,11 @@ var BuildingMap = function (options) {
     options = options || {};
     _el = options.el || document.createElement('div');
 
-    // Load buildings layer which calls initMap() when finished
-    _loadBuildingsLayer();
+    // Create Leaflet map immediately so it can be passed to _loadBuildingsLayer()
+    _map = _initMap();
+
+    // Load buildings layer which calls _finishMap() when finished
+    _loadBuildingsLayer(_map);
   };
 
   /**
@@ -86,32 +91,31 @@ var BuildingMap = function (options) {
     return layers;
   };
 
+
   /**
-   * Create Leaflet map instance
+   * Finish Leaflet map init - separated out from initMap so we can call oms
+   *   library with leaflet map instance before Buildings layer is created
    */
-  _initMap = function () {
-    var layers,
-        map;
+  _finishMap = function () {
+    var layers;
 
+    // Get all layers and add default layers to map
     layers = _getMapLayers();
-
-    // Create map
-    map = L.map(_el, {
-      layers: layers.defaults,
-      scrollWheelZoom: false
+    layers.defaults.forEach(function(layer) {
+      _map.addLayer(layer);
     });
 
     // Set intial map extent to contain buildings overlay
-    map.fitBounds(_buildings.getBounds());
+    _map.fitBounds(_buildings.getBounds());
 
     // Add controllers
-    L.control.fullscreen({ pseudoFullscreen: true }).addTo(map);
-    L.control.layers(layers.baseLayers, layers.overlays).addTo(map);
-    L.control.mousePosition().addTo(map);
-    L.control.scale().addTo(map);
+    L.control.fullscreen({ pseudoFullscreen: true }).addTo(_map);
+    L.control.layers(layers.baseLayers, layers.overlays).addTo(_map);
+    L.control.mousePosition().addTo(_map);
+    L.control.scale().addTo(_map);
 
     // Remember user's map settings (selected layers, map extent)
-    map.restoreMap({
+    _map.restoreMap({
       baseLayers: layers.baseLayers,
       id: 'main',
       overlays: layers.overlays
@@ -119,16 +123,30 @@ var BuildingMap = function (options) {
   };
 
   /**
+   * Create Leaflet map instance
+   */
+  _initMap = function () {
+    var map;
+
+    map = L.map(_el, {
+      scrollWheelZoom: false
+    });
+
+    return map;
+  };
+
+  /**
    * Load buildings layer from geojson data via ajax
    */
-  _loadBuildingsLayer = function () {
+  _loadBuildingsLayer = function (map) {
     Xhr.ajax({
       url: MOUNT_PATH + '/_getBuildings.json.php',
       success: function (data) {
         _buildings = L.buildingsLayer({
-          data: data
+          data: data,
+          map: map
         });
-        _initMap();
+        _finishMap();
       },
       error: function (status) {
         console.log(status);
