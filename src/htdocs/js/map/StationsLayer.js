@@ -1,4 +1,4 @@
-/* global L */
+/* global L, OverlappingMarkerSpiderfier */
 'use strict';
 
 
@@ -44,10 +44,12 @@ var StationsLayer = function (options) {
 
       _icons,
       _markerOptions,
+      _oms,
 
       _getIcon,
       _getStaionType,
       _initLayers,
+      _initOms,
       _onEachFeature,
       _pointToLayer,
       _showCount;
@@ -62,6 +64,7 @@ var StationsLayer = function (options) {
     _icons = [];
 
     _showCount(options.data.count);
+    _initOms();
     _initLayers();
 
     L.geoJson(options.data, {
@@ -152,6 +155,29 @@ var StationsLayer = function (options) {
   };
 
   /**
+   * Initialize OverlappingMarkerSpiderfier Leaflet plugin
+   */
+  _initOms = function () {
+    var map,
+        popup;
+
+    map = options.map;
+    _oms = new OverlappingMarkerSpiderfier(map, {
+      keepSpiderfied: true,
+      nearbyDistance: 5
+    });
+    popup = L.popup({
+      autoPanPadding: L.point(50, 10)
+    });
+
+    _oms.addListener('click', function(marker) {
+      popup.setContent(marker.popup);
+      popup.setLatLng(marker.getLatLng());
+      map.openPopup(popup);
+    });
+  };
+
+  /**
    * Leaflet GeoJSON option: called on each created feature layer. Useful for
    * attaching events and popups to features.
    *
@@ -159,12 +185,40 @@ var StationsLayer = function (options) {
    * @param layer (L.Layer)
    */
   _onEachFeature = function (feature, layer) {
+    layer.bindLabel(feature.properties.staname, {
+      pane: 'popupPane'
+    });
+  };
+
+  /**
+   * Leaflet GeoJSON option: used for creating layers for GeoJSON points
+   *
+   * @param feature {Object}
+   * @param latlng {L.LatLng}
+   *
+   * @return marker {L.CircleMarker}
+   */
+  _pointToLayer = function (feature, latlng) {
     var data,
+        icon,
+        marker,
         popup,
         popupTemplate,
-        props;
+        props,
+        type;
 
     props = feature.properties;
+    type = _getStaionType(props.cosmoscode);
+    icon = _getIcon(type, props.owner);
+    _markerOptions.icon = icon;
+
+    marker = L.marker(latlng, _markerOptions);
+
+    // Group stations in separate layers by type
+    _this.layers[type].addLayer(marker);
+    _this.count[type] ++;
+
+    // Create popup
     data = {
       owner: props.owner,
       numchan: props.numchan,
@@ -184,40 +238,11 @@ var StationsLayer = function (options) {
           '<dt>Number of Channels</dt><dd>{numchan}</dd>' +
         '</dl>' +
       '</div>';
+
     popup = L.Util.template(popupTemplate, data);
+    marker.popup = popup;
 
-    layer.bindPopup(popup, {
-      autoPanPadding: L.point(50, 10)
-    }).bindLabel(data.staname, {
-      pane: 'popupPane'
-    });
-  };
-
-  /**
-   * Leaflet GeoJSON option: used for creating layers for GeoJSON points
-   *
-   * @param feature {Object}
-   * @param latlng {L.LatLng}
-   *
-   * @return marker {L.CircleMarker}
-   */
-  _pointToLayer = function (feature, latlng) {
-    var icon,
-        marker,
-        props,
-        type;
-
-    props = feature.properties;
-
-    type = _getStaionType(props.cosmoscode);
-    icon = _getIcon(type, props.owner);
-    _markerOptions.icon = icon;
-
-    marker = L.marker(latlng, _markerOptions);
-
-    // Group stations in separate layers by type
-    _this.layers[type].addLayer(marker);
-    _this.count[type] ++;
+    _oms.addMarker(marker);
 
     return marker;
   };
@@ -233,6 +258,7 @@ var StationsLayer = function (options) {
     el = document.querySelector('.count');
     el.innerHTML = count + ' stations on this map';
   };
+
 
   _initialize(options);
   options = null;
