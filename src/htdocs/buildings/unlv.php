@@ -7,7 +7,7 @@ if (!isset($TEMPLATE)) {
   $NAVIGATION	= true;
   $HEAD = '<link rel="stylesheet" href="../css/unlv.css" />';
 
-  include	'template.inc.php';
+  include 'template.inc.php';
 }
 
 ?>

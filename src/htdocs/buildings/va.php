@@ -17,7 +17,7 @@ if (!isset($TEMPLATE)) {
     <script src="../lib/oms/oms.js"></script>
     <script src="../js/va.js"></script>
   ';
-  include	'template.inc.php';
+  include 'template.inc.php';
 }
 
 ?>
