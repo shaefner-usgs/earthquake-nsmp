@@ -1,4 +1,4 @@
-/* global L */
+/* global L, OverlappingMarkerSpiderfier */
 'use strict';
 
 
@@ -41,9 +41,11 @@ var BuildingsLayer = function (options) {
   var _initialize,
       _this,
 
+      _oms,
       _overlayOptions,
 
       _initLayers,
+      _initOms,
       _onEachFeature,
       _pointToLayer,
       _showCount;
@@ -56,6 +58,7 @@ var BuildingsLayer = function (options) {
     _overlayOptions = Util.extend({}, _OVERLAY_DEFAULTS, options.overlayOptions);
 
     _showCount(options.data.count);
+    _initOms();
     _initLayers();
 
     L.geoJson(options.data, {
@@ -79,6 +82,29 @@ var BuildingsLayer = function (options) {
   };
 
   /**
+   * Initialize OverlappingMarkerSpiderfier Leaflet plugin
+   */
+  _initOms = function () {
+    var map,
+        popup;
+
+    map = options.map;
+    _oms = new OverlappingMarkerSpiderfier(map, {
+      keepSpiderfied: true,
+      nearbyDistance: 1 // using min. distance b/c it's for markers w/ identical coords
+    });
+    popup = L.popup({
+      autoPanPadding: L.point(50, 10)
+    });
+
+    _oms.addListener('click', function(marker) {
+      popup.setContent(marker.popup);
+      popup.setLatLng(marker.getLatLng());
+      map.openPopup(popup);
+    });
+  };
+
+  /**
    * Leaflet GeoJSON option: called on each created feature layer. Useful for
    * attaching events and popups to features.
    *
@@ -86,15 +112,45 @@ var BuildingsLayer = function (options) {
    * @param layer (L.Layer)
    */
   _onEachFeature = function (feature, layer) {
+    layer.bindLabel(feature.properties.name);
+  };
+
+  /**
+   * Leaflet GeoJSON option: used for creating layers for GeoJSON points
+   *
+   * @param feature {Object}
+   * @param latlng {L.LatLng}
+   *
+   * @return marker {L.CircleMarker}
+   */
+  _pointToLayer = function (feature, latlng) {
     var data,
         imgs,
+        marker,
         popup,
         popupTemplate,
-        props;
+        props,
+        type;
 
     imgs = '';
     props = feature.properties;
+    type = feature.properties.type;
 
+    // Set color then create marker
+    if (type === 'array') {
+      _overlayOptions.color = '#ff7800';
+      _overlayOptions.fillColor = '#ff7800';
+    } else if (type === 'reference') {
+      _overlayOptions.color = '#00c';
+      _overlayOptions.fillColor = '#00c';
+    }
+    marker = L.circleMarker(latlng, _overlayOptions);
+
+    // Group stations in separate layers by type
+    _this.layers[type].addLayer(marker);
+    _this.count[type] ++;
+
+    // Create popup
     if (props.photo) {
       imgs += '<a href="img/photos/' + props.photo + '" target="_blank">' +
           '<img src="img/photos/thumbs/' + props.photo + '" alt="building photo" />' +
@@ -125,42 +181,15 @@ var BuildingsLayer = function (options) {
         '<dl>' +
           '<dt>Station number</dt><dd>{station}</dd>' +
           '<dt>Building number</dt><dd>{building}</dd>' +
-          '<dt>Sensors in building</dt><dd>{sensors_ground}</dd>' +
-          '<dt>Sensors in ground</dt><dd>{sensors_structure}</dd>' +
+          '<dt>Sensors in building</dt><dd>{sensors_structure}</dd>' +
+          '<dt>Sensors in ground</dt><dd>{sensors_ground}</dd>' +
         '</dl>' +
       '</div>';
+
     popup = L.Util.template(popupTemplate, data);
+    marker.popup = popup;
 
-    layer.bindPopup(popup, {
-      autoPanPadding: L.point(50, 10)
-    }).bindLabel(data.name);
-  };
-
-  /**
-   * Leaflet GeoJSON option: used for creating layers for GeoJSON points
-   *
-   * @param feature {Object}
-   * @param latlng {L.LatLng}
-   *
-   * @return marker {L.CircleMarker}
-   */
-  _pointToLayer = function (feature, latlng) {
-    var marker,
-        type;
-
-    type = feature.properties.type;
-    if (type === 'array') {
-      _overlayOptions.color = '#ff7800';
-      _overlayOptions.fillColor = '#ff7800';
-    } else if (type === 'reference') {
-      _overlayOptions.color = '#00c';
-      _overlayOptions.fillColor = '#00c';
-    }
-    marker = L.circleMarker(latlng, _overlayOptions);
-
-    // Group stations in separate layers by type
-    _this.layers[type].addLayer(marker);
-    _this.count[type] ++;
+    _oms.addMarker(marker);
 
     return marker;
   };
@@ -176,6 +205,7 @@ var BuildingsLayer = function (options) {
     el = document.querySelector('.count');
     el.innerHTML = count + ' structures on this map';
   };
+
 
   _initialize(options);
   options = null;

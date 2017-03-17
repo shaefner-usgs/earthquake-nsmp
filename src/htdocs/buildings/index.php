@@ -5,7 +5,7 @@ include_once '../../conf/config.inc.php'; // app config
 if (!isset($TEMPLATE)) {
   $TITLE  =  'Earthquake Monitoring of Structures';
   $NAVIGATION  = true;
-  include  'template.inc.php';
+  include 'template.inc.php';
 }
 
 ?>

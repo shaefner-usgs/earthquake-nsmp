@@ -14,9 +14,10 @@ if (!isset($TEMPLATE)) {
       var MOUNT_PATH = "' . $CONFIG['MOUNT_PATH'] . '";
     </script>
     <script src="/lib/leaflet-0.7.7/leaflet.js"></script>
+    <script src="../lib/oms/oms.js"></script>
     <script src="../js/va.js"></script>
   ';
-  include	'template.inc.php';
+  include 'template.inc.php';
 }
 
 ?>
@@ -52,7 +53,7 @@ if (!isset($TEMPLATE)) {
 
 <p>Select a circle on the map to see details at each instrumented structure.
   Note that some structures have both building arrays and reference sites where
-  "orange" and "blue" marks may overlap (toggle the layers using the controller
+  "orange" and "blue" markers may overlap (toggle the layers using the controller
   in the top right corner of the map).</p>
 
 <ul>

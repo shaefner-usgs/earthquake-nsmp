@@ -26,9 +26,11 @@ var StationMap = function (options) {
       _this,
 
       _el,
+      _map,
       _stations,
 
       _getMapLayers,
+      _finishMapInit,
       _initMap,
       _loadStationsLayer;
 
@@ -39,8 +41,11 @@ var StationMap = function (options) {
     options = options || {};
     _el = options.el || document.createElement('div');
 
-    // Load stations layer which calls initMap() when finished
-    _loadStationsLayer();
+    // Create Leaflet map immediately so it can be passed to _loadStationsLayer()
+    _map = _initMap();
+
+    // Load stations layer which calls _finishMapInit() when finished
+    _loadStationsLayer(_map);
   };
 
   /**
@@ -87,31 +92,29 @@ var StationMap = function (options) {
   };
 
   /**
-   * Create Leaflet map instance
+   * Finish Leaflet map init - separated out from initMap so we can call oms
+   *   library with leaflet map instance before Buildings layer is created
    */
-  _initMap = function () {
-    var layers,
-        map;
+  _finishMapInit = function () {
+    var layers;
 
+    // Get all layers and add default layers to map
     layers = _getMapLayers();
-
-    // Create map
-    map = L.map(_el, {
-      layers: layers.defaults,
-      scrollWheelZoom: false
+    layers.defaults.forEach(function(layer) {
+      _map.addLayer(layer);
     });
 
     // Set intial map extent to contain stations overlay
-    map.fitBounds(_stations.getBounds());
+    _map.fitBounds(_stations.getBounds());
 
     // Add controllers
-    L.control.fullscreen({ pseudoFullscreen: true }).addTo(map);
-    L.control.layers(layers.baseLayers, layers.overlays).addTo(map);
-    L.control.mousePosition().addTo(map);
-    L.control.scale().addTo(map);
+    L.control.fullscreen({ pseudoFullscreen: true }).addTo(_map);
+    L.control.layers(layers.baseLayers, layers.overlays).addTo(_map);
+    L.control.mousePosition().addTo(_map);
+    L.control.scale().addTo(_map);
 
     // Remember user's map settings (selected layers, map extent)
-    map.restoreMap({
+    _map.restoreMap({
       baseLayers: layers.baseLayers,
       id: 'main',
       overlays: layers.overlays
@@ -119,16 +122,30 @@ var StationMap = function (options) {
   };
 
   /**
+   * Create Leaflet map instance
+   */
+  _initMap = function () {
+    var map;
+
+    map = L.map(_el, {
+      scrollWheelZoom: false
+    });
+
+    return map;
+  };
+
+  /**
    * Load stations layer from geojson data via ajax
    */
-  _loadStationsLayer = function () {
+  _loadStationsLayer = function (map) {
     Xhr.ajax({
       url: MOUNT_PATH + '/_getStations.json.php',
       success: function (data) {
         _stations = L.stationsLayer({
-          data: data
+          data: data,
+          map: map
         });
-        _initMap();
+        _finishMapInit();
       },
       error: function (status) {
         console.log(status);

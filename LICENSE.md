@@ -38,3 +38,4 @@ Libraries used
 --------------
 
 * UTFGrid (license allows redistribution)     [https://github.com/mapbox/utfgrid-spec]
+* Overlapping Marker Spiderfier for Leaflet (license allows redistribution)  [https://github.com/jawj/OverlappingMarkerSpiderfier-Leaflet]
