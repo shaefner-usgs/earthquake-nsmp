@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # https://github.com/sequelpro/sequelpro
 #
-# Host: 127.0.0.1 (MySQL 5.0.77-community-log)
+# Host: ehpmaster (MySQL 5.0.77-community-log)
 # Database: ehpdb
-# Generation Time: 2017-02-09 21:05:08 +0000
+# Generation Time: 2017-03-01 22:00:09 +0000
 # ************************************************************
 
 
@@ -20,8 +20,128 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
+# Dump of table nsmp_buildings
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `nsmp_buildings`;
+
+CREATE TABLE `nsmp_buildings` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `station` int(11) default NULL,
+  `building` varchar(12) default NULL,
+  `type` varchar(24) default NULL,
+  `city` varchar(128) default NULL,
+  `state` varchar(2) default NULL,
+  `name` varchar(255) default NULL,
+  `lat` decimal(9,4) default NULL,
+  `lon` decimal(9,4) default NULL,
+  `stories_below` int(3) default NULL,
+  `stories_above` int(3) default NULL,
+  `area` int(11) default NULL,
+  `seismicity` varchar(10) default NULL,
+  `sensors_structure` int(3) default NULL,
+  `sensors_ground` int(3) default NULL,
+  `filename_photo` varchar(128) default NULL,
+  `filename_layout` varchar(128) default NULL,
+  `comment` text,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+LOCK TABLES `nsmp_buildings` WRITE;
+/*!40000 ALTER TABLE `nsmp_buildings` DISABLE KEYS */;
+
+INSERT INTO `nsmp_buildings` (`id`, `station`, `building`, `type`, `city`, `state`, `name`, `lat`, `lon`, `stories_below`, `stories_above`, `area`, `seismicity`, `sensors_structure`, `sensors_ground`, `filename_photo`, `filename_layout`, `comment`)
+VALUES
+	(6,1226,'62','array','Livermore','CA','MS&N',37.6260,-121.7630,1,6,74200,'VH',24,3,'1226.jpg','1226.pdf','A total of 24 accelerometers are placed in this 7-story reinforced concrete building. To measure ground motion, a triaxial accelerometer is placed on the basement. 2 to 4 accelerometers are placed on each ceiling of the stories above the basement to measure building responses in two lateral directions and to compute floor torsional motions. The building sensors are complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building.'),
+	(1,1868,'100','array','Palo Alto','CA','Outpatient Clinic',37.4050,-122.1400,1,4,341300,'VH',24,3,'1868.jpg','1868.pdf','The building has four stories above the ground and a basement. A triaxial accelerometer is placed on the ground floor to measure ground motion input to the building. The higher floors are similarly instrumented with 4 to 5 accelerometers each to measure the floor lateral motions in two horizontal directions and to compute floor torsional motions. The building sensors are complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building.'),
+	(2,1869,'101','array','Palo Alto','CA','Outpatient Clinic',37.4060,-122.1410,1,4,110700,'VH',24,3,'1869.jpg','1869.pdf','The building has four stories above the ground level. A total of 12 accelerometers are placed in the building at three levels. A triaxial accelerometer is placed on the basement of the adjacent building (Building 100) to record input motion to the building. The building sensors are complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building.'),
+	(3,1870,'334','array','Menlo Park','CA','Center Core Building',37.4650,-122.1610,1,3,153100,'VH',24,0,'1870.jpg','1870.pdf','This building has two story above ground and a basement. It is composed of three blocks separated by two seismic joints. There is also a courtyard. 24 sensors are distributed in the building at critical locations to capture translational and torsional motions of each block at each floor level.'),
+	(5,1875,'200','array','San Francisco','CA','AmbCare / Clinical Support',37.7820,-122.5050,1,4,155509,'VH',16,0,'1875.jpg','1875.pdf','This is a 4-story building instrumented with 16 accelerometers. A triaxial accelerometer is placed on the basement to measure input ground motion to the building. 13 accelerometers are placed on the higher floor ceilings to measure the floor responses to ground shaking as well as to compute floor torsional responses. '),
+	(19,2028,'12','array','Reno','NV','New Bed Building/Clinic',39.5160,-119.7990,0,6,109143,'VH',36,3,'2028.jpg','2028.pdf','This steel building has an unsymmetrical plan; therefore, significant torsional response is expected to occur under a strong ground shaking. In order to capture the building response, 36 sensors are distributed strategically at each floor levels. At the ground level, sensors 1-3 are to record base level ground shaking in two horizontal and vertical directions. Sensors 4-7 are located at the first floor level in order to measure building\'s response in two horizontal directions, and compute floor torsional motion. The higher floors are instrumented likewise. The building sensors are complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building. '),
+	(13,2129,'100D&T','array','Seattle','WA','Main Hosp. Diag. / Treatment Wing',47.5640,-122.3080,1,7,250000,'VH',27,3,'2129.jpg','2129.pdf','The building has 7 stories above the ground level and a basement. Each floor from the first to the seventh is instrumented with 3 accelerometers to measure building response in two horizontal directions. The torsional motion of each story can be computed from the recordings of these sensors. Input ground motion to the building is recorded by a triaxial accelerometer placed on the basement.The building sensors are complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building. '),
+	(9,2191,'100','array','Portland','OR','Main Hospital',45.4970,-122.6830,2,9,684985,'H',39,0,'2191.jpg','2191.pdf','This reinforced concrete building has 11 stories with two floors below the ground. A total of 39 accelerometers are deployed in the building. A triaxial accelerometer is placed on the basement floor. 3 to 4 accelerometers are placed on the ceiling of each floor from the basement to the ninth floor in order to measure floor lateral motions and floor torsional motions.'),
+	(23,2561,'1','array','Charleston','SC','Main Hospital',32.7840,-79.9530,0,5,453616,'VH',48,3,'2561.jpg','2561.pdf','This five-story building consists of three blocks (A, B, C) separated by two seismic joints. Each block has a T-shape plan. Sensors are strategically located at corners at each floor level to measure translational and torsional responses of each block and their wings. The building sensors are also complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building.'),
+	(7,3095,'B30','array','San Juan','PR','New Bed Tower',18.3900,-66.0790,1,6,230000,'H',24,3,'3095.jpg','3095.pdf','This 7-story reinforced concrete building has a basement, where a triaxial sensor is placed to measure input ground motion in the three directions of the building. Other floors have at least three sensors measuring translational motions. Recordings from these sensor can be used to compute floor torsional motions. Sensors at floor ceilings are located at each end of the building at each floor level. The building sensors are complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building. '),
+	(21,3096,'10','array','San Juan','PR','Nursing Building',18.3890,-66.0780,0,2,63900,'H',12,0,'3096.jpg','3096.pdf','This 2-story building has a T-shape plan with three wings. To monitor translational and torsional responses of all three wings during a strong shaking, 12 sensors are located strategically throughout the building. The building sensors are also complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building.'),
+	(11,5082,'500','array','West Los Angeles','CA','Main Hospital',34.0530,-118.4530,1,7,937000,'VH',36,3,'5082.jpg','5082.pdf','The building has 8 stories. A total of 36 accelerometers are deployed in the building at different floor levels to measure each floor lateral motions in two orthogonal directions. A triaxial accelerometer is placed on the ground level to record ground motion input to the building. Another two accelerometers oriented vertically are also placed on the ground floor to measure the building rocking motion. The higher stories are instrumented with at least 3 accelerometers located in the critical locations. The inter-story drift for each floor can be computed from their recordings. The torsional motion of each floor can also be computed from accelerometer recordings. The building sensors are complemented by two sets of three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building. '),
+	(27,5105,'1','array','San Diego','CA','Main Hospital',32.8750,-117.2300,1,6,854900,'VH',60,3,'5105.jpg','5105.pdf','This six-story building has one basement. The building lateral stiffness is mainly provided by 8 seismic towers located around the building and rigidly attached to slabs at each floor above ground. A total of 60 accelerometers are placed at the different levels in the building to measure its lateral response to strong ground motion. The sensors are also placed near the towers to measure their lateral motions. The building sensors are also complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building.'),
+	(29,5106,'126','array','Long Beach','CA','Main Hospital',33.7767,-118.1190,1,11,NULL,'VH',33,3,'5106.jpg','5106.pdf',''),
+	(4,5478,'10','array','Sepulveda','CA','Outpatient Clinical Care',34.2460,-118.4840,0,3,101223,'VH',24,3,'5478.jpg','5478.pdf','The building has 3 stories above the ground level. A total of 24 accelerometers are placed in the building at four different levels. Six accelerometers are placed on the ground level to describe the input ground motion at the center as well as at the wings of the building. The other sensors are placed on the ground, the first, and the second floor ceilings to measure floor lateral responses in two horizontal directions, as well as to compute floor torsional motions. Two vertical sensors, placed at the ground level, are aimed to compute the rocking motion of the building along its transverse direction. '),
+	(12,5483,'1','array','Los Angeles','CA','Out Patient Clinic',34.0520,-118.2380,1,6,201395,'VH',24,3,'5483.jpg','5483.pdf','The building has 7 stories. 3 accelerometers are placed on the ceiling of each floor level. The recordings of these sensors provide lateral and torsional motion of each floor. 2 accelerometers are placed on the ground and first floor ceiling. A triaxial accelerometer located on the basement provides ground motion input to the building. Two additional accelerometers oriented in the vertical location are also placed on the ground floor level to measure building rocking motion along transverse and longitudional axes. The building sensors are complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building. '),
+	(10,5485,'114','array','West Los Angeles','CA','Research Lab',34.2460,-118.4840,1,4,69921,'VH',12,3,'5485.jpg','5485.pdf','The building is a 5-story structure with a basement. A triaxial accelerometer is placed on the basement to record input ground motion to the building. The building has a long rectangular plan therefore accelerometers are placed on each floor level at cornersof the building to measure building response in the transverse (less stiff) direction. The building responses in the other horizontal direction are measured by accelerometers located on the ceilings of the ground, second, and the fourth floor. The building torsion can be computed from the recordings of the coupled sensors located on the fourth floor ceiling. The building sensors are complemented by two sets of three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building. '),
+	(17,7057,'1','array','Roseburg','OR','Main Hospital',43.2240,-123.3670,0,5,123320,'VH',36,3,'7057.jpg','7057.pdf','This unreinforced masonry building has five stories. At the ground level, sensors 1-3 are to record base level ground shaking in two horizontal and vertical directions. Sensors 4-8 are located at the second floor in order to measure building\'s response in two horizontal directions, and compute floor torsional motion. Strategic location of sensors also allows for computation of relative translational motion of the wings. Similarly, 5, 7, 5, 8 sensors are placed on the ceiling of floor 2,3, and 4 respectively to measure each story lateral motions. The building sensors are complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building. '),
+	(18,7059,'201','array','White City','OR','Primary Care Clinic',42.4400,-122.8360,0,2,27069,'H',12,0,'7059.jpg','7059.pdf','This 2 story building has a rectangular plan. 12 sensors are distributed at the corners of the building to measure its translational and torsional response to input ground shaking.'),
+	(20,7061,'11','array','Vancouver','WA','Barnes Rehab Building',45.6370,-122.6570,0,3,133263,'H',24,3,'7061.jpg','7061.pdf','The main building has an unsymmetrical plan; therefore some level of torsional response is expected to occur under a strong ground shaking. In order to capture the building response, and possible pounding due to adjacent wings, which are separated by seismic joints, 24 sensors are distributed strategically between the three-story main building and two adjacent single-story wood-frame wings. At the first floor level of the main building, sensors 1-3 are to record base level ground shaking in two horizontal and one vertical direction. The building sensors are complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building. '),
+	(16,7235,'154','array','Fort Harrison','MT','Main Hospital',46.6190,-112.1050,0,6,132381,'H',24,3,'7235.jpg','7235.pdf','The building is a 5-story structure including the basement floor. A total of 24 accelerometers are deployed in the building to measure its response to ground motion. 2 to 5 accelerometers are placed on the ceiling of each story from the basement to the fourth floor to measure floor lateral responses in two lateral directions and floor torsional motions. A triaxial accelerometer is also placed on the basement floor level to record input ground motion to the building. The building sensors are complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building. '),
+	(28,7237,'14','array','Salt Lake City','UT','Main Hospital',40.7580,-111.8400,1,4,209723,'VH',24,3,'7237.jpg','7237.pdf','The building has a fairly rectangular plan. The sensors are placed at the different levels of the vertical axes at the three corners of the building to measure floor translational and torsional responses. The building sensors are also complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building.'),
+	(22,7416,'1','array','Poplar Bluff','MO','Medical / Nursing / PCC',36.7740,-90.4170,0,7,137718,'H',48,3,'7416.jpg','7416.pdf','The building consists of three blocks separated by two seismic joints. To measure the entire building response, it is necessary to place sensors in each block. A total of 48 accelerometers are placed in the building at different levels and locations in order to measure the significant response of the building during strong motion. The sensors are placed in the critical corners of the building so that both the lateral and torsional responses can be measured and computed. The building sensors are also complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building.'),
+	(15,7410,'1A','array','Memphis','TN','Bed Tower',35.1430,-90.0260,0,3,654118,'VH',24,3,'7410.jpg','7410.pdf','This building has six stories. A triaxial sensor is placed on the ground floor level to measure input ground motion to the building. The higher floors are instrumented with 3 to 4 uniaxial sensors to measure floor lateral responses and floor torsional motions. The building sensors are complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building. '),
+	(14,7411,'7','array','Memphis','TN','Spinal Chord Injury',35.1440,-90.0240,0,3,314903,'VH',12,3,'7411.jpg','7411.pdf','This building has three stories. 9 sensors are placed on the ground, the first and the second floor ceilings to measure floor lateral and torsional motions. A triaxial sensor is also placed on the ground floor to measure three components of the ground motion in the building. The building sensors are complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building. '),
+	(26,7413,'1','array','Oklahoma City','OK','Main Hospital',35.4920,-97.4960,1,11,847780,'ML',60,3,'7413.jpg','7413.pdf','The building has 11 stories above ground and a basement. It consists of several major blocks separated by four main seismic joints. A total of 96 accelerometers are placed in the building at each floor levels in order to measure the significant response of the building during strong shaking. The accelerometers are placed in the critical corners of each block so that both the lateral and torsional responses can be measured. The building sensors are also complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building.'),
+	(24,7415,'1','array','Marion','IL','Main Hospital',37.7245,-88.9560,1,4,81750,'H',48,3,'7415.jpg','7415.pdf','This reinforced-concrete building consists of three blocks separated by two seismic joints. Each block has a fairly rectangular plan.The building was retrofitted by adding two seismic towers into the middle block as well as increased shear-wall cross-section area at its wings. Accelerometers are placed at different floor levels in the middle block to measure its lateral and torsional motions. The side blocks are instrumented likewise, and each 12 accelerometers oriented in horizontal directions in order to measure lateral and torsional response. The building sensors are also complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building.'),
+	(25,7600,'1','array','Richmond','VA','Main Hospital',37.4960,-77.4660,1,5,1018626,'ML',39,3,'7600.jpg','7600.pdf','This building consists of several blocks separated by seismic joints. The two blocks in the middle have five stories, and other blocks rise up to the second floor level. Therefore a considerable number of accelerometers are deployed in the two middle blocks. A total of 39 accelerometers are placed in the building in order to measure the building response to strong ground shaking. The building sensors are also complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building.'),
+	(8,8045,'B100','array','Anchorage','AK','New Hospital Building',61.2330,-149.7440,0,2,188000,'VH',21,3,'8045.jpg','8045.pdf','This steel building consists of two blocks separated by seismic joints. Each block has 2 stories. The first block has a rectangular plan, and it is instrumented with six accelerometers. The second block has a T-shape plan, and it is instrumented with 12 accelerometers. A triaxial sensor is also placed on the first floor of the second block to describe the input ground motion for the building. The building sensors are complemented by three-component seismic sensors located at a reference site distant from the building to monitor ground shaking without interference from the response of the building. '),
+	(30,637,'40','reference','Sepulveda','CA','Boiler Room',34.2491,-118.4790,0,1,NULL,NULL,3,0,'637.jpg','',NULL),
+	(31,638,'259','reference','Los Angeles','CA','Con Work Therapy Building',34.0627,-118.4632,0,1,NULL,NULL,3,0,'638.jpg','',NULL),
+	(32,1823,'21','reference','Martinez','CA','Administration Building',37.9945,-122.1147,0,4,NULL,NULL,6,0,'1823.jpg','',NULL),
+	(33,1849,'332','reference','Menlo Park','CA','Menlo Park VAMC',37.4673,-122.1614,0,1,NULL,NULL,3,0,'1849.jpg','',NULL),
+	(34,2008,'1','reference','Reno','NV','Boiler Room',39.5163,-119.7990,1,6,NULL,NULL,3,0,'2008.jpg','',NULL),
+	(35,2123,'3','reference','Spokane','WA','Engineering Building',47.7038,-117.4781,0,1,NULL,NULL,3,0,'2123.jpg','',NULL),
+	(36,2130,'81','reference','Tacoma','WA','Outpatient Hospital',47.1356,-122.5758,1,4,NULL,NULL,3,0,'2130.jpg','',NULL),
+	(37,2210,'1','reference','Salt Lake City','UT','Medical & Surgical Inpatient Units',40.7578,-111.8402,0,7,NULL,NULL,6,0,'2210.jpg','',NULL),
+	(38,2245,'2','reference','Fort Harrison','MT','Fort Harrison VAMC',46.6189,-112.1050,1,2,NULL,NULL,3,0,'2245.jpg','',NULL),
+	(39,2307,'107','reference','Prescott','AZ','Main Hospital Building',34.5547,-112.4531,1,5,NULL,NULL,3,0,'2307.jpg','',NULL),
+	(40,2314,'16','reference','Tucson','AZ','High Voltage Electric Vault',32.1839,-110.9622,0,2,NULL,NULL,3,0,'2314.jpg','',NULL),
+	(41,2315,'41','reference','Albuquerque','NM','Main Hospital Building',35.0547,-106.5821,1,6,NULL,NULL,3,0,'2315.jpg','',NULL),
+	(42,2319,'23','reference','Phoenix','AZ','Engineering Building',33.5001,-112.0662,0,2,NULL,NULL,3,0,'2319.jpg','',NULL),
+	(43,2405,'52','reference','Mountain Home','TN','Mountain Home VAMC',36.3068,-82.3795,1,2,NULL,NULL,3,0,'2405.jpg','',NULL),
+	(44,2406,'3','reference','Oklahoma City','OK','Day Treatment Center',35.4838,-97.4950,0,2,NULL,NULL,3,0,'2406.jpg','',NULL),
+	(45,2411,'15','reference','Marion','IL','Engineering Shops',37.7236,-88.9522,0,1,NULL,NULL,3,0,'2411.jpg','',NULL),
+	(46,2412,'8','reference','Louisville','KY','Boiler Plant',38.2697,-85.6987,0,2,NULL,NULL,3,0,'2412.jpg','',NULL),
+	(47,2414,'147','reference','Dayton','OH','Power Plant',39.7450,-84.2591,1,2,NULL,NULL,3,0,'2414.jpg','',NULL),
+	(48,2507,'143','reference','Salem','VA','Main Hospital Building',37.2742,-80.0180,0,5,NULL,NULL,3,0,'','',NULL),
+	(49,2509,'','reference','Birmingham','AL','Main Hospital Building',33.5046,-86.8011,1,10,NULL,NULL,3,0,'2509.jpg','',NULL),
+	(50,2510,'47','reference','Ashville','NC','Main Hospital Building',35.5888,-82.4838,1,1,NULL,NULL,3,0,'2510.jpg','',NULL),
+	(51,2511,'341','reference','Martinsburg','WV','Pumphouse',39.4164,-77.9072,0,1,NULL,NULL,3,0,'2511.jpg','',NULL),
+	(52,2531,'','reference','Decatur','GA','Main Hospital Building',33.8017,-84.3111,1,13,NULL,NULL,3,0,'2531.jpg','',NULL),
+	(53,2553,'','reference','Charleston','SC','Service Court Storage Shed',32.7843,-79.9531,0,1,NULL,NULL,3,0,'2553.jpg','',NULL),
+	(54,2554,'106','reference','Columbia','SC','Psychiatry Building',33.9753,-80.9611,0,2,NULL,NULL,3,0,'2554.jpg','',NULL),
+	(55,2563,'81','reference','Augusta','GA','Physical Plant',33.4659,-82.0280,0,1,NULL,NULL,3,0,'2563.jpg','',NULL),
+	(56,2564,'17','reference','Salisbury','NC','HVAC Electrical Room',35.6807,-80.4920,0,1,NULL,NULL,3,0,'2564.jpg','',NULL),
+	(57,2602,'1','reference','Bedford','MA','Human Resources Management Service Building',42.5042,-71.2734,1,2,NULL,NULL,3,0,'2602.jpg','',NULL),
+	(58,2606,'3','reference','Northampton','MA','Northampton VAMC',42.3504,-72.6822,1,2,NULL,NULL,3,0,'2606.jpg','',NULL),
+	(59,2607,'2','reference','Providence','RI','Providence VAMC',41.8327,-71.4347,1,2,NULL,NULL,3,0,'2607.jpg','',NULL),
+	(60,2609,'2','reference','Boston','MA','Main Hospital Building',42.2737,-71.1722,1,6,NULL,NULL,3,0,'2609.jpg','',NULL),
+	(61,2612,'4','reference','Canandaigua','NY','Canandaigua VAMC',42.9007,-77.2683,1,3,NULL,NULL,3,0,'2612.jpg','',NULL),
+	(62,2649,'1','reference','Boston','MA','Generator Building',42.3276,-71.1098,0,1,NULL,NULL,3,0,'2649.jpg','',NULL),
+	(63,2650,'','reference','Brockton','MA','Generator Building',42.0636,-71.0516,0,1,NULL,NULL,3,0,'2650.jpg','',NULL),
+	(64,2652,'','reference','Manchester','NH','Boiler Plant',43.0126,-71.4422,0,1,NULL,NULL,3,0,'2652.jpg','',NULL),
+	(65,2653,'25','reference','Albany','NY','Parking Garage',42.6519,-73.7729,0,1,NULL,NULL,3,0,'2653.jpg','',NULL),
+	(66,2654,'6','reference','Buffalo','NY','Boiler Plant',42.9521,-78.8108,0,2,NULL,NULL,3,0,'2654.jpg','',NULL),
+	(67,2655,'9','reference','White River','VT','Day Care Facility',43.6491,-72.3428,1,2,NULL,NULL,3,0,'2655.jpg','',NULL),
+	(68,2672,'11','reference','Batavia','NY','Boiler Plant',43.0144,-78.1963,1,1,NULL,NULL,3,0,'2672.jpg','',NULL),
+	(69,2673,'','reference','Syracuse','NY','Research Building',43.0389,-76.1387,0,1,NULL,NULL,3,0,'2673.jpg','',NULL),
+	(70,2674,'7','reference','Erie','PA','Maintenance Building',42.1022,-80.0619,0,1,NULL,NULL,3,0,'2674.jpg','',NULL),
+	(71,3090,'','reference','San Juan','PR','Parking Structure',18.3915,-66.0791,1,2,NULL,NULL,3,0,'3090.jpg','',NULL),
+	(72,5440,'16','reference','San Diego','CA','San Diego VAMC',32.8751,-117.2298,0,1,NULL,NULL,3,0,'5440.jpg','',NULL),
+	(73,7049,'','reference','Walla Walla','WA','Main Hospital Building',46.0520,-118.3587,1,3,NULL,NULL,3,0,'7049.jpg','',NULL),
+	(74,7217,'23','reference','Bosie','ID','Bosie VAMC',43.6203,-116.1883,1,2,NULL,NULL,3,0,'7217.jpg','',NULL),
+	(75,7403,'6','reference','St. Louis','MO','Parking Garage',38.6431,-90.2320,0,1,NULL,NULL,3,0,'7403.jpg','',NULL),
+	(76,7404,'6','reference','Memphis','TN','Memphis VAMC',35.1435,-90.0257,0,1,NULL,NULL,3,0,'7404.jpg','',NULL),
+	(77,7417,'127','reference','Marion','IN','Marion VAMC',40.5195,-85.6374,0,1,NULL,NULL,3,0,'7417.jpg','',NULL),
+	(78,1225,'2','array','San Francisco','CA','San Francisco VAMC',37.7827,-122.5048,1,7,NULL,NULL,6,0,'1225.jpg','1225.pdf',NULL),
+	(79,1447,'5','array','Palo Alto','CA','Palo Alto VAMC',37.4046,-122.1387,0,4,NULL,NULL,12,0,'1447.jpg','1447.pdf',NULL),
+	(80,5229,'1','array','Loma Linda','CA','Main Hospital Building',34.0502,-117.2500,1,4,NULL,NULL,21,3,'5229.jpg','5229.pdf',NULL),
+	(81,7402,'8','reference','Poplar Bluff','MO','Facility Management Offices and Shops',36.7736,-90.4168,NULL,NULL,NULL,NULL,3,0,'7402.jpg','',NULL);
+
+/*!40000 ALTER TABLE `nsmp_buildings` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
 # Dump of table nsmp_stations
 # ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `nsmp_stations`;
 
 CREATE TABLE `nsmp_stations` (
   `id` int(3) unsigned NOT NULL auto_increment,
@@ -1299,6 +1419,8 @@ UNLOCK TABLES;
 
 # Dump of table nsmp_structures
 # ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `nsmp_structures`;
 
 CREATE TABLE `nsmp_structures` (
   `id` int(11) unsigned NOT NULL auto_increment,
