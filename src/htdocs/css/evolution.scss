@@ -1,0 +1,64 @@
+figure {
+  margin: 0 auto;
+}
+
+hr {
+  background: #ccc;
+  border: 0;
+  height: 1px;
+  margin-top: 3em;
+}
+
+mark {
+  border-radius: 3px;
+  color: #fff;
+  padding: 0 3px;
+
+  &.green {
+    background: #00c800;
+  }
+  &.red {
+    background: #f44;
+  }
+  &.yellow {
+    background: #ff4;
+    color: #333;
+  }
+}
+
+.fig1, .fig2 {
+  max-width: 400px;
+}
+.fig3, .fig4, .fig6, .fig7 {
+  max-width: 600px;
+}
+.fig5 {
+  margin: 1em 0;
+  
+  div {
+    float: left;
+  }
+
+  img {
+    max-width: 49%;
+  }
+}
+.fig1-fig2 {
+  display: flex;
+}
+
+.linklist {
+  margin: 0;
+
+  a {
+    cursor: default;
+  }
+
+  img {
+    width: 75px;
+  }
+
+  li {
+    padding: 0;
+  }
+}
