@@ -95,7 +95,10 @@ if (!isset($TEMPLATE)) {
 <p>During the December 22, 2003 San Simeon, CA earthquake (Mw=6.4), at an epicentral distance of 258 km, a complete set of low-amplitude earthquake response data was recorded in the building. The largest peak acceleration was approximately 1 % of g.  Synchronized bandpass-filtered accelerations and corresponding double-integrated displacements are exhibited in Figure 6 for one side of the building.</p>
 
 <figure class="fig6">
-  <img />
+  <div>
+    <img src="img/figure6-left.png" alt="accelerations" />
+    <img src="img/figure6-right.png" alt="displacements" />
+  </div>
   <figcaption>Figure 6. Bandpass-filtered accelerations (left) and double-integrated displacements (right) at each instrumented floor (from Ground floor to the roof) on one side of the building during the San Simeon earthquake on December 22, 2003.</figcaption>
 </figure>
 
