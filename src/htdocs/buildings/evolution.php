@@ -120,7 +120,7 @@ if (!isset($TEMPLATE)) {
   <li>&Ccedil;elebi,M., 2008, Real-time Monitoring of Drift for Occupancy Resumption, PROC. 14WCEE (CD-ROM), Beijing, China, Oct.13&ndash;17, 2008.</li>
   <li>&Ccedil;elebi, M., and Sanli, A., 2002, &ldquo;GPS in Pioneering Dynamic Monitoring of Long-Period Structures&rdquo;, Earthquake Spectra, Journal of  EERI,. Volume 18, No. 1, pages 47&ndash;61, February 2002.</li>
   <li>&Ccedil;elebi, M., Sanli, A., Sinclair, M., Gallant, S., and Radulescu, D., 2004, Real-Time Seismic Monitoring Needs of a Building Owner and the solution &mdash; A Cooperative Effort, Journal of EERI, Earthquake Spectra,  vol. 20, no. 2, pp. 333&ndash;346, May 2004.</li>
-  <li><a href="https://books.google.com/books?id=2YCgbwAACAAJ&dq=bibliogroup:%22FEMA+273/274+NEHRP+Guidelines+for+the+Seismic+Rehabilitation+of+Buildings:+Case+Study+No.+42+%5Bi.e.+39%5D%22&hl=en&sa=X&ved=0ahUKEwihnazGq8LaAhUFPN8KHUlsCpcQ6AEIKzAB">FEMA 273/274 NEHRP Guidelines for the Seismic Rehabilitation of Buildings: Case Study No. 42 [i.e. 39], Building Seismic Safety Council (U.S.)</li>
+  <li>FEMA 273/274 NEHRP Guidelines for the Seismic Rehabilitation of Buildings: Case Study No. 42 [i.e. 39], Building Seismic Safety Council (U.S.)</li>
 </ul>
 
 <hr />
