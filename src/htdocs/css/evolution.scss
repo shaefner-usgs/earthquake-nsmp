@@ -29,12 +29,15 @@ mark {
 .fig1, .fig2 {
   max-width: 400px;
 }
-.fig3, .fig4, .fig6, .fig7 {
+.fig3, .fig4, .fig7 {
   max-width: 600px;
 }
-.fig5 {
-  margin: 1em 0;
-  
+.fig6 {
+  max-width: 1000px;
+}
+.fig5, .fig6 {
+  margin: 1em auto;
+
   div {
     float: left;
   }
