@@ -55,7 +55,7 @@ if (!isset($TEMPLATE)) {
   (NSMP) to improve the overall understanding of earthquakes and their effects
   on the built environment.</p>
 <p>
-  The instrumentation and monitoring of structures by NSMP is only one part of
+  The <a href="evolution.php">instrumentation and monitoring of structures</a> by NSMP is only one part of
   USGS efforts to protect people&rsquo;s lives and property from earthquake
   hazards in all of the Nation&rsquo;s seismically active regions.
 </p>
