@@ -1,5 +1,7 @@
 <?php
 
+include_once '../../conf/config.inc.php'; // app config
+
 if (!isset($TEMPLATE)) {
   $TITLE = 'Evolution of Seismic Structural Health Monitoring of Buildings (2000-2008)';
   $HEAD = '<link href="../css/evolution.css" rel="stylesheet" />';
