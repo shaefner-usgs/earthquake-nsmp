@@ -3,6 +3,7 @@
 if (!isset($TEMPLATE)) {
   $TITLE = 'Evolution of Seismic Structural Health Monitoring of Buildings (2000-2008)';
   $HEAD = '<link href="../css/evolution.css" rel="stylesheet" />';
+  $NAVIGATION  = true;
   $FOOT = '';
 
   include 'template.inc.php';
