@@ -130,6 +130,10 @@ if (!isset($TEMPLATE)) {
   </li>
 </ul>
 
+<h2>Frequently Asked Questions</h2>
+
+<p><a href="faq.php">Structural Health Monitoring FAQs</a></p>
+
 <a href="https://www.unlv.edu">
   <img src="img/unlv-logo_2x.png" class="logo" alt="UNLV logo" width="144" height="42" />
 </a>

@@ -94,6 +94,10 @@ if (!isset($TEMPLATE)) {
   </li>
 </ul>
 
+<h2>Frequently Asked Questions</h2>
+
+<p><a href="faq.php">Structural Health Monitoring FAQs</a></p>
+
 <h2>Papers</h2>
 
 <ul class="referencelist">
