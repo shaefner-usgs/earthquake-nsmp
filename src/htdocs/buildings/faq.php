@@ -77,7 +77,7 @@ if (!isset($TEMPLATE)) {
   <dd>In many cases, the digital recorder and SHM server has its own network completely separate (air-gapped) than the network in the facility. SHM system either uses DSL or cell modem to connect to the Internet.</dd>
 
   <dt>How does OpenSHM disseminate information?</dt>
-  <dd>SHM broadcasts notifications including information and data via emails an SMS messages to users. The information and recorded data are also transmitted to a central web server at USGS.</dd>
+  <dd>SHM broadcasts notifications including information and data via emails and SMS messages to users. The information and recorded data are also transmitted to a central web server at USGS.</dd>
 
   <dt>How long does it take for OpenSHM to transmit notifications to users?</dt>
   <dd>About 3-5 minutes after an earthquake.</dd>
