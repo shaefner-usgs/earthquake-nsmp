@@ -12,6 +12,8 @@ require('map/RestoreMap');
 
 // Factories for creating map layers
 require('map/DarkLayer');
+require('map/EarthquakesLayer');
+require('map/FaultsLayer');
 require('map/GreyscaleLayer');
 require('map/SatelliteLayer');
 require('map/BuildingsLayer');
@@ -26,13 +28,15 @@ var BuildingMap = function (options) {
       _this,
 
       _buildings,
+      _earthquakes,
       _el,
       _map,
 
       _getMapLayers,
       _finishMapInit,
       _initMap,
-      _loadBuildingsLayer;
+      _loadBuildingsLayer,
+      _loadEarthquakesLayer;
 
   _this = {};
 
@@ -44,8 +48,9 @@ var BuildingMap = function (options) {
     // Create Leaflet map immediately so it can be passed to _loadBuildingsLayer()
     _map = _initMap();
 
-    // Load buildings layer which calls _finishMapInit() when finished
+    // Load ajax layers which call _finishMapInit() when finished
     _loadBuildingsLayer(_map);
+    _loadEarthquakesLayer();
   };
 
   /**
@@ -60,6 +65,7 @@ var BuildingMap = function (options) {
    */
   _getMapLayers = function () {
     var dark,
+        faults,
         greyscale,
         layers,
         name,
@@ -67,6 +73,7 @@ var BuildingMap = function (options) {
         terrain;
 
     dark = L.darkLayer();
+    faults = L.faultsLayer();
     greyscale = L.greyscaleLayer();
     satellite = L.satelliteLayer();
     terrain = L.terrainLayer();
@@ -78,7 +85,10 @@ var BuildingMap = function (options) {
       'Greyscale': greyscale,
       'Dark': dark
     };
-    layers.overlays = {};
+    layers.overlays = {
+      'Earthquakes': _earthquakes,
+      'Faults': faults
+    };
     layers.defaults = [terrain, _buildings];
 
     // Add buildings to overlays / defaults
@@ -97,6 +107,10 @@ var BuildingMap = function (options) {
    */
   _finishMapInit = function () {
     var layers;
+
+    if (!_buildings || !_earthquakes) { // check that both ajax layers are set
+      return;
+    }
 
     // Get all layers and add default layers to map
     layers = _getMapLayers();
@@ -152,7 +166,29 @@ var BuildingMap = function (options) {
       }
     });
   };
-  
+
+  /**
+   * Load earthquakes layer from geojson data via ajax
+   */
+  _loadEarthquakesLayer = function () {
+    var url;
+
+    url = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&minmagnitude=2.5&orderby=time-asc';
+
+    Xhr.ajax({
+      url: url,
+      success: function (data) {
+        _earthquakes = L.earthquakesLayer({
+          data: data
+        });
+        _finishMapInit();
+      },
+      error: function (status) {
+        console.log(status);
+      }
+    });
+  };
+
 
   _initialize(options);
   options = null;
