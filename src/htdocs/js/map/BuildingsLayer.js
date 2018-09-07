@@ -138,8 +138,8 @@ var BuildingsLayer = function (options) {
 
     // Set color then create marker
     if (type === 'array') {
-      _overlayOptions.color = '#ff7800';
-      _overlayOptions.fillColor = '#ff7800';
+      _overlayOptions.color = '#0c0';
+      _overlayOptions.fillColor = '#0c0';
     } else if (type === 'reference') {
       _overlayOptions.color = '#00c';
       _overlayOptions.fillColor = '#00c';
