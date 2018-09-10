@@ -130,7 +130,7 @@ var BuildingMap = function (options) {
     // Remember user's map settings (selected layers, map extent)
     _map.restoreMap({
       baseLayers: layers.baseLayers,
-      id: 'main',
+      id: 'buildings',
       overlays: layers.overlays
     });
   };

@@ -116,7 +116,7 @@ var StationMap = function (options) {
     // Remember user's map settings (selected layers, map extent)
     _map.restoreMap({
       baseLayers: layers.baseLayers,
-      id: 'main',
+      id: 'stations',
       overlays: layers.overlays
     });
   };
