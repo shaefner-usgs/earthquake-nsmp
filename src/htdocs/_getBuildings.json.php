@@ -49,6 +49,7 @@ while ($row = $rsBuildings->fetch(PDO::FETCH_ASSOC)) {
       'layout_thumb' => $thumb,
       'name' => $row['name'],
       'photo' => $row['filename_photo'],
+      'repositories' => $row['repositories'],
       'sensors_ground' => $row['sensors_ground'],
       'sensors_structure' => $row['sensors_structure'],
       'state' => $row['state'],

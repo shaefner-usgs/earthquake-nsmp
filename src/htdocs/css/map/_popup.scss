@@ -1,4 +1,5 @@
 .popup {
+  font-size: 15px;
   min-width: 15em;
 
   dt {
@@ -12,6 +13,7 @@
 
   h2 {
     font-weight: normal;
+    margin-bottom: .1em;
   }
 
   p {
@@ -21,7 +23,6 @@
   .images {
     display: flex;
     justify-content: space-between;
-    width: 240px;
 
     img {
       height: 100px;

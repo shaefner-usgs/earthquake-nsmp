@@ -85,22 +85,16 @@ var BuildingsLayer = function (options) {
    * Initialize OverlappingMarkerSpiderfier Leaflet plugin
    */
   _initOms = function () {
-    var map,
-        popup;
+    var map;
 
     map = options.map;
+
     _oms = new OverlappingMarkerSpiderfier(map, {
       keepSpiderfied: true,
       nearbyDistance: 1 // using min. distance b/c it's for markers w/ identical coords
     });
-    popup = L.popup({
-      autoPanPadding: L.point(50, 10)
-    });
-
     _oms.addListener('click', function(marker) {
-      popup.setContent(marker.popup);
-      popup.setLatLng(marker.getLatLng());
-      map.openPopup(popup);
+      map.openPopup(marker.popup);
     });
   };
 
@@ -127,6 +121,7 @@ var BuildingsLayer = function (options) {
     var data,
         imgs,
         marker,
+        minWidth,
         popup,
         popupTemplate,
         props,
@@ -161,6 +156,20 @@ var BuildingsLayer = function (options) {
           '<img src="img/layouts/thumbs/' + props.layout_thumb + '" alt="building layout" />' +
         '</a>';
     }
+    if (parseInt(props.repositories)) {
+      imgs += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' + props.station + '/out/">' +
+          '<img src="img/repositories/tn-helicorder.png" alt="thumbnail image" />' +
+        '</a>';
+      imgs += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' + props.station + '/report/">' +
+          '<img src="img/repositories/tn-report.png" alt="thumbnail image" />' +
+        '</a>';
+      imgs += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' + props.station + '/data/">' +
+          '<img src="img/repositories/tn-data.png" alt="thumbnail image" />' +
+        '</a>';
+      imgs += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' + props.station + '/anim/">' +
+          '<img src="img/repositories/tn-animation.png" alt="thumbnail image" />' +
+        '</a>';
+    }
 
     data = {
       building: props.building,
@@ -186,9 +195,19 @@ var BuildingsLayer = function (options) {
         '</dl>' +
       '</div>';
 
-    popup = L.Util.template(popupTemplate, data);
-    marker.popup = popup;
+    minWidth = 240;
+    if (parseInt(props.repositories)) { // make room for extra thumbnails / links
+      minWidth = 680;
+    }
 
+    popup = L.popup({
+      autoPanPadding: L.point(50, 10),
+      minWidth: minWidth
+    });
+    popup.setContent(L.Util.template(popupTemplate, data));
+    popup.setLatLng(marker.getLatLng());
+
+    marker.popup = popup;
     _oms.addMarker(marker);
 
     return marker;
