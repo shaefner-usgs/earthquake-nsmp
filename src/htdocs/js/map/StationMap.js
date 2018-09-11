@@ -93,7 +93,7 @@ var StationMap = function (options) {
 
   /**
    * Finish Leaflet map init - separated out from initMap so we can call oms
-   *   library with leaflet map instance before Buildings layer is created
+   *   library with leaflet map instance before Stations layer is created
    */
   _finishMapInit = function () {
     var layers;
