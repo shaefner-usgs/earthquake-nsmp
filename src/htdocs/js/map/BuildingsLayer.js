@@ -147,26 +147,30 @@ var BuildingsLayer = function (options) {
 
     // Create popup
     if (props.photo) {
-      imgs += '<a href="img/photos/' + props.photo + '" target="_blank">' +
+      imgs += '<a href="img/photos/' + props.photo + '" target="_blank" title="Photo">' +
           '<img src="img/photos/thumbs/' + props.photo + '" alt="building photo" />' +
         '</a>';
     }
     if (props.layout) {
-      imgs += '<a href="img/layouts/' + props.layout + '" target="_blank">' +
+      imgs += '<a href="img/layouts/' + props.layout + '" target="_blank" title="Building Layout">' +
           '<img src="img/layouts/thumbs/' + props.layout_thumb + '" alt="building layout" />' +
         '</a>';
     }
     if (parseInt(props.repositories)) {
-      imgs += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' + props.station + '/out/">' +
+      imgs += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' +
+        props.station + '/out/" target="_blank" title="Helicorder">' +
           '<img src="img/repositories/tn-helicorder.png" alt="thumbnail image" />' +
         '</a>';
-      imgs += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' + props.station + '/report/">' +
+      imgs += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' +
+        props.station + '/report/" target="_blank" title="Report">' +
           '<img src="img/repositories/tn-report.png" alt="thumbnail image" />' +
         '</a>';
-      imgs += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' + props.station + '/data/">' +
+      imgs += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' +
+        props.station + '/data/" target="_blank" title="Data">' +
           '<img src="img/repositories/tn-data.png" alt="thumbnail image" />' +
         '</a>';
-      imgs += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' + props.station + '/anim/">' +
+      imgs += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' +
+        props.station + '/anim/" target="_blank" title="Animation">' +
           '<img src="img/repositories/tn-animation.png" alt="thumbnail image" />' +
         '</a>';
     }
