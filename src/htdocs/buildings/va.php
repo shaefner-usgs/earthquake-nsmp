@@ -53,8 +53,8 @@ if (!isset($TEMPLATE)) {
 
 <p>Select a circle on the map to see details at each instrumented structure.
   Note that some structures have both building arrays and reference sites where
-  "orange" and "blue" markers may overlap (toggle the layers using the controller
-  in the top right corner of the map).</p>
+  &ldquo;green&rdquo; and &ldquo;blue&rdquo; markers may overlap (you can toggle
+  the layers using the controller in the top right corner of the map).</p>
 
 <ul>
   <li>Building Array: Instrumented by 6 or more accelerometers
@@ -88,7 +88,7 @@ if (!isset($TEMPLATE)) {
         Affairs Medical Buildings&mdash;Instrumentation</h4>
       <img src="img/ofr1241.gif" alt="report cover"/>
     </a>
-    <p>USGS Open-File Report 2012-1241, by By Erol Kalkan, Krishna Banga,
+    <p>USGS Open-File Report 2012-1241, by Erol Kalkan, Krishna Banga,
       Hasan S. Ulusoy, Jon Peter B. Fletcher, William S. Leith, Shahneam Reza,
       and Timothy Cheng</p>
   </li>
@@ -101,8 +101,8 @@ if (!isset($TEMPLATE)) {
 <h2>Papers</h2>
 
 <ul class="referencelist">
-  <li>Ulusoy H.S., Kalkan, E. and Banga, K. &ldquo;
-    <a href="img/2013-Ulusoy_et_al-Real-time-seismic-monitoring.pdf">Real-time
+  <li>Ulusoy H.S., Kalkan, E. and Banga, K.
+    &ldquo;<a href="img/2013-Ulusoy_et_al-Real-time-seismic-monitoring.pdf">Real-time
     Seismic Monitoring of Veterans Affairs Hospital Buildings</a>&rdquo;,
     Proc. of the SPIE Smart Structures Conference, San Diego, CA, March 11-13,
     2013.</li>
