@@ -112,7 +112,7 @@ L.MouseOverLayer = L.LayerGroup.extend({
 
     // Update position
     L.DomUtil.setPosition(this._tooltip, this._map.latLngToLayerPoint(
-        evt.latlng));
+      evt.latlng));
 
     // Show the tooltip
     this._tooltip.style.display = 'block';
