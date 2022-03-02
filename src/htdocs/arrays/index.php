@@ -31,6 +31,7 @@ $arrays = $rsArrays->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);
 
 // Create HTML for data tables
 $arraysHtml = '';
+$prevCategory = '';
 foreach ($categories as $key=>$value) {
   $category = $value;
   if ($category !== $prevCategory) { // need this check b/c mult 'Miscellaneous' categories
