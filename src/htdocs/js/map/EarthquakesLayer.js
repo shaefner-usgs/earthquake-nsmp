@@ -3,7 +3,7 @@
 
 
 var Moment = require('moment'),
-    Util = require('util/Util');
+    Util = require('hazdev-webutils/src/util/Util');
 
 require('leaflet.label');
 
