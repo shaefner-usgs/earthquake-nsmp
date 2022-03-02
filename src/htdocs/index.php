@@ -44,8 +44,8 @@ if (!isset($TEMPLATE)) {
   retrieves strong motion recordings from its instrumentation as well as from
   more than 2000 other instruments operated throughout the US by federal,
   state, and local agencies, private companies, and academic institutions
-  that participate in the <a href="/monitoring/anss/">Advanced National
-  Seismic System</a> (ANSS). The NSMP rapidly processes these recordings
-  according to <a href="http://www.cosmos-eq.org/publications/reports/">COSMOS</a>
-  standards and archives the products at the <a href="https://strongmotioncenter.org/">Center
+  that participate in the <a href="https://www.usgs.gov/programs/earthquake-hazards/anss-advanced-national-seismic-system">Advanced
+  National Seismic System</a> (ANSS). The NSMP rapidly processes these recordings
+  according to <a href="https://www.strongmotion.org/archive/publications/reports/format_1_20.pdf">COSMOS standards</a>
+  and archives the products at the <a href="https://strongmotioncenter.org/">Center
   for Engineering Strong Motion Data</a>.</p>

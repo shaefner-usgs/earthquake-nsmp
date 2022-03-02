@@ -52,7 +52,6 @@ if (!isset($TEMPLATE)) {
   institutions.</p>
 
 <p>The NSMP is part of the USGS <a href="/">Earthquake Hazards Program</a>, and
-  its main campus location which is at the <a href="/contactus/menlo/">Menlo
-    Park Science Center</a> in northern California.  NSMN Operations activities
-    are coordinated from the Menlo Park office and a field office in
-    <a href="/contactus/pasadena/">Pasadena, California</a>.</p>
+  its main campus location which is at the <a href="https://www.usgs.gov/centers/earthquake-science-center">Earthquake Science Center</a>
+  in northern California.  NSMN Operations activities are coordinated with a
+  <a href="https://www.usgs.gov/centers/earthquake-science-center/pasadena-field-office">field office in Pasadena, California</a>.</p>
