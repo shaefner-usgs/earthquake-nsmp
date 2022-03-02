@@ -9,7 +9,7 @@
  * @author Scott Haefner <shaefner@usgs.gov>
  */
 class Db {
-  private static $db;
+  private $_db;
   private $_pdo;
 
   public function __construct($connectionType=NULL) {
