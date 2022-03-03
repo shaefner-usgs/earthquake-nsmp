@@ -2,7 +2,7 @@
 'use strict';
 
 
-var Moment = require('moment'),
+var Luxon = require('luxon'),
     Util = require('hazdev-webutils/src/util/Util');
 
 require('leaflet.label');
@@ -46,6 +46,7 @@ var EarthquakesLayer = function (options) {
       _initialize,
 
       _markerOptions,
+      _now,
       _pastDay,
       _pastHour,
       _pastWeek,
@@ -59,9 +60,10 @@ var EarthquakesLayer = function (options) {
     options = Util.extend({}, _DEFAULTS, options);
     _markerOptions = Util.extend({}, _MARKER_DEFAULTS, options.markerOptions);
 
-    _pastDay = Moment.utc().subtract(1, 'days');
-    _pastHour = Moment.utc().subtract(1, 'hours');
-    _pastWeek = Moment.utc().subtract(1, 'weeks');
+    _now = Luxon.DateTime.utc();
+    _pastDay = _now.minus({ days: 1 });
+    _pastHour = _now.minus({ hours: 1 });
+    _pastWeek = _now.minus({ weeks: 1 });
 
     _this = L.geoJson(options.data, {
       onEachFeature: _onEachFeature,
@@ -79,14 +81,15 @@ var EarthquakesLayer = function (options) {
    */
   _getAge = function (timestamp) {
     var age,
-        eqtime;
+        eqTime;
 
-    eqtime = Moment.utc(timestamp, 'x');
-    if (eqtime.isSameOrAfter(_pastHour)) {
+    eqTime = Luxon.DateTime.fromMillis(timestamp).toUTC();
+
+    if (eqTime >= _pastHour) {
       age = 'pasthour';
-    } else if (eqtime.isSameOrAfter(_pastDay)) {
+    } else if (eqTime >= _pastDay) {
       age = 'pastday';
-    } else if (eqtime.isSameOrAfter(_pastWeek)) {
+    } else if (eqTime >= _pastWeek) {
       age = 'pastweek';
     } else {
       age = 'pastmonth';
@@ -113,7 +116,7 @@ var EarthquakesLayer = function (options) {
     props = feature.properties;
     data = {
       mag: Math.round(props.mag * 10) / 10,
-      time: Moment.utc(props.time, 'x').format('ddd, MMM D HH:mm:ss') + ' UTC',
+      time: Luxon.DateTime.fromMillis(props.time).toUTC().toFormat('LLL d, yyyy TT') + ' UTC',
       place: props.place,
       url: props.url
     };
