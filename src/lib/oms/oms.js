@@ -40,6 +40,8 @@ Note: The Leaflet maps API must be included *before* this code
       'highlighted': '#f00'
     };
 
+    this._stopUnspider = false;
+
     function _Class(map, opts) {
       var e, k, v, _i, _len, _ref,
           _this = this;
@@ -287,7 +289,7 @@ Note: The Leaflet maps API must be included *before* this code
           }
           marker.setLatLng(footLl);
           if (marker instanceof L.CircleMarker) {
-            marker.bringToFront();
+            this._stopUnspider = true;
           } else {
             marker.setZIndexOffset(1000000);
           }
@@ -306,7 +308,8 @@ Note: The Leaflet maps API must be included *before* this code
       if (markerNotToMove == null) {
         markerNotToMove = null;
       }
-      if (this.spiderfied == null) {
+      if (this.spiderfied == null || this._stopUnspider) {
+        this._stopUnspider = false;
         return this;
       }
       this.unspiderfying = true;
@@ -320,9 +323,7 @@ Note: The Leaflet maps API must be included *before* this code
           if (marker !== markerNotToMove) {
             marker.setLatLng(marker['_omsData'].usualPosition);
           }
-          if (marker instanceof L.CircleMarker) {
-            marker.bringToBack();
-          } else {
+          if (!marker instanceof L.CircleMarker) {
             marker.setZIndexOffset(0);
           }
           mhl = marker['_omsData'].highlightListeners;
