@@ -5,8 +5,6 @@
 var Luxon = require('luxon'),
     Util = require('hazdev-webutils/src/util/Util');
 
-require('leaflet.label');
-
 
 var _COLORS,
     _DEFAULTS,
@@ -99,8 +97,7 @@ var EarthquakesLayer = function (options) {
   };
 
   /**
-   * Leaflet GeoJSON option: called on each created feature layer. Useful for
-   * attaching events and popups to features.
+   * Create Leaflet popups and tooltips.
    *
    * @param feature {Object}
    * @param layer (L.Layer)
@@ -134,11 +131,11 @@ var EarthquakesLayer = function (options) {
     layer.bindPopup(popup, {
       autoPanPadding: L.point(50, 50),
       maxWidth: '265'
-    }).bindLabel(label);
+    }).bindTooltip(label);
   };
 
   /**
-   * Leaflet GeoJSON option: used for creating layers for GeoJSON points
+   * Create Leaflet markers.
    *
    * @param feature {Object}
    * @param latlng {L.LatLng}

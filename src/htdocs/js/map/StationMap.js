@@ -6,7 +6,6 @@ var Xhr = require('hazdev-webutils/src/util/Xhr');
 
 // Leaflet plugins
 require('leaflet-fullscreen');
-require('leaflet.label');
 require('map/MousePosition');
 require('map/RestoreMap');
 

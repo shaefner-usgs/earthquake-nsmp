@@ -4,8 +4,6 @@
 
 var Util = require('hazdev-webutils/src/util/Util');
 
-require('leaflet.label');
-
 
 var _DEFAULTS,
     _LAYERNAMES,
@@ -185,7 +183,7 @@ var StationsLayer = function (options) {
    * @param layer (L.Layer)
    */
   _onEachFeature = function (feature, layer) {
-    layer.bindLabel(feature.properties.staname, {
+    layer.bindTooltip(feature.properties.staname, {
       pane: 'popupPane'
     });
   };
