@@ -4,41 +4,46 @@
 
 require('utfgrid');
 
-var CLASSES = 'leaflet-mouseover-tooltip';
 
+/**
+ * This class extends L.LayerGroup to enable mouseover labels to track the
+ * cursor on a UtfGrid layer.
+ *
+ * @param options {Object}
+ *   {
+ *     dataOpts: {Object} Options to be used on L.UtfGrid for grid tiles
+ *     dataUrl: {String} URL to UtfGrid tiles (requires 'callback={cb}')
+ *     tileOpts: {Object} Options to be used on L.TileLayer for image tiles
+ *     tileUrl: {String} URL to image tiles
+ *     tiptext: {String} Template used for auto-tooltipping on hover
+ *   }
+ */
 L.MouseOverLayer = L.LayerGroup.extend({
-
-  _initialized: false, // Flag to tell if constructor has finished
-
-  /**
-   * @param options {Object}
-   *      tileUrl: URL to image tiles
-   *      dataUrl: URL to UtfGrid tiles (requires callback={cb})
-   *      tileOpts: Options to be used on L.TileLayer for image tiles
-   *      dataOpts: Options to be used on L.UtfGrid for grid tiles
-   *      tiptext: Template string to be used for auto-tooltipping on hover
-   */
   initialize: function (options) {
+    var className;
 
     // Create the two layers
-    this._tileLayer = new L.TileLayer(options.tileUrl, options.tileOpts);
-    this._dataLayer = new L.UtfGrid(options.dataUrl, options.dataOpts);
+    this._tileLayer = L.tileLayer(options.tileUrl, options.tileOpts);
+    this._dataLayer = L.utfGrid(options.dataUrl, options.dataOpts);
 
     if (typeof options.tiptext === 'string') {
+      className = 'leaflet-tooltip leaflet-zoom-animated';
+
       this._tiptext = options.tiptext;
-      this._tooltip = L.DomUtil.create('span', CLASSES);
+      this._tooltip = L.DomUtil.create('div', className);
+
+      this._tooltip.setAttribute('style', 'display: none'); // hide placeholder
+
       this.on('mouseover', this._onMouseOver, this);
       this.on('mouseout', this._onMouseOut, this);
     }
 
-    // Call parent constructor
-    L.LayerGroup.prototype.initialize.call(this, []);
+    L.LayerGroup.prototype.initialize.call(this);
+
     this.addLayer(this._tileLayer);
     if (!L.Browser.mobile) {
       this.addLayer(this._dataLayer);
     }
-
-    this._initialized = true;
   },
 
   // --------------------------------------------------
@@ -58,47 +63,18 @@ L.MouseOverLayer = L.LayerGroup.extend({
   // --------------------------------------------------
 
   onAdd: function (map) {
-    L.LayerGroup.prototype.onAdd.apply(this, arguments);
+    L.LayerGroup.prototype.onAdd.call(this, map);
 
     if (this._tooltip) {
-      map.getPanes().popupPane.appendChild(this._tooltip);
+      map.getPanes().tooltipPane.appendChild(this._tooltip);
     }
   },
 
-  onRemove: function (/*map*/) {
-    L.LayerGroup.prototype.onRemove.apply(this, arguments);
+  onRemove: function (map) {
+    L.LayerGroup.prototype.onRemove.call(this, map);
 
-    if (this._tooltip && this._tooltip.parentNode) {
-      this._tooltip.parentNode.removeChild(this._tooltip);
-    }
-  },
-
-  // --------------------------------------------------
-  // Suppress these methods inherited from LayerGroup
-  // --------------------------------------------------
-
-  addLayer: function (/*layer*/) {
-    if (!this._initialized) {
-      L.LayerGroup.prototype.addLayer.apply(this, arguments);
-    } else {
-      try {console.log('MouseOverLayer::addLayer - Immutable object');}
-      catch (e) { /* Ignore */ }
-    }
-  },
-  removeLayer: function (/*layer*/) {
-    if (!this._initialized) {
-      L.LayerGroup.prototype.removeLayer.apply(this, arguments);
-    } else {
-      try {console.log('MouseOverLayer::removeLayer - Immutable object');}
-      catch (e) { /* Ignore */ }
-    }
-  },
-  clearLayers: function () {
-    if (!this._initialized) {
-      L.LayerGroup.prototype.clearLayers.apply(this, arguments);
-    } else {
-      try {console.log('MouseOverLayer::clearLayers - Immutable object');}
-      catch (e) { /* Ignore */ }
+    if (this._tooltip) {
+      L.DomUtil.remove(this._tooltip);
     }
   },
 
@@ -107,25 +83,47 @@ L.MouseOverLayer = L.LayerGroup.extend({
   // --------------------------------------------------
 
   _onMouseOver: function (evt) {
-    // Update text
-    this._tooltip.innerHTML = L.Util.template(this._tiptext, evt.data);
+    var centerPoint,
+        direction,
+        map,
+        pos,
+        tooltip,
+        tooltipPoint;
 
-    // Update position
-    L.DomUtil.setPosition(this._tooltip, this._map.latLngToLayerPoint(
-      evt.latlng));
+    map = this._map;
+    pos = map.latLngToLayerPoint(evt.latlng);
+    pos = pos.subtract(L.point(0, 10, true)); // shift tooltip up
+    tooltip = this._tooltip;
 
-    // Show the tooltip
-    this._tooltip.style.display = 'block';
+    tooltip.innerHTML = L.Util.template(this._tiptext, evt.data);
+    tooltip.style.display = 'block';
+
+    L.DomUtil.setOpacity(tooltip, 0.9);
+
+    // Position tooltip to left / right of cursor depending on relative position
+    centerPoint = this._map.latLngToContainerPoint(map.getCenter());
+    tooltipPoint = this._map.layerPointToContainerPoint(pos);
+
+    if (tooltipPoint.x < centerPoint.x) { // left side of map, shift right
+      direction = 'right';
+      pos = pos.add(L.point(10, 0, true));
+    } else { // right side of map, shift left
+      direction = 'left';
+      pos = pos.subtract(L.point(tooltip.offsetWidth + 5, 0, true));
+    }
+
+    L.DomUtil.addClass(tooltip, 'leaflet-tooltip-' + direction);
+    L.DomUtil.removeClass(tooltip, 'leaflet-tooltip-left');
+    L.DomUtil.removeClass(tooltip, 'leaflet-tooltip-right');
+    L.DomUtil.setPosition(tooltip, pos);
   },
 
-  _onMouseOut: function (/*evt*/) {
-    // Hide the tooltip
-    this._tooltip.style.display = '';
+  _onMouseOut: function () {
+    this._tooltip.style.display = 'none';
   }
 });
+
 
 L.mouseOverLayer = function (options) {
   return new L.MouseOverLayer(options);
 };
-
-//return L.MouseOverLayer;
