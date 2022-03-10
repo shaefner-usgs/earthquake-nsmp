@@ -2,23 +2,23 @@
 'use strict';
 
 
-var Util = require('hazdev-webutils/src/util/Util');
-
-
 /**
- * Factory for ESRI Terrain base layer
+ * Factory for Terrain base layer.
  *
  * @param options {Object}
- *     L.TileLayer options
+ *     L.tileLayer options
  *
- * @return {L.TileLayer}
+ * @return {L.tileLayer}
  */
-var TerrainLayer = function (options) {
-  options = Util.extend({
-    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, ' +
-      'Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance ' +
-      'Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community',
-    subdomains: ['server', 'services']
+L.TerrainLayer = function (options) {
+  options = Object.assign({
+    attribution: 'Tiles &copy; Esri — Esri, DeLorme, NAVTEQ, TomTom, Intermap, ' +
+      'iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, ' +
+      'Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community',
+    subdomains: [
+      'server',
+      'services'
+    ]
   }, options);
 
   return L.tileLayer(
@@ -28,6 +28,6 @@ var TerrainLayer = function (options) {
 };
 
 
-L.terrainLayer = TerrainLayer;
-
-module.exports = TerrainLayer;
+L.terrainLayer = function () {
+  return new L.TerrainLayer();
+};

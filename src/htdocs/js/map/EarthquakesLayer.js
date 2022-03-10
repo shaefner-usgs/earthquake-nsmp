@@ -2,8 +2,7 @@
 'use strict';
 
 
-var Luxon = require('luxon'),
-    Util = require('hazdev-webutils/src/util/Util');
+var Luxon = require('luxon');
 
 
 var _COLORS,
@@ -17,10 +16,10 @@ _COLORS = {
   pastmonth: '#ffc'
 };
 _MARKER_DEFAULTS = {
-  weight: 1,
-  opacity: 0.5,
-  fillOpacity: 0.9,
-  color: '#333'
+  color: '#000',
+  fillOpacity: 0.85,
+  opacity: 0.6,
+  weight: 1
 };
 _DEFAULTS = {
   data: {},
@@ -29,7 +28,7 @@ _DEFAULTS = {
 
 
 /**
- * Factory for Earthquakes overlay
+ * Factory for Earthquakes overlay.
  *
  * @param options {Object}
  *     {
@@ -37,9 +36,9 @@ _DEFAULTS = {
  *       markerOptions: {Object} L.Path options
  *     }
  *
- * @return {L.FeatureGroup}
+ * @return _this {L.FeatureGroup}
  */
-var EarthquakesLayer = function (options) {
+L.EarthquakesLayer = function (options) {
   var _this,
       _initialize,
 
@@ -55,9 +54,9 @@ var EarthquakesLayer = function (options) {
 
 
   _initialize = function (options) {
-    options = Util.extend({}, _DEFAULTS, options);
-    _markerOptions = Util.extend({}, _MARKER_DEFAULTS, options.markerOptions);
+    options = Object.assign({}, _DEFAULTS, options);
 
+    _markerOptions = Object.assign({}, _MARKER_DEFAULTS, options.markerOptions);
     _now = Luxon.DateTime.utc();
     _pastDay = _now.minus({ days: 1 });
     _pastHour = _now.minus({ hours: 1 });
@@ -71,9 +70,10 @@ var EarthquakesLayer = function (options) {
 
 
   /**
-   * Get 'age' of earthquake (pasthour, pastday, etc)
+   * Get the 'age' of an earthquake (pasthour, pastday, etc).
    *
-   * @param tiemstamp {Int} milliseconds since 1970
+   * @param tiemstamp {Int}
+   *     milliseconds since 1970
    *
    * @return age {String}
    */
@@ -117,11 +117,10 @@ var EarthquakesLayer = function (options) {
       place: props.place,
       url: props.url
     };
-
     labelTemplate = 'M{mag} - {time}';
     label = L.Util.template(labelTemplate, data);
-
-    popupTemplate = '<div class="popup eq">' +
+    popupTemplate =
+      '<div class="popup eq">' +
         '<h2>M{mag}, {place}</h2>' +
         '<time>{time}</time>' +
         '<p><a href="{url}" target="_blank">Details</a> &raquo;</p>' +
@@ -157,12 +156,13 @@ var EarthquakesLayer = function (options) {
     return L.circleMarker(latlng, _markerOptions);
   };
 
+
   _initialize(options);
   options = null;
   return _this;
 };
 
 
-L.earthquakesLayer = EarthquakesLayer;
-
-module.exports = EarthquakesLayer;
+L.earthquakesLayer = function (options) {
+  return new L.EarthquakesLayer(options);
+};
