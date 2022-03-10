@@ -2,29 +2,37 @@
 'use strict';
 
 
-// Copyright 2012 Ardhi Lukianto
-// https://github.com/ardhi/Leaflet.MousePosition
-var MousePosition = L.Control.extend({
+/**
+ * This class extends L.Control to display the geographic coordinates of the
+ * mouse pointer as it is moved around the map.
+ *
+ * Copyright 2013 Ardhi Lukianto (https://github.com/ardhi/Leaflet.MousePosition)
+ * with modifications.
+ */
+L.Control.MousePosition = L.Control.extend({
   options: {
-    position: 'bottomleft',
-    separator: ', ',
     emptyString: '',
-    lngFirst: false,
-    numDigits: 3,
-    lngFormatter: function(n) {
-      return [Math.abs(n).toFixed(3), '&deg;', (n<0?'W':'E')].join('');
-    },
     latFormatter: function(n) {
-      return [Math.abs(n).toFixed(3), '&deg;', (n<0?'S':'N')].join('');
-    }
+      return [Math.abs(n).toFixed(3), '°', (n<0?'S':'N')].join('');
+    },
+    lngFirst: false,
+    lngFormatter: function(n) {
+      return [Math.abs(n).toFixed(3), '°', (n<0?'W':'E')].join('');
+    },
+    numDigits: 3,
+    position: 'bottomcenter',
+    prefix: '',
+    separator: ', '
   },
 
   onAdd: function (map) {
-    this._container = L.DomUtil.create('div',
-      'leaflet-control-background leaflet-control-mouseposition');
+    this._container = L.DomUtil.create('div', 'leaflet-control-mouseposition');
+    this._container.innerHTML = this.options.emptyString;
+
     L.DomEvent.disableClickPropagation(this._container);
+
     map.on('mousemove', this._onMouseMove, this);
-    this._container.innerHTML=this.options.emptyString;
+
     return this._container;
   },
 
@@ -33,33 +41,51 @@ var MousePosition = L.Control.extend({
   },
 
   _onMouseMove: function (e) {
-    var lng = L.Util.formatNum(e.latlng.lng, this.options.numDigits);
-    // need to correct for rollover of map if user scrolls
-    if(lng >= 0) {
-      lng=((lng+180)%360)-180;
+    var lat,
+        lng,
+        value;
+
+    lat = this.options.latFormatter(e.latlng.lat);
+    lng = this.options.lngFormatter(e.latlng.lng);
+
+    if (this.options.lngFirst) {
+      value = lng + this.options.separator + lat;
     } else {
-      lng=(((lng+180)+(Math.ceil(Math.abs(lng+180)/360)*360))%360)-180;
+      value = lat + this.options.separator + lng;
     }
-    var lat = L.Util.formatNum(e.latlng.lat, this.options.numDigits);
-    if (this.options.lngFormatter) {
-      lng = this.options.lngFormatter(lng);
-    }
-    if (this.options.latFormatter) {
-      lat = this.options.latFormatter(lat);
-    }
-    var value = this.options.lngFirst ?
-      lng + this.options.separator + lat :
-      lat + this.options.separator + lng;
-    this._container.innerHTML = value;
+
+    this._container.innerHTML = this.options.prefix + ' ' + value;
   }
 });
 
+L.Map.mergeOptions({
+  positionControl: false
+});
 
-L.Control.MousePosition = MousePosition;
+L.Map.addInitHook(function () {
+  if (this.options.positionControl) {
+    this.positionControl = new L.Control.MousePosition();
+    this.addControl(this.positionControl);
+  }
+});
+
+/**
+ * Create a bottom-center control container.
+ */
+L.Map.prototype._initControlPos = (function (_initControlPos) {
+  return function () {
+    _initControlPos.apply(this, arguments); // original method
+
+    // Add new control-container
+    this._controlCorners.bottomcenter = L.DomUtil.create(
+      'div',
+      'leaflet-bottom leaflet-center',
+      this._controlContainer
+    );
+  };
+}(L.Map.prototype._initControlPos));
+
 
 L.control.mousePosition = function (options) {
-  return new MousePosition(options);
+  return new L.Control.MousePosition(options);
 };
-
-
-module.exports = MousePosition;
