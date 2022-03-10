@@ -2,7 +2,7 @@
 'use strict';
 
 
-require('map/Utfgrid');
+require('utfgrid');
 
 var CLASSES = 'leaflet-mouseover-tooltip';
 
