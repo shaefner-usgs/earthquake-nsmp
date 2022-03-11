@@ -7,16 +7,17 @@ if (!isset($TEMPLATE)) {
   $NAVIGATION	= true;
   $HEAD = '
     <link rel="stylesheet" href="/lib/leaflet/leaflet.css" />
-    <link rel="stylesheet" href="../css/va.css"/>
+    <link rel="stylesheet" href="/css/va.css"/>
   ';
   $FOOT = '
     <script>
       var MOUNT_PATH = "' . $CONFIG['MOUNT_PATH'] . '";
     </script>
     <script src="/lib/leaflet/leaflet.js"></script>
-    <script src="../lib/oms/oms.js"></script>
-    <script src="../js/va.js"></script>
+    <script src="/lib/oms/oms.js"></script>
+    <script src="/js/va.js"></script>
   ';
+
   include 'template.inc.php';
 }
 
