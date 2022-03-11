@@ -7,6 +7,7 @@ if (!isset($TEMPLATE)) {
   $NAVIGATION = true;
   $HEAD = '
     <link rel="stylesheet" href="/lib/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="/lib/leaflet-fullscreen/leaflet.fullscreen.css" />
     <link rel="stylesheet" href="/css/stations.css"/>
   ';
   $FOOT = '

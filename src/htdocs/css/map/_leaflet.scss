@@ -1,5 +1,4 @@
 @import '../../../../node_modules/hazdev-template/src/htdocs/css/_variables.scss';
-@import 'leaflet.fullscreen.css';
 @import '_MousePosition.scss';
 
 
@@ -9,18 +8,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-/* leaflet fullscreen plugin icons - override image paths */
-.leaflet-control-fullscreen a {
-  background-image: url(/img/fullscreen.png);
-}
-@media
-  (-webkit-min-device-pixel-ratio:2),
-  (min-resolution:192dpi) {
-  .leaflet-control-fullscreen a {
-    background-image: url(/img/fullscreen@2x.png);
-  }
 }
 
 /* Leaflet label mouseovers */

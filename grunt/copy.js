@@ -55,10 +55,11 @@ var copy = {
 
   leaflet_fullscreen: {
     cwd: 'node_modules/leaflet-fullscreen/dist',
-    dest: config.build + '/' + config.src + '/htdocs/img',
+    dest: config.build + '/' + config.src + '/htdocs/lib/leaflet-fullscreen',
     expand: true,
     src: [
-      '*.png'
+      '**/*',
+      '!**/*.js'
     ]
   },
 
