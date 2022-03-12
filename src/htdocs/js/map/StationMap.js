@@ -2,14 +2,14 @@
 'use strict';
 
 
-var Xhr = require('hazdev-webutils/src/util/Xhr');
+var AppUtil = require('util/AppUtil');
 
 // Leaflet plugins
 require('leaflet-fullscreen');
 require('map/MousePosition');
 require('map/RestoreMap');
 
-// Factories for creating map layers
+// Factories for map layers
 require('map/DarkLayer');
 require('map/GreyscaleLayer');
 require('map/SatelliteLayer');
@@ -18,7 +18,7 @@ require('map/TerrainLayer');
 
 
 /*
- * Factory for Leaflet map instance
+ * Create and render the Leaflet map.
  */
 var StationMap = function (options) {
   var _initialize,
@@ -26,29 +26,28 @@ var StationMap = function (options) {
 
       _el,
       _map,
-      _stations,
 
-      _getMapLayers,
-      _finishMapInit,
+      _getLayers,
       _initMap,
-      _loadStationsLayer;
+      _loadStations,
+      _render;
+
 
   _this = {};
 
-
   _initialize = function (options) {
     options = options || {};
+
     _el = options.el || document.createElement('div');
 
-    // Create Leaflet map immediately so it can be passed to _loadStationsLayer()
-    _map = _initMap();
-
-    // Load stations layer which calls _finishMapInit() when finished
-    _loadStationsLayer(_map);
+    _initMap();
+    _loadStations();
   };
 
   /**
-   * Get all map layers that will be displayed on map
+   * Get all map layers.
+   *
+   * @param stations {Object}
    *
    * @return layers {Object}
    *     {
@@ -57,98 +56,99 @@ var StationMap = function (options) {
    *       defaults: {Array}
    *     }
    */
-  _getMapLayers = function () {
-    var dark,
-        greyscale,
+  _getLayers = function (stations) {
+    var greyscale,
         layers,
-        name,
-        satellite,
-        terrain;
+        name;
 
-    dark = L.darkLayer();
     greyscale = L.greyscaleLayer();
-    satellite = L.satelliteLayer();
-    terrain = L.terrainLayer();
-
-    layers = {};
-    layers.baseLayers = {
-      'Terrain': terrain,
-      'Satellite': satellite,
-      'Greyscale': greyscale,
-      'Dark': dark
+    layers = {
+      baseLayers: {
+        'Greyscale': greyscale,
+        'Dark': L.darkLayer(),
+        'Terrain': L.terrainLayer(),
+        'Satellite': L.satelliteLayer()
+      },
+      overlays: {},
+      defaults: [
+        greyscale
+      ]
     };
-    layers.overlays = {};
-    layers.defaults = [terrain];
 
-    // Add stations to overlays / defaults
-    Object.keys(_stations.layers).forEach(function(key) {
-      name = _stations.names[key] + ' (' + _stations.count[key] + ')';
-      layers.overlays[name] = _stations.layers[key];
-      layers.defaults.push(_stations.layers[key]);
+    // Add station layers to overlays, defaults
+    Object.keys(stations.layers).forEach(function(layer) {
+      name = stations.names[layer] + ' (' + stations.count[layer] + ')';
+
+      layers.overlays[name] = stations.layers[layer];
+      layers.defaults.push(stations.layers[layer]);
     });
 
     return layers;
   };
 
   /**
-   * Finish Leaflet map init - separated out from initMap so we can call oms
-   *   library with leaflet map instance before Stations layer is created
+   * Create the Leaflet map instance.
    */
-  _finishMapInit = function () {
-    var layers;
+  _initMap = function () {
+    _map = L.map(_el, {
+      scrollWheelZoom: false
+    });
 
-    // Get all layers and add default layers to map
-    layers = _getMapLayers();
+    L.control.fullscreen({
+      pseudoFullscreen: true
+    }).addTo(_map);
+    L.control.mousePosition().addTo(_map);
+    L.control.scale().addTo(_map);
+  };
+
+  /**
+   * Load stations layer geojson.
+   */
+  _loadStations = async function () {
+    var json,
+        response,
+        stations,
+        url;
+
+    try {
+      url =  MOUNT_PATH + '/_getStations.json.php';
+      response = await AppUtil.fetchWithTimeout(url);
+      json = await response.clone().json();
+      stations = L.stationsLayer({
+        json: json,
+        map: _map
+      });
+
+      _render(stations);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  /**
+   * Render the map layers and layer controller.
+   *
+   * @param stations {Object}
+   */
+  _render = function (stations) {
+    var layers = _getLayers(stations);
+
     layers.defaults.forEach(function(layer) {
       _map.addLayer(layer);
     });
 
-    // Set intial map extent to contain stations overlay
-    _map.fitBounds(_stations.getBounds());
+    L.control.layers(
+      layers.baseLayers,
+      layers.overlays
+    ).addTo(_map);
 
-    // Add controllers
-    L.control.fullscreen({ pseudoFullscreen: true }).addTo(_map);
-    L.control.layers(layers.baseLayers, layers.overlays).addTo(_map);
-    L.control.mousePosition().addTo(_map);
-    L.control.scale().addTo(_map);
+    _map.fitBounds(stations.getBounds());
 
-    // Remember user's map settings (selected layers, map extent)
+    // Remember user's settings (selected layers, map extent, etc.)
     _map.restoreMap({
       baseLayers: layers.baseLayers,
       id: 'stations',
       overlays: layers.overlays
-    });
-  };
-
-  /**
-   * Create Leaflet map instance
-   */
-  _initMap = function () {
-    var map;
-
-    map = L.map(_el, {
-      scrollWheelZoom: false
-    });
-
-    return map;
-  };
-
-  /**
-   * Load stations layer from geojson data via ajax
-   */
-  _loadStationsLayer = function (map) {
-    Xhr.ajax({
-      url: MOUNT_PATH + '/_getStations.json.php',
-      success: function (data) {
-        _stations = L.stationsLayer({
-          data: data,
-          map: map
-        });
-        _finishMapInit();
-      },
-      error: function (status) {
-        console.log(status);
-      }
     });
   };
 
