@@ -2,47 +2,49 @@
 'use strict';
 
 
-var Util = require('hazdev-webutils/src/util/Util');
-
-
 var _DEFAULTS,
     _LAYERNAMES,
-    _OVERLAY_DEFAULTS;
+    _MARKER_DEFAULTS;
 
-_OVERLAY_DEFAULTS = {
+_MARKER_DEFAULTS = {
   fillOpacity: 0.3,
   opacity: 0.7,
   radius: 8,
   weight: 1
 };
 _DEFAULTS = {
-  data: {},
-  overlayOptions: _OVERLAY_DEFAULTS
+  json: {},
+  markerOptions: _MARKER_DEFAULTS
 };
 _LAYERNAMES = {
   array: 'Building Array',
   reference: 'Reference Site'
 };
 
+
 /**
- * Factory for Buildings overlay
+ * Factory for Buildings overlay.
  *
  * @param options {Object}
  *     {
- *       data: {String} Geojson data
- *       overlayOptions: {Object} L.CircleMarker options
+ *       json: {String} Geojson data
+ *       map: {L.Map}
+ *       markerOptions: {Object} L.CircleMarker options (optional)
  *     }
  *
- * @return {L.FeatureGroup}
+ * @return _this {L.FeatureGroup}
  */
-var BuildingsLayer = function (options) {
+L.BuildingsLayer = function (options) {
   var _initialize,
       _this,
 
+      _map,
+      _markerOptions,
       _oms,
-      _overlayOptions,
 
-      _initLayers,
+      _createLayers,
+      _getContent,
+      _getImages,
       _initOms,
       _onEachFeature,
       _pointToLayer,
@@ -52,143 +54,50 @@ var BuildingsLayer = function (options) {
   _this = L.featureGroup();
 
   _initialize = function (options) {
-    options = Util.extend({}, _DEFAULTS, options);
-    _overlayOptions = Util.extend({}, _OVERLAY_DEFAULTS, options.overlayOptions);
+    options = Object.assign({}, _DEFAULTS, options);
 
-    _showCount(options.data.count);
+    _map = options.map;
+    _markerOptions = Object.assign({}, _MARKER_DEFAULTS, options.markerOptions);
+
+    _createLayers();
     _initOms();
-    _initLayers();
+    _showCount(options.json.count);
 
-    L.geoJson(options.data, {
+    L.geoJson(options.json, {
       onEachFeature: _onEachFeature,
       pointToLayer: _pointToLayer
     });
   };
 
   /**
-   * Create a featureGroup for each type of station
+   * Create the map layers for each building type.
    */
-  _initLayers = function () {
+  _createLayers = function () {
     _this.count = {};
     _this.layers = {};
     _this.names = _LAYERNAMES;
+
     Object.keys(_LAYERNAMES).forEach(function (key) {
       _this.count[key] = 0;
       _this.layers[key] = L.featureGroup();
-      _this.addLayer(_this.layers[key]); // add to 'master' featureGroup
+
+      _this.addLayer(_this.layers[key]); // add map layer to featureGroup
     });
   };
 
   /**
-   * Initialize OverlappingMarkerSpiderfier Leaflet plugin
-   */
-  _initOms = function () {
-    var map;
-
-    map = options.map;
-
-    _oms = new OverlappingMarkerSpiderfier(map, {
-      keepSpiderfied: true,
-      nearbyDistance: 1 // using min. distance b/c it's for markers w/ identical coords
-    });
-    _oms.addListener('click', function(marker) {
-      map.openPopup(marker.popup);
-    });
-  };
-
-  /**
-   * Leaflet GeoJSON option: called on each created feature layer. Useful for
-   * attaching events and popups to features.
+   * Get the content for a popup.
    *
-   * @param feature {Object}
-   * @param layer (L.Layer)
-   */
-  _onEachFeature = function (feature, layer) {
-    layer.bindTooltip(feature.properties.name);
-  };
-
-  /**
-   * Leaflet GeoJSON option: used for creating layers for GeoJSON points
+   * @param data {Object}
    *
-   * @param feature {Object}
-   * @param latlng {L.LatLng}
-   *
-   * @return marker {L.CircleMarker}
+   * @return {String}
    */
-  _pointToLayer = function (feature, latlng) {
-    var data,
-        imgs,
-        marker,
-        minWidth,
-        popup,
-        popupTemplate,
-        props,
-        type;
-
-    imgs = '';
-    props = feature.properties;
-    type = feature.properties.type;
-
-    // Set color then create marker
-    if (type === 'array') {
-      _overlayOptions.color = '#0c0';
-      _overlayOptions.fillColor = '#0c0';
-    } else if (type === 'reference') {
-      _overlayOptions.color = '#00c';
-      _overlayOptions.fillColor = '#00c';
-    }
-    marker = L.circleMarker(latlng, _overlayOptions);
-
-    // Group stations in separate layers by type
-    _this.layers[type].addLayer(marker);
-    _this.count[type] ++;
-
-    // Create popup
-    if (props.photo) {
-      imgs += '<a href="img/photos/' + props.photo + '" target="_blank" title="Photo">' +
-          '<img src="img/photos/thumbs/' + props.photo + '" alt="building photo" />' +
-        '</a>';
-    }
-    if (props.layout) {
-      imgs += '<a href="img/layouts/' + props.layout + '" target="_blank" title="Building Layout">' +
-          '<img src="img/layouts/thumbs/' + props.layout_thumb + '" alt="building layout" />' +
-        '</a>';
-    }
-    if (parseInt(props.repositories)) {
-      imgs += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' +
-        props.station + '/out/" target="_blank" title="Helicorder">' +
-          '<img src="img/repositories/tn-helicorder.png" alt="thumbnail image" />' +
-        '</a>';
-      imgs += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' +
-        props.station + '/report/" target="_blank" title="Report">' +
-          '<img src="img/repositories/tn-report.png" alt="thumbnail image" />' +
-        '</a>';
-      imgs += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' +
-        props.station + '/data/" target="_blank" title="Data">' +
-          '<img src="img/repositories/tn-data.png" alt="thumbnail image" />' +
-        '</a>';
-      imgs += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' +
-        props.station + '/anim/" target="_blank" title="Animation">' +
-          '<img src="img/repositories/tn-animation.png" alt="thumbnail image" />' +
-        '</a>';
-    }
-
-    data = {
-      building: props.building,
-      city: props.city,
-      imgs: imgs,
-      name: props.name,
-      photo: props.photo,
-      sensors_ground: props.sensors_ground,
-      sensors_structure: props.sensors_structure,
-      state: props.state,
-      station: props.station,
-    };
-
-    popupTemplate = '<div class="popup">' +
+  _getContent = function (data) {
+    var template =
+      '<div class="popup">' +
         '<h2>{name}</h2>' +
         '<p>{city}, {state}</p>' +
-        '<div class="images">{imgs}</div>' +
+        '<div class="images">{images}</div>' +
         '<dl>' +
           '<dt>Station number</dt><dd>{station}</dd>' +
           '<dt>Building number</dt><dd>{building}</dd>' +
@@ -197,33 +106,135 @@ var BuildingsLayer = function (options) {
         '</dl>' +
       '</div>';
 
-    minWidth = 240;
-    if (parseInt(props.repositories)) { // make room for extra thumbnails / links
-      minWidth = 680;
-    }
-
-    popup = L.popup({
-      autoPanPadding: L.point(50, 10),
-      minWidth: minWidth
-    });
-    popup.setContent(L.Util.template(popupTemplate, data));
-    popup.setLatLng(marker.getLatLng());
-
-    marker.popup = popup;
-    _oms.addMarker(marker);
-
-    return marker;
+    return L.Util.template(template, data);
   };
 
   /**
-   * Show building count on web page
+   * Get the images for a popup.
+   *
+   * @param props {Object}
+   *
+   * @return images {String}
+   */
+  _getImages = function (props) {
+    var images = '';
+
+    if (props.photo) {
+      images += '<a href="img/photos/' + props.photo + '" target="_blank" title="Photo">' +
+          '<img src="img/photos/thumbs/' + props.photo + '" alt="building photo" />' +
+        '</a>';
+    }
+    if (props.layout) {
+      images += '<a href="img/layouts/' + props.layout + '" target="_blank" title="Building Layout">' +
+          '<img src="img/layouts/thumbs/' + props.layout_thumb + '" alt="building layout" />' +
+        '</a>';
+    }
+    if (parseInt(props.repositories)) {
+      images += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' +
+        props.station + '/out/" target="_blank" title="Helicorder">' +
+          '<img src="img/repositories/tn-helicorder.png" alt="thumbnail image" />' +
+        '</a>';
+      images += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' +
+        props.station + '/report/" target="_blank" title="Report">' +
+          '<img src="img/repositories/tn-report.png" alt="thumbnail image" />' +
+        '</a>';
+      images += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' +
+        props.station + '/data/" target="_blank" title="Data">' +
+          '<img src="img/repositories/tn-data.png" alt="thumbnail image" />' +
+        '</a>';
+      images += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' +
+        props.station + '/anim/" target="_blank" title="Animation">' +
+          '<img src="img/repositories/tn-animation.png" alt="thumbnail image" />' +
+        '</a>';
+    }
+
+    return images;
+  };
+
+  /**
+   * Initialize the OverlappingMarkerSpiderfier (oms) Leaflet plugin.
+   */
+  _initOms = function () {
+    var popup = L.popup({
+      autoPanPadding: L.point(60, 10)
+    });
+
+    _oms = new OverlappingMarkerSpiderfier(_map, {
+      nearbyDistance: 1 // use min. distance: only for markers w/ identical coords
+    });
+
+    _oms.addListener('click', function(marker) {
+      var data = Object.assign({}, marker.props, {
+        images: _getImages(marker.props)
+      });
+
+      popup.setContent(_getContent(data));
+      popup.setLatLng(marker.getLatLng());
+      _map.openPopup(popup);
+    });
+  };
+
+  /**
+   * Add tooltips and group features into separate layers by type; add markers
+   * to oms.
+   *
+   * @param feature {Object}
+   * @param layer (L.Layer)
+   */
+  _onEachFeature = function (feature, layer) {
+    var props,
+        type;
+
+    props = feature.properties;
+    type = props.type;
+
+    layer.bindTooltip(props.name);
+    layer.props = props; // for oms lib to create popup content
+
+    _this.count[type] ++;
+    _this.layers[type].addLayer(layer);
+
+    _oms.addMarker(layer);
+  };
+
+  /**
+   * Create Leaflet markers.
+   *
+   * @param feature {Object}
+   * @param latlng {L.LatLng}
+   *
+   * @return {L.CircleMarker}
+   */
+  _pointToLayer = function (feature, latlng) {
+    var options,
+        type;
+
+    options = {};
+    type = feature.properties.type;
+
+    if (type === 'array') {
+      options = Object.assign({}, _markerOptions, { // default (type array)
+        color: '#0c0',
+        fillColor: '#0c0'
+      });
+    } else if (type === 'reference') {
+      options = Object.assign({}, _markerOptions, {
+        color: '#00c',
+        fillColor: '#00c'
+      });
+    }
+
+    return L.circleMarker(latlng, options);
+  };
+
+  /**
+   * Show the number of buildings below the map.
    *
    * @param count {Integer}
    */
   _showCount = function (count) {
-    var el;
+    var el = document.querySelector('.count');
 
-    el = document.querySelector('.count');
     el.innerHTML = count + ' structures on this map';
   };
 
@@ -234,6 +245,6 @@ var BuildingsLayer = function (options) {
 };
 
 
-L.buildingsLayer = BuildingsLayer;
-
-module.exports = BuildingsLayer;
+L.buildingsLayer = function (options) {
+  return new L.BuildingsLayer(options);
+};

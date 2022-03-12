@@ -2,9 +2,6 @@
 'use strict';
 
 
-var Util = require('hazdev-webutils/src/util/Util');
-
-
 var _DEFAULTS,
     _LAYERNAMES,
     _MARKER_DEFAULTS;
@@ -13,7 +10,7 @@ _MARKER_DEFAULTS = {
   opacity: 0.8
 };
 _DEFAULTS = {
-  data: {},
+  json: {},
   markerOptions: _MARKER_DEFAULTS
 };
 _LAYERNAMES = {
@@ -25,28 +22,37 @@ _LAYERNAMES = {
   ref: 'Free-field and reference'
 };
 
+
 /**
- * Factory for Stations overlay
+ * Factory for Stations overlay.
  *
  * @param options {Object}
  *     {
- *       data: {String} Geojson data
- *       markerOptions: {Object} L.Marker options
+ *       json: {String} Geojson data
+ *       map: {L.Map}
+ *       markerOptions: {Object} L.Marker options (optional)
  *     }
  *
- * @return {L.FeatureGroup}
+ * @return _this {L.FeatureGroup}
+ *     {
+ *       count: {Integer}
+ *       layers: {Object}
+ *       names: {Object}
+ *     }
  */
-var StationsLayer = function (options) {
+L.StationsLayer = function (options) {
   var _initialize,
       _this,
 
       _icons,
+      _map,
       _markerOptions,
       _oms,
 
+      _createLayers,
+      _getContent,
       _getIcon,
-      _getStaionType,
-      _initLayers,
+      _getType,
       _initOms,
       _onEachFeature,
       _pointToLayer,
@@ -56,65 +62,104 @@ var StationsLayer = function (options) {
   _this = L.featureGroup();
 
   _initialize = function (options) {
-    options = Util.extend({}, _DEFAULTS, options);
-    _markerOptions = Util.extend({}, _MARKER_DEFAULTS, options.markerOptions);
+    options = Object.assign({}, _DEFAULTS, options);
 
-    _icons = [];
+    _icons = {};
+    _map = options.map;
+    _markerOptions = Object.assign({}, _MARKER_DEFAULTS, options.markerOptions);
 
-    _showCount(options.data.count);
+    _createLayers();
     _initOms();
-    _initLayers();
+    _showCount(options.json.count);
 
-    L.geoJson(options.data, {
+    L.geoJson(options.json, {
       onEachFeature: _onEachFeature,
       pointToLayer: _pointToLayer
     });
   };
 
   /**
-   * Get Leaflet icon for a point
+   * Create the map layers for each station type.
+   */
+  _createLayers = function () {
+    _this.count = {};
+    _this.layers = {};
+    _this.names = _LAYERNAMES;
+
+    Object.keys(_LAYERNAMES).forEach(function (key) {
+      _this.count[key] = 0;
+      _this.layers[key] = L.featureGroup();
+
+      _this.addLayer(_this.layers[key]); // add map layer to featureGroup
+    });
+  };
+
+  /**
+   * Get the content for a popup.
    *
-   * @param code {String}
+   * @param data {Object}
+   *
+   * @return {String}
+   */
+  _getContent = function (data) {
+    var template =
+      '<div class="popup">' +
+        '<h2>{staname}</h2>' +
+        '<dl>' +
+          '<dt>Station Code</dt><dd>{stacode}</dd>' +
+          '<dt>Sensor Type</dt><dd>{sentype}</dd>' +
+          '<dt>Recorder Type</dt><dd>{rectype}</dd>' +
+          '<dt>Owner</dt><dd>{owner}</dd>' +
+          '<dt>Number of Channels</dt><dd>{numchan}</dd>' +
+        '</dl>' +
+      '</div>';
+
+    return L.Util.template(template, data);
+  };
+
+  /**
+   * Get the icon for a marker.
+   *
+   * @param type {String}
    * @param owner {String}
    *
-   * @return {L.icon}
+   * @return {L.Icon}
    */
-  _getIcon = function (code, owner) {
-    var colors;
-
-    colors = {
-      USGS: '48a',
-      other: 'c34'
+  _getIcon = function (type, owner) {
+    var colors = {
+      other: 'c34',
+      USGS: '48a'
     };
+
     if (owner !== 'USGS') {
       owner = 'other';
     }
-    if (!_icons[code]) {
-      _icons[code] = {};
+
+    // Only create each icon once
+    if (!_icons[type]) {
+      _icons[type] = {};
     }
-    if (!_icons[code][owner]) {
-      _icons[code][owner] = L.icon({
-        iconUrl: 'img/pin-m-' + code + '+' + colors[owner] + '.png',
-        iconSize: [30, 70],
+    if (!_icons[type][owner]) {
+      _icons[type][owner] = L.icon({
         iconAnchor: [15, 35],
+        iconSize: [30, 70],
+        iconUrl: `img/pin-m-${type}+${colors[owner]}.png`,
         popupAnchor: [0, -35]
       });
     }
 
-    return _icons[code][owner];
+    return _icons[type][owner];
   };
 
   /**
-   * Get station type based on cosmos code
+   * Get the station type based on the COSMOS code.
    *
-   * @param num {Integer}
+   * @param code {Integer}
    *
    * @return {String}
    */
-  _getStaionType = function (num) {
-    var codes;
-
-    codes = {
+  _getType = function (code) {
+    var types = {
       0: 'misc',
       1: 'ref',
       2: 'ref',
@@ -135,125 +180,82 @@ var StationsLayer = function (options) {
       52: 'array'
     };
 
-    return codes[num];
+    return types[code];
   };
 
   /**
-   * Create a featureGroup for each type of station
-   */
-  _initLayers = function () {
-    _this.count = {};
-    _this.layers = {};
-    _this.names = _LAYERNAMES;
-    Object.keys(_LAYERNAMES).forEach(function (key) {
-      _this.count[key] = 0;
-      _this.layers[key] = L.featureGroup();
-      _this.addLayer(_this.layers[key]); // add to 'master' featureGroup
-    });
-  };
-
-  /**
-   * Initialize OverlappingMarkerSpiderfier Leaflet plugin
+   * Initialize OverlappingMarkerSpiderfier Leaflet plugin.
    */
   _initOms = function () {
-    var map,
-        popup;
+    var popup = L.popup({
+      autoPanPadding: L.point(60, 10)
+    });
 
-    map = options.map;
-    _oms = new OverlappingMarkerSpiderfier(map, {
+    _oms = new OverlappingMarkerSpiderfier(_map, {
       keepSpiderfied: true,
       nearbyDistance: 5
     });
-    popup = L.popup({
-      autoPanPadding: L.point(50, 10)
-    });
 
     _oms.addListener('click', function(marker) {
-      popup.setContent(marker.popup);
+      popup.setContent(_getContent(marker.props));
       popup.setLatLng(marker.getLatLng());
-      map.openPopup(popup);
+      _map.openPopup(popup);
     });
   };
 
   /**
-   * Leaflet GeoJSON option: called on each created feature layer. Useful for
-   * attaching events and popups to features.
+   * Add tooltips and group features into separate layers by type; add markers
+   * to oms.
    *
    * @param feature {Object}
    * @param layer (L.Layer)
    */
   _onEachFeature = function (feature, layer) {
-    layer.bindTooltip(feature.properties.staname, {
-      pane: 'popupPane'
-    });
+    var props,
+        type;
+
+    props = feature.properties;
+    type = _getType(props.cosmoscode);
+
+    layer.bindTooltip(props.staname);
+    layer.props = props; // for oms lib to create popup content
+
+    _this.count[type] ++;
+    _this.layers[type].addLayer(layer);
+
+    _oms.addMarker(layer);
   };
 
   /**
-   * Leaflet GeoJSON option: used for creating layers for GeoJSON points
+   * Create Leaflet markers.
    *
    * @param feature {Object}
    * @param latlng {L.LatLng}
    *
-   * @return marker {L.CircleMarker}
+   * @return {L.Marker}
    */
   _pointToLayer = function (feature, latlng) {
-    var data,
-        icon,
-        marker,
-        popup,
-        popupTemplate,
+    var options,
         props,
         type;
 
     props = feature.properties;
-    type = _getStaionType(props.cosmoscode);
-    icon = _getIcon(type, props.owner);
-    _markerOptions.icon = icon;
+    type = _getType(props.cosmoscode);
+    options = Object.assign({}, _markerOptions, {
+      icon: _getIcon(type, props.owner)
+    });
 
-    marker = L.marker(latlng, _markerOptions);
-
-    // Group stations in separate layers by type
-    _this.layers[type].addLayer(marker);
-    _this.count[type] ++;
-
-    // Create popup
-    data = {
-      owner: props.owner,
-      numchan: props.numchan,
-      rectype: props.rectype,
-      sentype: props.sentype,
-      stacode: props.stacode,
-      staname: props.staname
-    };
-
-    popupTemplate = '<div class="popup">' +
-        '<h2>{staname}</h2>' +
-        '<dl>' +
-          '<dt>Station Code</dt><dd>{stacode}</dd>' +
-          '<dt>Sensor Type</dt><dd>{sentype}</dd>' +
-          '<dt>Recorder Type</dt><dd>{rectype}</dd>' +
-          '<dt>Owner</dt><dd>{owner}</dd>' +
-          '<dt>Number of Channels</dt><dd>{numchan}</dd>' +
-        '</dl>' +
-      '</div>';
-
-    popup = L.Util.template(popupTemplate, data);
-    marker.popup = popup;
-
-    _oms.addMarker(marker);
-
-    return marker;
+    return L.marker(latlng, options);
   };
 
   /**
-   * Show station count on web page
+   * Show the number of stations below the map.
    *
    * @param count {Integer}
    */
   _showCount = function (count) {
-    var el;
+    var el = document.querySelector('.count');
 
-    el = document.querySelector('.count');
     el.innerHTML = count + ' stations on this map';
   };
 
@@ -264,6 +266,6 @@ var StationsLayer = function (options) {
 };
 
 
-L.stationsLayer = StationsLayer;
-
-module.exports = StationsLayer;
+L.stationsLayer = function (options) {
+  return new L.StationsLayer(options);
+};
