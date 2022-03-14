@@ -58,8 +58,7 @@ var StationMap = function (options) {
    */
   _getLayers = function (stations) {
     var greyscale,
-        layers,
-        name;
+        layers;
 
     greyscale = L.greyscaleLayer();
     layers = {
@@ -77,7 +76,7 @@ var StationMap = function (options) {
 
     // Add station layers to overlays, defaults
     Object.keys(stations.layers).forEach(function(layer) {
-      name = stations.names[layer] + ' (' + stations.count[layer] + ')';
+      var name = stations.names[layer] + ' (' + stations.count[layer] + ')';
 
       layers.overlays[name] = stations.layers[layer];
       layers.defaults.push(stations.layers[layer]);

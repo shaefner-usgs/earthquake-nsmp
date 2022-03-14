@@ -62,8 +62,7 @@ var BuildingMap = function (options) {
    */
   _getLayers = function () {
     var greyscale,
-        layers,
-        name;
+        layers;
 
     greyscale = L.greyscaleLayer();
     layers = {
@@ -84,7 +83,7 @@ var BuildingMap = function (options) {
 
     // Add building layers to overlays, defaults
     Object.keys(_buildings.layers).forEach(function(key) {
-      name = _buildings.names[key] + ' (' + _buildings.count[key] + ')';
+      var name = _buildings.names[key] + ' (' + _buildings.count[key] + ')';
 
       layers.overlays[name] = _buildings.layers[key];
       layers.defaults.push(_buildings.layers[key]);
