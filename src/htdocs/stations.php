@@ -63,7 +63,7 @@ if (!isset($TEMPLATE)) {
   </li>
   <li>
     <img src="img/pin-m-misc+48a.png" alt="marker icon">
-    <span>Misc</span>
+    <span>Miscellaneous</span>
   </li>
 </ul>
 <ul class="legend owners no-style">
