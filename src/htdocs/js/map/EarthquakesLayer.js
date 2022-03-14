@@ -22,7 +22,7 @@ _MARKER_DEFAULTS = {
   weight: 1
 };
 _DEFAULTS = {
-  data: {},
+  json: {},
   markerOptions: _MARKER_DEFAULTS
 };
 
@@ -32,7 +32,7 @@ _DEFAULTS = {
  *
  * @param options {Object}
  *     {
- *       data: {String} Geojson data
+ *       json: {String} Geojson data
  *       markerOptions: {Object} L.Path options
  *     }
  *
@@ -62,7 +62,7 @@ L.EarthquakesLayer = function (options) {
     _pastHour = _now.minus({ hours: 1 });
     _pastWeek = _now.minus({ weeks: 1 });
 
-    _this = L.geoJson(options.data, {
+    _this = L.geoJson(options.json, {
       onEachFeature: _onEachFeature,
       pointToLayer: _pointToLayer
     });
