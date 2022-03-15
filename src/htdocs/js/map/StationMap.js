@@ -75,7 +75,7 @@ var StationMap = function (options) {
     };
 
     // Add station layers to overlays, defaults
-    Object.keys(stations.layers).forEach(function(layer) {
+    Object.keys(stations.layers).forEach(layer => {
       var name = stations.names[layer] + ' (' + stations.count[layer] + ')';
 
       layers.overlays[name] = stations.layers[layer];
@@ -132,7 +132,7 @@ var StationMap = function (options) {
   _render = function (stations) {
     var layers = _getLayers(stations);
 
-    layers.defaults.forEach(function(layer) {
+    layers.defaults.forEach(layer => {
       _map.addLayer(layer);
     });
 

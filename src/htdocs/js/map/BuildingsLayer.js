@@ -77,7 +77,7 @@ L.BuildingsLayer = function (options) {
     _this.layers = {};
     _this.names = _LAYERNAMES;
 
-    Object.keys(_LAYERNAMES).forEach(function (key) {
+    Object.keys(_LAYERNAMES).forEach(key => {
       _this.count[key] = 0;
       _this.layers[key] = L.featureGroup();
 
@@ -163,7 +163,7 @@ L.BuildingsLayer = function (options) {
       nearbyDistance: 1 // use min. distance: only for markers w/ identical coords
     });
 
-    _oms.addListener('click', function(marker) {
+    _oms.addListener('click', marker => {
       var data = Object.assign({}, marker.props, {
         images: _getImages(marker.props)
       });

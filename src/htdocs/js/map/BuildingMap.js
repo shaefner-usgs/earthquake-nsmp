@@ -82,7 +82,7 @@ var BuildingMap = function (options) {
     };
 
     // Add building layers to overlays, defaults
-    Object.keys(_buildings.layers).forEach(function(key) {
+    Object.keys(_buildings.layers).forEach(key => {
       var name = _buildings.names[key] + ' (' + _buildings.count[key] + ')';
 
       layers.overlays[name] = _buildings.layers[key];
@@ -166,7 +166,7 @@ var BuildingMap = function (options) {
     }
 
     layers = _getLayers();
-    layers.defaults.forEach(function(layer) {
+    layers.defaults.forEach(layer => {
       _map.addLayer(layer);
     });
 

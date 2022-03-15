@@ -86,7 +86,7 @@ L.StationsLayer = function (options) {
     _this.layers = {};
     _this.names = _LAYERNAMES;
 
-    Object.keys(_LAYERNAMES).forEach(function (key) {
+    Object.keys(_LAYERNAMES).forEach(key => {
       _this.count[key] = 0;
       _this.layers[key] = L.featureGroup();
 
@@ -196,7 +196,7 @@ L.StationsLayer = function (options) {
       nearbyDistance: 5
     });
 
-    _oms.addListener('click', function(marker) {
+    _oms.addListener('click', marker => {
       popup.setContent(_getContent(marker.props));
       popup.setLatLng(marker.getLatLng());
       _map.openPopup(popup);
