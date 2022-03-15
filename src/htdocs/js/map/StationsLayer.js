@@ -141,8 +141,8 @@ L.StationsLayer = function (options) {
     }
     if (!_icons[type][owner]) {
       _icons[type][owner] = L.icon({
-        iconAnchor: [15, 35],
-        iconSize: [30, 70],
+        iconAnchor: [10, 23],
+        iconSize: [20, 47],
         iconUrl: `img/pin-m-${type}+${colors[owner]}.png`,
         popupAnchor: [0, -35]
       });
