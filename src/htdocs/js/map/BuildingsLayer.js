@@ -129,24 +129,6 @@ L.BuildingsLayer = function (options) {
           '<img src="img/layouts/thumbs/' + props.layout_thumb + '" alt="building layout" />' +
         '</a>';
     }
-    if (parseInt(props.repositories)) {
-      images += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' +
-        props.station + '/out/" target="_blank" title="Helicorder">' +
-          '<img src="img/repositories/tn-helicorder.png" alt="thumbnail image" />' +
-        '</a>';
-      images += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' +
-        props.station + '/report/" target="_blank" title="Report">' +
-          '<img src="img/repositories/tn-report.png" alt="thumbnail image" />' +
-        '</a>';
-      images += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' +
-        props.station + '/data/" target="_blank" title="Data">' +
-          '<img src="img/repositories/tn-data.png" alt="thumbnail image" />' +
-        '</a>';
-      images += '<a href="http://shm.gps.caltech.edu/monitoring/repo/' +
-        props.station + '/anim/" target="_blank" title="Animation">' +
-          '<img src="img/repositories/tn-animation.png" alt="thumbnail image" />' +
-        '</a>';
-    }
 
     return images;
   };
