@@ -67,15 +67,12 @@ var BuildingMap = function (options) {
     greyscale = L.greyscaleLayer();
     layers = {
       baseLayers: {
-        'Terrain': L.terrainLayer(),
-        'Satellite': L.satelliteLayer(),
         'Greyscale': greyscale,
-        'Dark': L.darkLayer()
+        'Dark': L.darkLayer(),
+        'Terrain': L.terrainLayer(),
+        'Satellite': L.satelliteLayer()
       },
-      overlays: {
-        'Earthquakes': _earthquakes,
-        'Faults': L.faultsLayer()
-      },
+      overlays: {},
       defaults: [
         greyscale
       ]
@@ -87,6 +84,12 @@ var BuildingMap = function (options) {
 
       layers.overlays[name] = _buildings.layers[key];
       layers.defaults.push(_buildings.layers[key]);
+    });
+
+    // Add eqs, faults after building layers
+    Object.assign(layers.overlays, {
+      'Earthquakes': _earthquakes,
+      'Faults': L.faultsLayer()
     });
 
     return layers;
