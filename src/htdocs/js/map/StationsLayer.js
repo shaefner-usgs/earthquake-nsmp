@@ -14,12 +14,12 @@ _DEFAULTS = {
   markerOptions: _MARKER_DEFAULTS
 };
 _LAYERNAMES = {
-  array: 'Geotechnical Array',
   bridge: 'Bridge, overpass',
   building: 'Building',
   dam: 'Dam',
-  misc: 'Miscellaneous',
-  ref: 'Free-field and reference'
+  ref: 'Free-field and reference',
+  array: 'Geotechnical Array',
+  misc: 'Miscellaneous'
 };
 
 

@@ -42,12 +42,12 @@ if (!isset($TEMPLATE)) {
 
 <ul class="legend types no-style">
   <li>
-    <img src="img/pin-m-building+48a.png" alt="marker icon">
-    <span>Building</span>
-  </li>
-  <li>
     <img src="img/pin-m-bridge+48a.png" alt="marker icon">
     <span>Bridge, overpass</span>
+  </li>
+  <li>
+    <img src="img/pin-m-building+48a.png" alt="marker icon">
+    <span>Building</span>
   </li>
   <li>
     <img src="img/pin-m-dam+48a.png" alt="marker icon">
