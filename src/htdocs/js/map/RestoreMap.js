@@ -63,7 +63,7 @@ L.RestoreMapMixin = {
 
     _map = this;
 
-    _initialize = function () {
+    _initialize = function (options) {
       var storage = {
         local: window.localStorage || {},
         session: window.sessionStorage || {}
@@ -103,12 +103,9 @@ L.RestoreMapMixin = {
      */
     _addListeners = function () {
       if (!_map.__initRestore) {
-        // map view (extent, size)
+        _map.on('baselayerchange', _baselayerchange);
         _map.on('fullscreenchange', _fullscreenchange);
         _map.on('moveend', _moveend);
-
-        // map layers
-        _map.on('baselayerchange', _baselayerchange);
         _map.on('overlayadd', _overlayadd);
         _map.on('overlayremove', _overlayremove);
 
@@ -275,16 +272,12 @@ L.RestoreMapMixin = {
      * Restore map layers.
      */
     _restoreLayers = function () {
-      var baseLayer,
-          overlay,
-          settings;
-
-      settings = _layers[_scope][_layersId];
+      var settings = _layers[_scope][_layersId];
 
       if (!_isEmpty(settings)) {
         if (settings.base) {
           Object.keys(_baseLayers).forEach(name => {
-            baseLayer = _baseLayers[name];
+            var baseLayer = _baseLayers[name];
 
             if (name === settings.base) {
               _map.addLayer(baseLayer);
@@ -295,7 +288,7 @@ L.RestoreMapMixin = {
         }
 
         settings.add.forEach(layer => {
-          overlay = _getOverlay(layer);
+          var overlay = _getOverlay(layer);
 
           if (overlay && !_map.hasLayer(overlay)) {
             _map.addLayer(overlay);
@@ -303,7 +296,7 @@ L.RestoreMapMixin = {
         });
 
         settings.remove.forEach(layer => {
-          overlay = _getOverlay(layer);
+          var overlay = _getOverlay(layer);
 
           if (overlay && _map.hasLayer(overlay)) {
             _map.removeLayer(overlay);
@@ -365,7 +358,8 @@ L.RestoreMapMixin = {
     };
 
 
-    _initialize();
+    _initialize(options);
+    options = null;
   }
 };
 
