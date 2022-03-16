@@ -13,13 +13,13 @@ if (!isset($TEMPLATE)) {
 }
 
 $categories = [
-  10 => 'Buildings',
   11 => 'Bridges, Overpasses',
+  10 => 'Buildings',
   12 => 'Dams',
+  50 => 'Geotechnical Arrays',
   13 => 'Miscellaneous',
   14 => 'Miscellaneous',
-  15 => 'Miscellaneous',
-  50 => 'Geotechnical Arrays'
+  15 => 'Miscellaneous'
 ];
 
 $db = new Db;
@@ -107,19 +107,19 @@ $arraysHtml .= '</table>';
 
 <ul>
   <li>
-    <a href="#Buildings">Buildings</a>
+    <a href="#Bridges">Bridges, Overpasses</a>
   </li>
   <li>
-    <a href="#Bridges">Bridges, Overpasses</a>
+    <a href="#Buildings">Buildings</a>
   </li>
   <li>
     <a href="#Dams">Dams</a>
   </li>
   <li>
-    <a href="#Miscellaneous">Miscellaneous</a>
+    <a href="#Geotechnical">Geotechnical Arrays</a>
   </li>
   <li>
-    <a href="#Geotechnical">Geotechnical Arrays</a>
+    <a href="#Miscellaneous">Miscellaneous</a>
   </li>
 </ul>
 
