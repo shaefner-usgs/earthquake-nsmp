@@ -14,11 +14,6 @@
   font-size: 14px;
 }
 
-/* ensure popups are on top of labels */
-.leaflet-popup {
-  z-index: 1000;
-}
-
 /* use template's color for links in popups */
 .leaflet-popup-content a {
   color: $link-color;
