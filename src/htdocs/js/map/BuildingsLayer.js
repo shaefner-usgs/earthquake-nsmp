@@ -138,7 +138,8 @@ L.BuildingsLayer = function (options) {
    */
   _initOms = function () {
     var popup = L.popup({
-      autoPanPadding: L.point(60, 10)
+      autoPanPadding: L.point(60, 10),
+      minWidth: 240
     });
 
     _oms = new OverlappingMarkerSpiderfier(_map, {

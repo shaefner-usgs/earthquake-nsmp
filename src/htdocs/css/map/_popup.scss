@@ -2,13 +2,22 @@
   font-size: 15px;
   min-width: 15em;
 
+  dd {
+    grid-column-start: 2;
+    margin: 0;
+    padding-left: .75em;
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: max-content auto;
+  }
+
   dt {
-    clear: left;
     color: #333;
-    display: block;
-    float: left;
     font-weight: 300;
-    width: 10em;
+    grid-column-start: 1;
+    text-align: right;
   }
 
   h2 {
@@ -31,6 +40,7 @@
 
     img {
       height: 100px;
+      max-width: none;
     }
   }
 }
