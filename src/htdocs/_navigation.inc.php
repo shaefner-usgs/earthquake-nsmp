@@ -1,6 +1,6 @@
 <?php
 
-$section = $CONFIG['MOUNT_PATH'];
+$section = $MOUNT_PATH;
 $url = $_SERVER['REQUEST_URI'];
 
 $matchesIndex = preg_match("@^$section/$@", $_SERVER['REQUEST_URI']);

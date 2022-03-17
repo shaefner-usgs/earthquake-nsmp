@@ -12,7 +12,7 @@ if (!isset($TEMPLATE)) {
   ';
   $FOOT = '
     <script>
-      var MOUNT_PATH = "' . $CONFIG['MOUNT_PATH'] . '";
+      var MOUNT_PATH = "' . $MOUNT_PATH . '";
     </script>
     <script src="/lib/leaflet/leaflet.js"></script>
     <script src="/lib/oms/oms.js"></script>
