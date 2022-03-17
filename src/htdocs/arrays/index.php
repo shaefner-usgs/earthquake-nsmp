@@ -1,7 +1,7 @@
 <?php
 
-include_once '../../conf/config.inc.php'; // app config
-include_once '../../lib/classes/Db.class.php'; // db connector, queries
+include_once $_SERVER['DOCUMENT_ROOT'] . '/../conf/config.inc.php'; // app config
+include_once $_SERVER['DOCUMENT_ROOT'] . '/../lib/classes/Db.class.php'; // db connector, queries
 
 if (!isset($TEMPLATE)) {
   $TITLE = 'NSMP Structural and Geotechnical Arrays';

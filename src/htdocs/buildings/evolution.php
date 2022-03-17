@@ -1,6 +1,6 @@
 <?php
 
-include_once '../../conf/config.inc.php'; // app config
+include_once $_SERVER['DOCUMENT_ROOT'] . '/../conf/config.inc.php'; // app config
 
 if (!isset($TEMPLATE)) {
   $TITLE = 'Evolution of Seismic Structural Health Monitoring of Buildings (2000-2008)';
