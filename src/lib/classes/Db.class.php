@@ -1,36 +1,21 @@
 <?php
 
 /**
- * Database connector and queries for app
- *
- * @param $connectionType {String} default is NULL
- *     pass in 'write' to create a connection with write privileges
+ * Database connector and queries.
  *
  * @author Scott Haefner <shaefner@usgs.gov>
  */
 class Db {
   private $_db;
-  private $_pdo;
 
-  public function __construct($connectionType=NULL) {
-    if ($connectionType === 'write') {
-      $this->_pdo = [
-        'db' => $GLOBALS['CONFIG']['DB_WRITE_DSN'],
-        'user' => $GLOBALS['CONFIG']['DB_WRITE_USER'],
-        'pass' => $GLOBALS['CONFIG']['DB_WRITE_PASS']
-      ];
-    } else {
-      $this->_pdo = [
-        'db' => $GLOBALS['CONFIG']['DB_DSN'],
-        'user' => $GLOBALS['CONFIG']['DB_USER'],
-        'pass' => $GLOBALS['CONFIG']['DB_PASS']
-      ];
-    }
+  public function __construct() {
+    global $DB_DSN, $DB_PASS, $DB_USER;
+
     try {
-      $this->db = new PDO($this->_pdo['db'], $this->_pdo['user'], $this->_pdo['pass']);
-      $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $this->_db = new PDO($DB_DSN, $DB_USER, $DB_PASS);
+      $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $e) {
-      print '<p class="alert error">ERROR 1: ' . $e->getMessage() . '</p>';
+      print '<p class="alert error">ERROR: ' . $e->getMessage() . '</p>';
     }
   }
 
@@ -42,29 +27,32 @@ class Db {
    * @param $params {Array} default is NULL
    *     key-value substitution params for SQL query
    *
-   * @return $stmt {Object} - PDOStatement object
+   * @return $stmt {Object}
+   *     PDOStatement object upon success
    */
   private function _execQuery ($sql, $params=NULL) {
     try {
-      $stmt = $this->db->prepare($sql);
+      $stmt = $this->_db->prepare($sql);
 
       // bind sql params
       if (is_array($params)) {
         foreach ($params as $key => $value) {
           $type = $this->_getType($value);
+
           $stmt->bindValue($key, $value, $type);
         }
       }
+
       $stmt->execute();
 
       return $stmt;
     } catch(Exception $e) {
-      print '<p class="alert error">ERROR 2: ' . $e->getMessage() . '</p>';
+      print '<p class="alert error">ERROR: ' . $e->getMessage() . '</p>';
     }
   }
 
   /**
-   * Get data type for a sql parameter (PDO::PARAM_* constant)
+   * Get the data type for a sql parameter (PDO::PARAM_* constant).
    *
    * @param $var {?}
    *     variable to identify type of
@@ -72,15 +60,15 @@ class Db {
    * @return $type {Integer}
    */
   private function _getType ($var) {
-    $varType = gettype($var);
-    $pdoTypes = array(
+    $pdoTypes = [
       'boolean' => PDO::PARAM_BOOL,
       'integer' => PDO::PARAM_INT,
       'NULL' => PDO::PARAM_NULL,
       'string' => PDO::PARAM_STR
-    );
-
+    ];
     $type = $pdoTypes['string']; // default
+    $varType = gettype($var);
+
     if (isset($pdoTypes[$varType])) {
       $type = $pdoTypes[$varType];
     }
@@ -89,8 +77,8 @@ class Db {
   }
 
   /**
-   * Get arrays
-   *   Listing columns explicitly so 'cosmoscode' is first column in result
+   * Query the db to get arrays. Listing columns explicitly so 'cosmoscode'
+   * is the first column in the result.
    *
    * @return {Function}
    */
@@ -103,7 +91,7 @@ class Db {
   }
 
   /**
-   * Get buildings
+   * Query the db to get buildings.
    *
    * @return {Function}
    */
@@ -114,7 +102,7 @@ class Db {
   }
 
   /**
-   * Get stations
+   * Query the db to get stations.
    *
    * @return {Function}
    */
