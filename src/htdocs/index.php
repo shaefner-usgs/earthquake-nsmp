@@ -1,6 +1,6 @@
 <?php
 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/../conf/config.inc.php'; // app config
+include_once '../conf/config.inc.php'; // app config
 
 if (!isset($TEMPLATE)) {
   $TITLE = 'National Strong Motion Project';

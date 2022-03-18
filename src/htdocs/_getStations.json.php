@@ -1,8 +1,8 @@
 <?php
 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/../conf/config.inc.php'; // app config
-include_once $_SERVER['DOCUMENT_ROOT'] . '/../lib/_functions.inc.php'; // app functions
-include_once $_SERVER['DOCUMENT_ROOT'] . '/../lib/classes/Db.class.php'; // db connector, queries
+include_once '../conf/config.inc.php'; // app config
+include_once '../lib/_functions.inc.php'; // app functions
+include_once '../lib/classes/Db.class.php'; // db connector, queries
 
 $callback = safeParam('callback');
 $now = date(DATE_RFC2822);
