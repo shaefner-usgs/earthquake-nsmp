@@ -6,17 +6,17 @@ if (!isset($TEMPLATE)) {
   $TITLE = 'NSMP Stations';
   $NAVIGATION = true;
   $HEAD = '
-    <link rel="stylesheet" href="/lib/leaflet/leaflet.css" />
-    <link rel="stylesheet" href="/lib/leaflet-fullscreen/leaflet.fullscreen.css" />
-    <link rel="stylesheet" href="/css/stations.css"/>
+    <link rel="stylesheet" href="lib/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="lib/leaflet-fullscreen/leaflet.fullscreen.css" />
+    <link rel="stylesheet" href="css/stations.css"/>
   ';
   $FOOT = '
     <script>
       var MOUNT_PATH = "' . $MOUNT_PATH . '";
     </script>
-    <script src="/lib/leaflet/leaflet.js"></script>
-    <script src="/lib/oms/oms.js"></script>
-    <script src="/js/stations.js"></script>
+    <script src="lib/leaflet/leaflet.js"></script>
+    <script src="lib/oms/oms.js"></script>
+    <script src="js/stations.js"></script>
   ';
 
   include 'template.inc.php';

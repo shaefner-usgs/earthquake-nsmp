@@ -6,17 +6,17 @@ if (!isset($TEMPLATE)) {
   $TITLE = 'Structural Health Monitoring of Veterans Affairs&rsquo; Hospital Buildings';
   $NAVIGATION	= true;
   $HEAD = '
-    <link rel="stylesheet" href="/lib/leaflet/leaflet.css" />
-    <link rel="stylesheet" href="/lib/leaflet-fullscreen/leaflet.fullscreen.css" />
-    <link rel="stylesheet" href="/css/va.css"/>
+    <link rel="stylesheet" href="../lib/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="../lib/leaflet-fullscreen/leaflet.fullscreen.css" />
+    <link rel="stylesheet" href="../css/va.css"/>
   ';
   $FOOT = '
     <script>
       var MOUNT_PATH = "' . $MOUNT_PATH . '";
     </script>
-    <script src="/lib/leaflet/leaflet.js"></script>
-    <script src="/lib/oms/oms.js"></script>
-    <script src="/js/va.js"></script>
+    <script src="../lib/leaflet/leaflet.js"></script>
+    <script src="../lib/oms/oms.js"></script>
+    <script src="../js/va.js"></script>
   ';
 
   include 'template.inc.php';
