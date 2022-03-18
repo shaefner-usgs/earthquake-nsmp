@@ -19,11 +19,11 @@ $output = [
   'features' => []
 ];
 
-$thumbPath = 'buildings/img/layouts/thumbs/';
+$thumbPath = $DATA_DIR . '/buildings/layouts/thumbs/';
 
 // Store results from Instruments / Plots tables in features array
 while ($row = $rsBuildings->fetch(PDO::FETCH_ASSOC)) {
-  // ImageMagick adds '-0', '-1', etc when converting multipage .pdf to .png
+  // NOTE: ImageMagick adds '-0', '-1', etc when converting multipage .pdf to .png
   $thumb = '';
   if ($row['filename_layout']) {
     $thumb = preg_replace('/pdf$/', 'png', $row['filename_layout']);

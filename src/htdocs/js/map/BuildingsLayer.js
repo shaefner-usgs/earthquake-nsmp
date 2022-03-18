@@ -1,4 +1,4 @@
-/* global L, OverlappingMarkerSpiderfier */
+/* global L, MOUNT_PATH, OverlappingMarkerSpiderfier */
 'use strict';
 
 
@@ -117,16 +117,22 @@ L.BuildingsLayer = function (options) {
    * @return images {String}
    */
   _getImages = function (props) {
-    var images = '';
+    var images,
+        path;
+
+    images = '';
+    path = MOUNT_PATH + '/data/buildings';
 
     if (props.photo) {
-      images += '<a href="img/photos/' + props.photo + '" target="_blank" title="Photo">' +
-          '<img src="img/photos/thumbs/' + props.photo + '" alt="building photo" />' +
+      images +=
+        `<a href="${path}/photos/${props.photo}" target="_blank" title="Photo">` +
+          `<img src="${path}/photos/thumbs/${props.photo}" alt="building photo" />` +
         '</a>';
     }
     if (props.layout) {
-      images += '<a href="img/layouts/' + props.layout + '" target="_blank" title="Building Layout">' +
-          '<img src="img/layouts/thumbs/' + props.layout_thumb + '" alt="building layout" />' +
+      images +=
+        `<a href="${path}/layouts/${props.layout}" target="_blank" title="Building Layout">` +
+          `<img src="${path}/layouts/thumbs/${props.layout_thumb}" alt="building layout" />` +
         '</a>';
     }
 

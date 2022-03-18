@@ -65,10 +65,10 @@ foreach ($categories as $key=>$value) {
       )
     ];
     if ($array['image']) {
-      $links['photo'] = 'photos/' . $array['image'];
+      $links['photo'] = $MOUNT_PATH . '/data/arrays/photos/' . $array['image'];
     }
     if ($array['schematic']) {
-      $links['schematic'] = 'schematics/' . $array['schematic'];
+      $links['schematic'] = $MOUNT_PATH . '/data/arrays/schematics/' . $array['schematic'];
     }
     $linklist = [];
     foreach ($links as $anchor=>$href) {
