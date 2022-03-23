@@ -27,7 +27,7 @@ $PROMPTS = [
   ],
   'DATA_HOST' => [
     'prompt' => 'Host where data files are served',
-    'default' => 'localhost',
+    'default' => 'earthquake.usgs.gov',
     'secure' => false
   ],
   'DB_DSN' => [
@@ -48,11 +48,17 @@ $PROMPTS = [
 ];
 
 
-writeConfig ($CONFIG_FILE_INI, $PROMPTS);
+writeConfig($CONFIG_FILE_INI, $PROMPTS);
 
 
 /**
- * Get the configuration value for the given option.
+ * Prompt the user to get the configuration value for the given option.
+ *
+ * @param $prompt {String}
+ * @param $default {String} default null
+ * @param $secure {Boolean} default false
+ *
+ * @return $answer {String}
  */
 function configure ($prompt, $default=null, $secure=false) {
   print $prompt;
@@ -86,6 +92,10 @@ function configure ($prompt, $default=null, $secure=false) {
 /**
  * Get the previous config options or an empty Array (default). Optionally
  * backup the previous config options.
+ *
+ * @param $CONFIG_FILE_INI {String}
+ *
+ * @return $config {Array}
  */
 function getConfig ($CONFIG_FILE_INI) {
   $config = [];
@@ -102,7 +112,7 @@ function getConfig ($CONFIG_FILE_INI) {
       false
     );
 
-    if (strtoupper(substr($answer, 0, 1)) == 'Y') {
+    if (isYes($answer)) {
       $config = $prevConfig;
     }
 
@@ -112,7 +122,7 @@ function getConfig ($CONFIG_FILE_INI) {
       false
     );
 
-    if (strtoupper(substr($answer, 0, 1)) == 'Y') {
+    if (isYes($answer)) {
       $backup = $CONFIG_FILE_INI . '.' . date('YmdHis');
 
       rename($CONFIG_FILE_INI, $backup);
@@ -125,7 +135,21 @@ function getConfig ($CONFIG_FILE_INI) {
 }
 
 /**
+ * Determine if the user answered 'yes' or not.
+ *
+ * @param $answer {String}
+ *
+ * @return {Boolean}
+ */
+function isYes ($answer) {
+  return strtoupper(substr($answer, 0, 1)) === 'Y';
+}
+
+/**
  * Write the config file.
+ *
+ * @param $CONFIG_FILE_INI {String}
+ * @param $PROMPTS {Array}
  */
 function writeConfig ($CONFIG_FILE_INI, $PROMPTS) {
   $CONFIG = getConfig($CONFIG_FILE_INI);
