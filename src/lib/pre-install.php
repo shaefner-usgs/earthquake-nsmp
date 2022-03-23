@@ -8,7 +8,6 @@ chdir(dirname($argv[0]));
 $LIB_DIR = getcwd(); // returns false on some Unix variants
 
 if (!$LIB_DIR) {
-  // Some platforms don't update $_SERVER['PWD'] after chdir()
   $LIB_DIR = $_SERVER['PWD'];
 }
 
@@ -32,7 +31,7 @@ if (!defined('NON_INTERACTIVE')) {
   define('NON_INTERACTIVE', false);
 }
 
-// Interactively prompt the user for config options and write the config.ini file
+// Interactively prompt the user for config options and write config.ini
 include_once 'configure.inc.php';
 
 $CONFIG = parse_ini_file($CONFIG_FILE_INI);
