@@ -54,7 +54,12 @@ L.EarthquakesLayer = function (options) {
 
 
   _initialize = function (options) {
+    var map;
+
     options = Object.assign({}, _DEFAULTS, options);
+    map = options.map;
+
+    map.createPane('earthquakes', map.getPane('overlayPane'));
 
     _markerOptions = Object.assign({}, _MARKER_DEFAULTS, options.markerOptions);
     _now = Luxon.DateTime.utc();
@@ -142,18 +147,17 @@ L.EarthquakesLayer = function (options) {
    * @return marker {L.CircleMarker}
    */
   _pointToLayer = function (feature, latlng) {
-    var age,
-        fillColor,
-        radius;
+    var options,
+        props;
 
-    age = _getAge(feature.properties.time);
-    fillColor = _COLORS[age];
-    radius = 3 * parseInt(Math.pow(10, (0.11 * feature.properties.mag)), 10);
+    props = feature.properties;
+    options = Object.assign({}, _markerOptions, {
+      fillColor: _COLORS[_getAge(props.time)],
+      pane: 'earthquakes',
+      radius: 3 * parseInt(Math.pow(10, (0.11 * props.mag)), 10)
+    });
 
-    _markerOptions.fillColor = fillColor;
-    _markerOptions.radius = radius;
-
-    return L.circleMarker(latlng, _markerOptions);
+    return L.circleMarker(latlng, options);
   };
 
 

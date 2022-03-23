@@ -2,6 +2,17 @@
 @import '_MousePosition.scss';
 
 
+/* Stacking order on buildings map (leaflet-overlay-pane has a z-index of 400) */
+.leaflet-array-pane {
+  z-index: 403;
+}
+.leaflet-earthquakes-pane {
+  z-index: 401;
+}
+.leaflet-reference-pane {
+  z-index: 402;
+}
+
 /* Quell long attributions */
 .leaflet-control-attribution {
   max-width: 300px;
@@ -10,11 +21,11 @@
   white-space: nowrap;
 }
 
-.leaflet-tooltip-pane {
-  font-size: 14px;
-}
-
 /* use template's color for links in popups */
 .leaflet-popup-content a {
   color: $link-color;
+}
+
+.leaflet-tooltip-pane {
+  font-size: 14px;
 }

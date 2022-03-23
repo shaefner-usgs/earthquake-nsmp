@@ -77,11 +77,12 @@ L.BuildingsLayer = function (options) {
     _this.layers = {};
     _this.names = _LAYERNAMES;
 
-    Object.keys(_LAYERNAMES).forEach(key => {
-      _this.count[key] = 0;
-      _this.layers[key] = L.featureGroup();
+    Object.keys(_LAYERNAMES).forEach(type => {
+      _this.count[type] = 0;
+      _this.layers[type] = L.featureGroup();
 
-      _this.addLayer(_this.layers[key]); // add map layer to featureGroup
+      _map.createPane(type, _map.getPane('overlayPane'));
+      _this.addLayer(_this.layers[type]); // add map layer to featureGroup
     });
   };
 
@@ -198,16 +199,18 @@ L.BuildingsLayer = function (options) {
     var options,
         type;
 
-    options = {};
     type = feature.properties.type;
+    options = {
+      pane: type
+    };
 
     if (type === 'array') {
-      options = Object.assign({}, _markerOptions, { // default (type array)
+      Object.assign(options, _markerOptions, {
         color: '#0c0',
         fillColor: '#0c0'
       });
     } else if (type === 'reference') {
-      options = Object.assign({}, _markerOptions, {
+      Object.assign(options, _markerOptions, {
         color: '#00c',
         fillColor: '#00c'
       });
