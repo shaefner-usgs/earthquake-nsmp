@@ -9,7 +9,7 @@
  * @param options {Object}
  *     L.tileLayer options
  *
- * @return {L.tileLayer|L.layerGroup}
+ * @return {Object <L.tileLayer|L.layerGroup>}
  */
 L.GreyscaleLayer = function (provider, options) {
   var base,
