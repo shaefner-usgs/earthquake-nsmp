@@ -1,4 +1,4 @@
-@import '../../../../node_modules/hazdev-template/src/htdocs/css/_variables.scss';
+@import 'node_modules/hazdev-template/src/htdocs/css/_variables.scss';
 @import '_MousePosition.scss';
 
 
@@ -24,6 +24,14 @@
 /* use template's color for links in popups */
 .leaflet-popup-content a {
   color: $link-color;
+
+  &:visited {
+    color: $link-color-visited
+  }
+
+  &:active {
+    color: $link-color-active;
+  }
 }
 
 .leaflet-tooltip-pane {
