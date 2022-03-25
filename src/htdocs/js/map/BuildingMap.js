@@ -6,8 +6,8 @@ var AppUtil = require('util/AppUtil');
 
 // Leaflet plugins
 require('leaflet-fullscreen');
-require('map/MousePosition');
-require('map/RestoreMap');
+require('leaflet-mouse-position');
+require('leaflet-restore-map');
 
 // Factories for map layers
 require('map/BuildingsLayer');
