@@ -100,7 +100,8 @@ var BuildingMap = function (options) {
    */
   _initMap = function () {
     _map = L.map(_el, {
-      scrollWheelZoom: false
+      scrollWheelZoom: false,
+      worldCopyJump: true
     });
 
     L.control.fullscreen({
