@@ -1,6 +1,6 @@
-@import '_common.scss';
-@import 'map/_map.scss';
-@import 'map/_popup.scss';
+@use 'common';
+@use 'map/map';
+@use 'map/popup';
 
 li.count {
   flex: 1;

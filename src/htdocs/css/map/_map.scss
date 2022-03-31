@@ -1,11 +1,12 @@
-@import '_leaflet.scss';
+@use 'leaflet';
 
 .map {
   height: 700px;
   margin-bottom: 5px;
 
-  /* template's css is getting the way */
-  input[type=checkbox], input[type=radio] {
+  /* Template's css is getting the way */
+  input[type=checkbox],
+  input[type=radio] {
     display: inline;
     height: auto;
     opacity: 1;
@@ -14,7 +15,7 @@
   }
 }
 
-/* shrink map height on small displays */
+/* Shrink map height on small displays */
 @media all and (max-height: 667px) {
   .map {
     height: 500px;
