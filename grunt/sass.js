@@ -7,8 +7,11 @@ var config = require('./config'),
 var sass = {
   options: {
     implementation: dartSass,
+    includePaths: [
+      'node_modules/hazdev-template/src/htdocs/css',
+      'node_modules/leaflet-mouse-position/src'
+    ],
     outputStyle: 'expanded',
-    sourceComments: true,
     sourceMap: true,
     sourceMapContents: true
   },
