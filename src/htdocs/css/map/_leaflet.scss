@@ -1,5 +1,5 @@
-@import 'node_modules/hazdev-template/src/htdocs/css/_variables.scss';
-@import 'node_modules/leaflet-mouse-position/src/L.Control.MousePosition.scss';
+@use 'L.Control.MousePosition';
+@use 'variables' as *;
 
 
 /* Stacking order on buildings map (leaflet-overlay-pane has a z-index of 400) */
@@ -21,7 +21,7 @@
   white-space: nowrap;
 }
 
-/* use template's color for links in popups */
+/* Use template's color for links in popups */
 .leaflet-popup-content a {
   color: $link-color;
 
