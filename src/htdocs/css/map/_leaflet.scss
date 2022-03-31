@@ -1,5 +1,5 @@
-@use 'L.Control.MousePosition';
-@use 'variables' as *;
+@use 'L.Control.MousePosition'; // located in node_modules/leaflet-mouse-position
+@use 'variables' as *; // located in node_modules/hazdev-template
 
 
 /* Stacking order on buildings map (leaflet-overlay-pane has a z-index of 400) */
