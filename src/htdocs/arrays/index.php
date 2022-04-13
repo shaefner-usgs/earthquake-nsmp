@@ -16,7 +16,9 @@ $categories = [
   11 => 'Bridges, Overpasses',
   10 => 'Buildings',
   12 => 'Dams',
-  50 => 'Geotechnical Arrays',
+  50 => 'Geotechnical Arrays, Boreholes',
+  51 => 'Geotechnical Arrays, Boreholes',
+  52 => 'Geotechnical Arrays, Boreholes',
   13 => 'Miscellaneous',
   14 => 'Miscellaneous',
   15 => 'Miscellaneous'
@@ -44,6 +46,7 @@ foreach ($categories as $code => $category) {
       <table>
         <tr>
           <th>Station Code</th>
+          <th>Network Code</th>
           <th>Name</th>
           <th>City</th>
           <th>State</th>
@@ -65,13 +68,18 @@ foreach ($categories as $code => $category) {
         implode('+', $coords)
       )
     ];
+    $station = $array['stacode'];
 
-    if ($array['station']) {
-      $links['photo and schematic'] = $array['station'];
+    if ($array['decommissioned']) {
+      $station .= '**';
     }
 
     if ($array['data']) {
       $links['data'] = $array['data'];
+    }
+
+    if ($array['station']) {
+      $links['photo and schematic'] = $array['station'];
     }
 
     foreach ($links as $description => $href) {
@@ -91,8 +99,10 @@ foreach ($categories as $code => $category) {
         <td>%s</td>
         <td>%s</td>
         <td>%s</td>
+        <td>%s</td>
       </tr>',
-      $array['stacode'],
+      $station,
+      $array['network'],
       $array['name'],
       $array['city'],
       $array['state'],
@@ -125,7 +135,7 @@ $html .= '</table>';
     <a href="#Dams">Dams</a>
   </li>
   <li>
-    <a href="#Geotechnical">Geotechnical Arrays</a>
+    <a href="#Geotechnical">Geotechnical Arrays, Boreholes</a>
   </li>
   <li>
     <a href="#Miscellaneous">Miscellaneous</a>
@@ -141,12 +151,17 @@ $html .= '</table>';
   and/or partner with the NSMP in the operation and maintenance of the equipment.
   Supporting metadata that describes the &ldquo;SEED&rdquo; (Standard for
   Earthquake Data Exchange) instrument response for each data channel is
-  available at the <a href="http://quake.geo.berkeley.edu/ftp/pub/doc/NP.info/">Northern
+  available at the <a href="https://www.ncedc.org/ftp/pub/doc/NP.info/">Northern
   California Earthquake Data Center</a>. The <a href="http://www.fdsn.org/">International
   Federation of Digital Seismograph Networks</a> code for all NSMP stations
   is &ldquo;NP&rdquo;.</p>
 
-<p>* <a href="http://cosmos-eq.org/">Consortium of Organizations for Strong
-  Motion Observation Systems</a></p>
+<p>All NSMP waveform products are publicly available for download at the
+  <a href="https://www.strongmotioncenter.org/">Center for Engineering Strong
+  Motion Data</a>.</p>
 
 <?php print $html; ?>
+
+<p>* <a href=" https://www.strongmotion.org/">Consortium of Organizations for Strong
+  Motion Observation Systems</a></p>
+<p>** Station has been decommissioned</p>
