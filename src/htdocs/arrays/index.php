@@ -21,60 +21,68 @@ $categories = [
   14 => 'Miscellaneous',
   15 => 'Miscellaneous'
 ];
-
 $db = new Db;
-
+$html = '';
+$prevCategory = '';
 $rsArrays = $db->queryArrays();
 
-// Create associative array with $arrays indexed by cosmoscode (first column of result set)
+// Create an Array with $arrays indexed by cosmoscode (first column of result set)
 $arrays = $rsArrays->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);
 
-// Create HTML for data tables
-$arraysHtml = '';
-$prevCategory = '';
-foreach ($categories as $key=>$value) {
-  $category = $value;
-  if ($category !== $prevCategory) { // need this check b/c mult 'Miscellaneous' categories
-    if ($arraysHtml) {
-      $arraysHtml .= '</table>'; // close open <table> tag if it exists
+// Create the HTML for the data tables
+foreach ($categories as $code => $category) {
+  if ($category !== $prevCategory) { // necessary due to mult. 'Miscellaneous' categories
+    if ($html) {
+      $html .= '</table>';
     }
-    $arraysHtml .= sprintf ('<a class="category" id="%s"><h2>%s</h2></a>',
-      strtok($value, ', '),
-      $value
+
+    $html .= sprintf ('<a class="category" id="%s"><h2>%s</h2></a>',
+      strtok($category, ', '),
+      $category
     );
-    $arraysHtml .= '<table>
-      <tr>
-        <th>Station Code</th>
-        <th>Name</th>
-        <th>City</th>
-        <th>State</th>
-        <th>Location</th>
-        <th>Site Agency</th>
-        <th>Channels</th>
-        <th>Links</th>
-      </tr>';
+    $html .= '
+      <table>
+        <tr>
+          <th>Station Code</th>
+          <th>Name</th>
+          <th>City</th>
+          <th>State</th>
+          <th>Location</th>
+          <th>Site Agency</th>
+          <th>Channels</th>
+          <th>Links</th>
+        </tr>';
   }
-  foreach ($arrays[$key] as $array) {
+
+  foreach ($arrays[$code] as $array) {
     $coords = [
       $array['lat'],
       $array['lon']
     ];
+    $linklist = [];
     $links = [
-      'map' => sprintf ('https://www.google.com/maps/place/%s',
-        implode(',', $coords)
+      'map' => sprintf ('https://maps.google.com/maps?t=k&q=loc:%s',
+        implode('+', $coords)
       )
     ];
-    if ($array['image']) {
-      $links['photo'] = $MOUNT_PATH . '/data/arrays/photos/' . $array['image'];
+
+    if ($array['station']) {
+      $links['photo and schematic'] = $array['station'];
     }
-    if ($array['schematic']) {
-      $links['schematic'] = $MOUNT_PATH . '/data/arrays/schematics/' . $array['schematic'];
+
+    if ($array['data']) {
+      $links['data'] = $array['data'];
     }
-    $linklist = [];
-    foreach ($links as $anchor=>$href) {
-      $linklist[] = "<a href=\"$href\">$anchor</a>";
+
+    foreach ($links as $description => $href) {
+      $linklist[] = sprintf('<a href="%s">%s</a>',
+        $href,
+        $description
+      );
     }
-    $arraysHtml .= sprintf('<tr>
+
+    $html .= sprintf('
+      <tr>
         <td>%s</td>
         <td>%s</td>
         <td>%s</td>
@@ -96,7 +104,8 @@ foreach ($categories as $key=>$value) {
   }
   $prevCategory = $category;
 }
-$arraysHtml .= '</table>';
+
+$html .= '</table>';
 
 ?>
 
@@ -140,4 +149,4 @@ $arraysHtml .= '</table>';
 <p>* <a href="http://cosmos-eq.org/">Consortium of Organizations for Strong
   Motion Observation Systems</a></p>
 
-<?php print $arraysHtml; ?>
+<?php print $html; ?>
