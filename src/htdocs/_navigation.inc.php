@@ -12,7 +12,8 @@ $NAVIGATION =
     navItem("$section/arrays/", 'Structural Arrays') .
     navItem("$section/buildings/", 'Buildings') .
     navItem("$section/nsmpdata.php", 'Data') .
-    navItem("$section/history/", 'History')
+    navItem("$section/history/", 'History') .
+    navItem("$section/contacts.php", 'Contacts')
   );
 
 print $NAVIGATION;
