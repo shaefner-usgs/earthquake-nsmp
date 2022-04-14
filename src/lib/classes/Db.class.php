@@ -84,7 +84,7 @@ class Db {
    */
   public function queryArrays () {
     $sql = 'SELECT `cosmoscode`, `stacode`, `agency`, `lat`, `lon`, `name`,
-      `city`, `state`, `channels`, `station`, `data`, `network`, `decommissioned`
+      `city`, `state`, `channels`, `station`, `data`, `nees`, `network`, `decommissioned`
       FROM nsmp_structures ORDER BY cosmoscode ASC, stacode ASC';
 
     return $this->_execQuery($sql);

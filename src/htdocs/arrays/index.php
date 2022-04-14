@@ -78,6 +78,10 @@ foreach ($categories as $code => $category) {
       $links['data'] = $array['data'];
     }
 
+    if ($array['nees']) {
+      $links['NEES portal'] = $array['nees'];
+    }
+
     if ($array['station']) {
       $links['photo and schematic'] = $array['station'];
     }
