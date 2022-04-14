@@ -24,21 +24,21 @@ while ($row = $rsStations->fetch(PDO::FETCH_ASSOC)) {
   $feature = [
     'geometry' => [
       'coordinates' => [
-        floatval($row['chalon']),
-        floatval($row['chalat']),
+        floatval($row['lon']),
+        floatval($row['lat']),
         floatval($row['elevation'])
       ],
       'type' => 'Point'
     ],
     'id' => 'point' . intval($row['id']),
     'properties' => [
+      'agency' => $row['agency'],
       'cosmoscode' => intval($row['cosmoscode']),
+      'name' => utf8_encode($row['name']),
       'numchan' => intval($row['numchan']),
-      'owner' => $row['site_agency'],
       'rectype' => $row['rectype'],
       'sentype' => $row['sentype'],
-      'stacode' => $row['stacode'],
-      'staname' => utf8_encode($row['staname'])
+      'stacode' => $row['stacode']
     ],
     'type' => 'Feature'
   ];

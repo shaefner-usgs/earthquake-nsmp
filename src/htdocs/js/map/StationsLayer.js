@@ -104,12 +104,12 @@ L.StationsLayer = function (options) {
   _getContent = function (data) {
     var template =
       '<div class="popup">' +
-        '<h2>{staname}</h2>' +
+        '<h2>{name}</h2>' +
         '<dl>' +
           '<dt>Station Code</dt><dd>{stacode}</dd>' +
           '<dt>Sensor Type</dt><dd>{sentype}</dd>' +
           '<dt>Recorder Type</dt><dd>{rectype}</dd>' +
-          '<dt>Owner</dt><dd>{owner}</dd>' +
+          '<dt>Owner</dt><dd>{agency}</dd>' +
           '<dt>Number of Channels</dt><dd>{numchan}</dd>' +
         '</dl>' +
       '</div>';
@@ -121,34 +121,34 @@ L.StationsLayer = function (options) {
    * Get the icon for a marker.
    *
    * @param type {String}
-   * @param owner {String}
+   * @param agency {String}
    *
    * @return {L.Icon}
    */
-  _getIcon = function (type, owner) {
+  _getIcon = function (type, agency) {
     var colors = {
       other: 'c34',
       USGS: '48a'
     };
 
-    if (owner !== 'USGS') {
-      owner = 'other';
+    if (agency !== 'USGS') {
+      agency = 'other';
     }
 
     // Only create each icon once
     if (!_icons[type]) {
       _icons[type] = {};
     }
-    if (!_icons[type][owner]) {
-      _icons[type][owner] = L.icon({
+    if (!_icons[type][agency]) {
+      _icons[type][agency] = L.icon({
         iconAnchor: [10, 23],
         iconSize: [20, 47],
-        iconUrl: `img/pin-m-${type}+${colors[owner]}.png`,
+        iconUrl: `img/pin-m-${type}+${colors[agency]}.png`,
         popupAnchor: [0, -35]
       });
     }
 
-    return _icons[type][owner];
+    return _icons[type][agency];
   };
 
   /**
@@ -217,7 +217,7 @@ L.StationsLayer = function (options) {
     props = feature.properties;
     type = _getType(props.cosmoscode);
 
-    layer.bindTooltip(props.staname);
+    layer.bindTooltip(props.name);
     layer.props = props; // for oms lib to create popup content
 
     _this.count[type] ++;
@@ -242,7 +242,7 @@ L.StationsLayer = function (options) {
     props = feature.properties;
     type = _getType(props.cosmoscode);
     options = Object.assign({}, _markerOptions, {
-      icon: _getIcon(type, props.owner)
+      icon: _getIcon(type, props.agency)
     });
 
     return L.marker(latlng, options);
