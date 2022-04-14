@@ -1,5 +1,9 @@
 @use 'variables' as *; // located in node_modules/hazdev-template
 
+sup a {
+  padding: 3px;
+}
+
 a.category {
   color: $text-color;
 }

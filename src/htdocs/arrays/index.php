@@ -71,7 +71,7 @@ foreach ($categories as $code => $category) {
     $station = $array['stacode'];
 
     if ($array['decommissioned']) {
-      $station .= '**';
+      $station .= ' <sup><a href="#fn2">2</a></sup>';
     }
 
     if ($array['data']) {
@@ -120,9 +120,9 @@ $html .= '</table>';
 ?>
 
 <p>This list of current structural arrays is grouped into five broad categories
-  based on the &ldquo;Station Type codes&rdquo; defined in Table 6 of the
-  <a href="http://www.strongmotioncenter.org/NCESMD/reports/Cosmos_Tables.xls">COSMOS*
-    data format</a>:</p>
+  based on the &ldquo;Station Type codes&rdquo; defined in
+  <a href="http://www.strongmotioncenter.org/NCESMD/reports/Cosmos_Tables.xls">Table 6</a>
+  of the COSMOS<sup><a href="#fn1">1</a></sup> data format:</p>
 
 <ul>
   <li>
@@ -162,6 +162,10 @@ $html .= '</table>';
 
 <?php print $html; ?>
 
-<p>* <a href=" https://www.strongmotion.org/">Consortium of Organizations for Strong
-  Motion Observation Systems</a></p>
-<p>** Station has been decommissioned</p>
+<ol>
+  <li id="fn1">
+    <a href=" https://www.strongmotion.org/">Consortium of Organizations for Strong
+      Motion Observation Systems</a>
+  </li>
+  <li id="fn2">Station has been decommissioned</li>
+</ol>
