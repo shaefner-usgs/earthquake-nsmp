@@ -121,7 +121,7 @@ $html .= '</table>';
 
 <p>This list of current structural arrays is grouped into five broad categories
   based on the &ldquo;Station Type codes&rdquo; defined in
-  <a href="http://www.strongmotioncenter.org/NCESMD/reports/Cosmos_Tables.xls">Table 6</a>
+  <a href="https://www.strongmotioncenter.org/NCESMD/reports/Cosmos_Tables.xls">Table 6</a>
   of the COSMOS<sup><a href="#fn1">1</a></sup> data format:</p>
 
 <ul>
@@ -152,7 +152,7 @@ $html .= '</table>';
   Supporting metadata that describes the &ldquo;SEED&rdquo; (Standard for
   Earthquake Data Exchange) instrument response for each data channel is
   available at the <a href="https://www.ncedc.org/ftp/pub/doc/NP.info/">Northern
-  California Earthquake Data Center</a>. The <a href="http://www.fdsn.org/">International
+  California Earthquake Data Center</a>. The <a href="https://www.fdsn.org/">International
   Federation of Digital Seismograph Networks</a> code for all NSMP stations
   is &ldquo;NP&rdquo;.</p>
 
@@ -161,6 +161,18 @@ $html .= '</table>';
   Motion Data</a>.</p>
 
 <?php print $html; ?>
+
+<p class="partners">Strong motion networks that partner with the NSMP:
+  <a href="https://www.conservation.ca.gov/cgs/smip">CE</a>,
+  <a href="https://www.scsn.org/">CI</a>,
+  <a href="https://www.memphis.edu/ceri/">NM</a>,
+  <a href="http://www.prsmp.uprm.edu/prsmp2/">PR</a>.
+</p>
+
+<p>For SB network stations, complete borehole array data must be downloaded from
+  <a href="http://nees.ucsb.edu/data-portal">NEES@UCSB</a>.</p>
+
+<hr />
 
 <ol>
   <li id="fn1">
