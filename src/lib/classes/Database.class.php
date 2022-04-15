@@ -5,7 +5,7 @@
  *
  * @author Scott Haefner <shaefner@usgs.gov>
  */
-class Db {
+class Database {
   private $_db;
 
   public function __construct() {

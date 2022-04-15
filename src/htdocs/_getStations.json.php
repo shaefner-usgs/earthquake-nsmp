@@ -2,12 +2,12 @@
 
 include_once '../conf/config.inc.php'; // app config
 include_once '../lib/_functions.inc.php'; // app functions
-include_once '../lib/classes/Db.class.php'; // db connector, queries
+include_once '../lib/classes/Database.class.php'; // db connector, queries
 
 $callback = safeParam('callback');
 $now = date(DATE_RFC2822);
 
-$db = new Db;
+$db = new Database;
 
 $rsStations = $db->queryStations();
 

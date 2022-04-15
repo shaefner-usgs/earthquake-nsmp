@@ -1,7 +1,7 @@
 <?php
 
 include_once '../../conf/config.inc.php'; // app config
-include_once '../../lib/classes/Db.class.php'; // db connector, queries
+include_once '../../lib/classes/Database.class.php'; // db connector, queries
 
 if (!isset($TEMPLATE)) {
   $TITLE = 'NSMP Structural and Geotechnical Arrays';
@@ -23,7 +23,7 @@ $categories = [
   14 => 'Miscellaneous',
   15 => 'Miscellaneous'
 ];
-$db = new Db;
+$db = new Database;
 $html = '';
 $prevCategory = '';
 $rsArrays = $db->queryArrays();
