@@ -49,3 +49,6 @@ if (!isset($TEMPLATE)) {
   according to <a href="https://www.strongmotion.org/archive/publications/reports/format_1_20.pdf">COSMOS standards</a>
   and archives the products at the <a href="https://strongmotioncenter.org/">Center
   for Engineering Strong Motion Data</a>.</p>
+
+<p>For questions about data, metadata, and station operations, please send email
+  to: <a href="mailto:nsmp@usgs.gov">nsmp@usgs.gov</a>.</p>
