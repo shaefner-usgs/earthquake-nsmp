@@ -2,9 +2,14 @@
   font-size: 15px;
   min-width: 15em;
 
+  dd,
+  dt {
+    padding: .25rem 0;
+  }
+
   dd {
     grid-column-start: 2;
-    margin: 0;
+    margin-left: 0;
     padding-left: .75em;
   }
 
