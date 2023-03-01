@@ -23,12 +23,13 @@
     "node": ">=10"
   },
   "dependencies": {
-    "leaflet": "^1.7.1",
-    "leaflet-fullscreen": "shaefner-usgs/Leaflet.fullscreen",
-    "leaflet-mouse-position": "shaefner-usgs/Leaflet.MousePosition",
-    "leaflet-restore-map": "shaefner-usgs/Leaflet.restoreMap",
-    "luxon": "^2.3.1",
-    "utfgrid": "danzel/Leaflet.utfgrid"
+    "leaflet": "^1.9.3",
+    "leaflet-fullscreen": "github:shaefner-usgs/Leaflet.fullscreen",
+    "leaflet-mouse-position": "github:shaefner-usgs/Leaflet.MousePosition",
+    "leaflet-mouseover-layer": "github:shaefner-usgs/Leaflet.mouseOverLayer",
+    "leaflet-restore-map": "github:shaefner-usgs/Leaflet.restoreMap",
+    "leaflet.utfgrid": "github:danzel/Leaflet.utfgrid",
+    "luxon": "^2.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
