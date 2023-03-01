@@ -2,7 +2,7 @@
 'use strict';
 
 
-require('map/MouseOverLayer');
+require('leaflet-mouseover-layer');
 
 
 /**
@@ -15,7 +15,7 @@ L.FaultsLayer = function () {
       plates,
       urlPrefix;
 
-  urlPrefix = 'https://bayquakealliance.org/faults/tiles/';
+  urlPrefix = 'https://escweb.wr.usgs.gov/faults/tiles/';
   faults = L.mouseOverLayer({
     dataUrl: urlPrefix + 'faults/{z}/{x}/{y}.grid.json?callback={cb}',
     tileOpts: {
