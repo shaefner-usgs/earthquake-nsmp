@@ -10,11 +10,11 @@ require('leaflet-mouse-position');
 require('leaflet-restore-map');
 
 // Factories for map layers
-require('map/DarkLayer');
-require('map/GreyscaleLayer');
+// require('map/DarkLayer');
+// require('map/GreyscaleLayer');
 require('map/SatelliteLayer');
 require('map/StationsLayer');
-require('map/TerrainLayer');
+require('map/TerrainLayer-alt');
 
 
 /*
@@ -57,20 +57,20 @@ var StationMap = function (options) {
    *     }
    */
   _getLayers = function (stations) {
-    var greyscale,
-        layers;
+    var layers,
+        terrain;
 
-    greyscale = L.greyscaleLayer();
+    terrain = L.terrainLayer();
     layers = {
       baseLayers: {
-        'Greyscale': greyscale,
-        'Dark': L.darkLayer(),
-        'Terrain': L.terrainLayer(),
+        // 'Greyscale': L.greyscaleLayer(),
+        // 'Dark': L.darkLayer(),
+        'Terrain': terrain,
         'Satellite': L.satelliteLayer()
       },
       overlays: {},
       defaults: [
-        greyscale
+        terrain
       ]
     };
 
@@ -90,10 +90,12 @@ var StationMap = function (options) {
    */
   _initMap = function () {
     _map = L.map(_el, {
+      attributionControl: false,
       scrollWheelZoom: false,
       worldCopyJump: true
     });
 
+    L.control.attribution({ prefix: '' }).addTo(_map);
     L.control.fullscreen({
       pseudoFullscreen: true
     }).addTo(_map);

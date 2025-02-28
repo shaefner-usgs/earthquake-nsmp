@@ -11,12 +11,12 @@ require('leaflet-restore-map');
 
 // Factories for map layers
 require('map/BuildingsLayer');
-require('map/DarkLayer');
+// require('map/DarkLayer');
 require('map/EarthquakesLayer');
 require('map/FaultsLayer');
-require('map/GreyscaleLayer');
+// require('map/GreyscaleLayer');
 require('map/SatelliteLayer');
-require('map/TerrainLayer');
+require('map/TerrainLayer-alt');
 
 
 /*
@@ -61,20 +61,20 @@ var BuildingMap = function (options) {
    *     }
    */
   _getLayers = function () {
-    var greyscale,
-        layers;
+    var layers,
+        terrain;
 
-    greyscale = L.greyscaleLayer();
+    terrain = L.terrainLayer();
     layers = {
       baseLayers: {
-        'Greyscale': greyscale,
-        'Dark': L.darkLayer(),
-        'Terrain': L.terrainLayer(),
+        // 'Greyscale': L.greyscaleLayer(),
+        // 'Dark': L.darkLayer(),
+        'Terrain': terrain,
         'Satellite': L.satelliteLayer()
       },
       overlays: {},
       defaults: [
-        greyscale
+        terrain
       ]
     };
 
@@ -100,10 +100,12 @@ var BuildingMap = function (options) {
    */
   _initMap = function () {
     _map = L.map(_el, {
+      attributionControl: false,
       scrollWheelZoom: false,
       worldCopyJump: true
     });
 
+    L.control.attribution({ prefix: '' }).addTo(_map);
     L.control.fullscreen({
       pseudoFullscreen: true
     }).addTo(_map);
